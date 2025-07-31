@@ -41,7 +41,7 @@ const Login = () => {
 							id: "AuthLogin",
 							withCloseButton: false,
 							onClose: () => {
-								router.push("/dashboard");
+								router.push("/ms");
 							},
 							autoClose: 1000,
 							withBorder: true,

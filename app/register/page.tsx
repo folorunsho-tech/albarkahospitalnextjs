@@ -28,9 +28,9 @@ const page = () => {
 		});
 	};
 	return (
-		<main className='w-max pt-12'>
+		<main>
 			<form
-				className='relative'
+				className='relative form'
 				onSubmit={async (e) => {
 					e.preventDefault();
 					await post("/auth/register", {

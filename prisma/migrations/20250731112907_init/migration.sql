@@ -5,7 +5,7 @@ CREATE TABLE `Accounts` (
     `passHash` VARCHAR(191) NULL,
     `menu` JSON NULL,
     `role` VARCHAR(191) NOT NULL DEFAULT 'user',
-    `status` BOOLEAN NOT NULL DEFAULT true,
+    `active` BOOLEAN NOT NULL DEFAULT true,
     `createdById` VARCHAR(191) NULL,
     `updatedById` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -15,19 +15,10 @@ CREATE TABLE `Accounts` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `AuthHistory` (
-    `id` VARCHAR(191) NOT NULL,
-    `accountId` VARCHAR(191) NULL,
-    `loggedInAt` DATETIME(3) NULL,
-    `loggedOutAt` DATETIME(3) NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Patients` (
     `id` VARCHAR(191) NOT NULL,
     `hosp_no` VARCHAR(191) NOT NULL,
+    `no` INTEGER NULL,
     `year` INTEGER NULL,
     `month` VARCHAR(191) NULL,
     `name` VARCHAR(191) NULL,
@@ -96,7 +87,7 @@ CREATE TABLE `Admission` (
     `id` VARCHAR(191) NOT NULL,
     `encounter_id` VARCHAR(191) NULL,
     `adm_date` DATETIME(3) NULL,
-    `admitted_for` VARCHAR(191) NULL,
+    `admitted_for` INTEGER NULL,
     `discharged_on` DATETIME(3) NULL,
     `nok_phone` VARCHAR(191) NULL,
     `ward_matron` VARCHAR(191) NULL,
@@ -206,57 +197,81 @@ CREATE TABLE `LabTest` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Transactions` (
+CREATE TABLE `Transaction` (
     `id` VARCHAR(191) NOT NULL,
-    `method` VARCHAR(191) NULL,
-    `status` VARCHAR(191) NULL,
-    `total` INTEGER NULL,
-    `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `year` INTEGER NULL,
-    `month` VARCHAR(191) NULL,
+    `total` INTEGER NOT NULL,
+    `balance` INTEGER NOT NULL,
+    `year` INTEGER NOT NULL,
+    `month` VARCHAR(191) NOT NULL,
+    `status` VARCHAR(191) NOT NULL,
     `createdById` VARCHAR(191) NULL,
     `updatedById` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `patient_id` VARCHAR(191) NULL,
+    `patientId` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `TransactionHist` (
+CREATE TABLE `TnxItem` (
     `id` VARCHAR(191) NOT NULL,
-    `items` JSON NULL,
-    `method` VARCHAR(191) NULL,
-    `status` VARCHAR(191) NULL,
-    `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `transactionId` VARCHAR(191) NOT NULL,
+    `feeId` VARCHAR(191) NOT NULL,
+    `price` INTEGER NOT NULL,
+    `paid` INTEGER NOT NULL,
+    `balance` INTEGER NOT NULL,
+    `active` BOOLEAN NOT NULL DEFAULT true,
     `year` INTEGER NULL,
-    `total` INTEGER NULL,
     `month` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Payment` (
+    `id` VARCHAR(191) NOT NULL,
+    `tnxId` VARCHAR(191) NULL,
+    `itemId` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `paid` INTEGER NOT NULL,
+    `method` VARCHAR(191) NULL,
+    `createdById` VARCHAR(191) NULL,
+    `type` VARCHAR(191) NOT NULL DEFAULT 'payment',
+    `year` INTEGER NULL,
+    `month` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Reciept` (
+    `id` VARCHAR(191) NOT NULL,
+    `items` JSON NOT NULL,
+    `tnxId` VARCHAR(191) NOT NULL,
+    `year` INTEGER NOT NULL,
+    `month` VARCHAR(191) NOT NULL,
+    `status` VARCHAR(191) NOT NULL,
     `createdById` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `transactionId` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `TnxItems` (
+CREATE TABLE `Snapshot` (
     `id` VARCHAR(191) NOT NULL,
-    `hosp_no` VARCHAR(191) NULL,
-    `patient_name` VARCHAR(191) NULL,
-    `item_id` VARCHAR(191) NULL,
-    `amount` INTEGER NULL DEFAULT 0,
-    `paid` INTEGER NULL DEFAULT 0,
-    `method` VARCHAR(191) NULL,
-    `status` VARCHAR(191) NULL,
-    `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `type` VARCHAR(191) NULL,
+    `data` JSON NULL,
     `year` INTEGER NULL,
     `month` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `transactionId` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -264,7 +279,6 @@ CREATE TABLE `TnxItems` (
 -- CreateTable
 CREATE TABLE `DrugsInventory` (
     `id` VARCHAR(191) NOT NULL,
-    `drug` VARCHAR(191) NULL,
     `stock_qty` INTEGER NOT NULL DEFAULT 0,
     `added` INTEGER NULL DEFAULT 0,
     `rate` INTEGER NULL DEFAULT 0,
@@ -272,7 +286,9 @@ CREATE TABLE `DrugsInventory` (
     `updatedById` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
+    `drugId` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `DrugsInventory_drugId_key`(`drugId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -328,6 +344,16 @@ CREATE TABLE `DrugPurchases` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `createdById` VARCHAR(191) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Drugs` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -406,9 +432,6 @@ CREATE TABLE `_DiagnosisToEncounters` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `AuthHistory` ADD CONSTRAINT `AuthHistory_accountId_fkey` FOREIGN KEY (`accountId`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `Patients` ADD CONSTRAINT `Patients_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -460,25 +483,37 @@ ALTER TABLE `LabTest` ADD CONSTRAINT `LabTest_encounter_id_fkey` FOREIGN KEY (`e
 ALTER TABLE `LabTest` ADD CONSTRAINT `LabTest_test_id_fkey` FOREIGN KEY (`test_id`) REFERENCES `Tests`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Transactions` ADD CONSTRAINT `Transactions_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Transaction` ADD CONSTRAINT `Transaction_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Transactions` ADD CONSTRAINT `Transactions_patient_id_fkey` FOREIGN KEY (`patient_id`) REFERENCES `Patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Transaction` ADD CONSTRAINT `Transaction_patientId_fkey` FOREIGN KEY (`patientId`) REFERENCES `Patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TransactionHist` ADD CONSTRAINT `TransactionHist_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `TnxItem` ADD CONSTRAINT `TnxItem_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `Transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TransactionHist` ADD CONSTRAINT `TransactionHist_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `Transactions`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `TnxItem` ADD CONSTRAINT `TnxItem_feeId_fkey` FOREIGN KEY (`feeId`) REFERENCES `Fees`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TnxItems` ADD CONSTRAINT `TnxItems_item_id_fkey` FOREIGN KEY (`item_id`) REFERENCES `Fees`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Payment` ADD CONSTRAINT `Payment_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `Transaction`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TnxItems` ADD CONSTRAINT `TnxItems_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `Transactions`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Payment` ADD CONSTRAINT `Payment_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `TnxItem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Payment` ADD CONSTRAINT `Payment_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Reciept` ADD CONSTRAINT `Reciept_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `Transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Reciept` ADD CONSTRAINT `Reciept_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `DrugsInventory` ADD CONSTRAINT `DrugsInventory_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `DrugsInventory` ADD CONSTRAINT `DrugsInventory_drugId_fkey` FOREIGN KEY (`drugId`) REFERENCES `Drugs`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `prescriptionHist` ADD CONSTRAINT `prescriptionHist_given_id_fkey` FOREIGN KEY (`given_id`) REFERENCES `DrugsGiven`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

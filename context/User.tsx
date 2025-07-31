@@ -24,17 +24,18 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<any>(null);
 	const [token, setToken] = useState<null | string>(null);
 	const [permissions, setPerm] = useState<any[]>([]);
-	const getData = async () => {
-		const res = await fetch(`/auth/me`);
-		if (res.status === 200) {
-			const user = await res.data;
-			setUser(user);
-			setPerm(JSON.parse(user?.menu));
-		}
-	};
-	useEffect(() => {
-		getData();
-	}, []);
+	// const getData = async () => {
+	// 	const res = await fetch(`/auth/me`);
+	// 	console.log(res);
+	// 	if (res.status === 200) {
+	// 		const user = await res.data;
+	// 		setUser(user);
+	// 		setPerm(JSON.parse(user?.menu));
+	// 	}
+	// };
+	// useEffect(() => {
+	// 	getData();
+	// }, []);
 
 	return (
 		<userContext.Provider

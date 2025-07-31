@@ -1,16 +1,15 @@
 import prisma from "@/config/prisma";
-const { createHash } = await import("node:crypto");
-const hashpass = (password: string) => {
-	return createHash("sha256").update(password).digest("hex");
-};
+import bcrypt from "bcrypt";
+export const runtime = "nodejs";
 export async function POST(request: Request) {
 	// Parse the request body
 	const body = await request.json();
 	const { username, password, menu, role } = body;
+	const hashedPassword = await bcrypt.hash(password, 10);
 	try {
 		const created = await prisma.accounts.create({
 			data: {
-				passHash: hashpass(password),
+				passHash: hashedPassword,
 				username,
 				role,
 				menu,

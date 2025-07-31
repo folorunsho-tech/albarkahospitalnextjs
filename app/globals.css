@@ -48,3 +48,10 @@ body {
 .tableFoot td{
 border: 1px solid;
 }
+.form{
+  width: 600px;
+  padding: 1rem;
+  margin: auto;
+  margin-top: 30px;
+  position: relative;
+}

@@ -1,10 +1,8 @@
-const { createHash } = await import("node:crypto");
+export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import prisma from "@/config/prisma";
-const hashpass = (password: string) => {
-	return createHash("sha256").update(password).digest("hex");
-};
+import bcrypt from "bcrypt";
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function POST(request: NextRequest) {
@@ -14,17 +12,17 @@ export async function POST(request: NextRequest) {
 		const user = await prisma.accounts.findFirst({
 			where: {
 				username,
-				passHash: hashpass(password),
 			},
 		});
-		if (!user) {
+		const valid = bcrypt.compare(password, user?.passHash!);
+		if (!valid) {
 			return NextResponse.json(
 				{ error: "Invalid credentials" },
-				{ status: 404 }
+				{ status: 401 }
 			);
 		} else {
 			const token = jwt.sign(
-				{ userId: user.id, username: user.username },
+				{ userId: user?.id, username: user?.username },
 				JWT_SECRET,
 				{
 					expiresIn: "10h",

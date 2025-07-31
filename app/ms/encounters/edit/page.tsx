@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useFetch } from "@/queries";
 import {
 	ArrowLeft,
@@ -73,171 +73,173 @@ const Edit = () => {
 	const iconStyle = { width: rem(22), height: rem(22) };
 
 	return (
-		<section className='space-y-6'>
-			<section>
-				<div className='flex justify-between items-center'>
-					<Link
-						className='bg-blue-500 hover:bg-blue-600 p-1 px-2 rounded-lg text-white flex gap-3'
-						href='/ms/encounters'
-					>
-						<ArrowLeft />
-						Go back
-					</Link>
-				</div>
-			</section>
-			<section className='flex justify-between gap-3'>
-				<section className='flex gap-4 flex-wrap items-center'>
-					<div className='flex gap-3 items-center'>
-						<h3 className='font-semibold'>Hospital No: </h3>
-						<Text>{patientData?.hosp_no}</Text>
-					</div>
-					<div className='flex gap-3 items-center'>
-						<h3 className='font-semibold'>Patient Name: </h3>
-						<Text>{patientData?.name}</Text>
-					</div>
-					<div className='flex gap-3 items-center'>
-						<h3 className='font-semibold'>Sex: </h3>
-						<Text>{patientData?.sex}</Text>
-					</div>
-					<div className='flex gap-3 items-center'>
-						<h3 className='font-semibold'>Age: </h3>
-						<Text>{patientData?.age}</Text>
-					</div>
-					<div className='flex gap-3 items-center'>
-						<h3 className='font-semibold'>Address: </h3>
-						<Text>{patientData?.town?.name}</Text>
+		<Suspense>
+			<section className='space-y-6'>
+				<section>
+					<div className='flex justify-between items-center'>
+						<Link
+							className='bg-blue-500 hover:bg-blue-600 p-1 px-2 rounded-lg text-white flex gap-3'
+							href='/ms/encounters'
+						>
+							<ArrowLeft />
+							Go back
+						</Link>
 					</div>
 				</section>
+				<section className='flex justify-between gap-3'>
+					<section className='flex gap-4 flex-wrap items-center'>
+						<div className='flex gap-3 items-center'>
+							<h3 className='font-semibold'>Hospital No: </h3>
+							<Text>{patientData?.hosp_no}</Text>
+						</div>
+						<div className='flex gap-3 items-center'>
+							<h3 className='font-semibold'>Patient Name: </h3>
+							<Text>{patientData?.name}</Text>
+						</div>
+						<div className='flex gap-3 items-center'>
+							<h3 className='font-semibold'>Sex: </h3>
+							<Text>{patientData?.sex}</Text>
+						</div>
+						<div className='flex gap-3 items-center'>
+							<h3 className='font-semibold'>Age: </h3>
+							<Text>{patientData?.age}</Text>
+						</div>
+						<div className='flex gap-3 items-center'>
+							<h3 className='font-semibold'>Address: </h3>
+							<Text>{patientData?.town?.name}</Text>
+						</div>
+					</section>
 
-				<Select
-					label='Care type'
-					placeholder='Select a care'
-					data={cares}
-					allowDeselect={false}
-					value={care}
-					disabled
-					onChange={(value: any) => {
-						setCare(value);
-					}}
-					nothingFoundMessage='Nothing found...'
-				/>
-				<DatePickerInput
-					label='Regristration date'
-					placeholder='Reg. date...'
-					className='w-44'
-					disabled
-					value={enc_date}
-					onChange={setDate}
-				/>
-			</section>
-			<section className='flex gap-6'>
-				<Select
-					placeholder='outcome'
-					label='Outcome'
-					className='w-max'
-					data={[
-						"Admitted",
-						"DAMA",
-						"Dead",
-						"Discharged",
-						"Police Case",
-						"ReferGH",
-						"ReferFMC",
-						"ReferUITH",
-						"Treated",
-					]}
-					value={outcome}
-					disabled
-					onChange={(value: any) => {
-						setOutcome(value);
-					}}
-				/>
-				{outcome == "Admitted" && (
-					<div className='flex flex-col gap-2'>
-						<label className='font-bold underline'>Admission</label>
-						<Admission admission={admission} />
-					</div>
-				)}
-			</section>
-			<main>
-				<Tabs defaultValue='diagnosis' keepMounted={false}>
-					<Tabs.List>
-						<Tabs.Tab
-							value='diagnosis'
-							leftSection={<BriefcaseMedical style={iconStyle} />}
-						>
-							Diagnosis
-						</Tabs.Tab>
-						<Tabs.Tab
-							value='drugs'
-							leftSection={<Hospital style={iconStyle} />}
-						>
-							Prescriptions
-						</Tabs.Tab>
-						<Tabs.Tab
-							value='tests'
-							leftSection={<TestTubes style={iconStyle} />}
-						>
-							Lab tests
-						</Tabs.Tab>
-						{careN == "Delivery" && (
+					<Select
+						label='Care type'
+						placeholder='Select a care'
+						data={cares}
+						allowDeselect={false}
+						value={care}
+						disabled
+						onChange={(value: any) => {
+							setCare(value);
+						}}
+						nothingFoundMessage='Nothing found...'
+					/>
+					<DatePickerInput
+						label='Regristration date'
+						placeholder='Reg. date...'
+						className='w-44'
+						disabled
+						value={enc_date}
+						onChange={setDate}
+					/>
+				</section>
+				<section className='flex gap-6'>
+					<Select
+						placeholder='outcome'
+						label='Outcome'
+						className='w-max'
+						data={[
+							"Admitted",
+							"DAMA",
+							"Dead",
+							"Discharged",
+							"Police Case",
+							"ReferGH",
+							"ReferFMC",
+							"ReferUITH",
+							"Treated",
+						]}
+						value={outcome}
+						disabled
+						onChange={(value: any) => {
+							setOutcome(value);
+						}}
+					/>
+					{outcome == "Admitted" && (
+						<div className='flex flex-col gap-2'>
+							<label className='font-bold underline'>Admission</label>
+							<Admission admission={admission} />
+						</div>
+					)}
+				</section>
+				<main>
+					<Tabs defaultValue='diagnosis' keepMounted={false}>
+						<Tabs.List>
 							<Tabs.Tab
-								value='delivery'
-								leftSection={<Cross style={iconStyle} />}
+								value='diagnosis'
+								leftSection={<BriefcaseMedical style={iconStyle} />}
 							>
-								Delivery
+								Diagnosis
 							</Tabs.Tab>
-						)}
-						{careN == "Operation" && (
 							<Tabs.Tab
-								value='operation'
-								leftSection={<Scissors style={iconStyle} />}
+								value='drugs'
+								leftSection={<Hospital style={iconStyle} />}
 							>
-								Operation
+								Prescriptions
 							</Tabs.Tab>
-						)}
+							<Tabs.Tab
+								value='tests'
+								leftSection={<TestTubes style={iconStyle} />}
+							>
+								Lab tests
+							</Tabs.Tab>
+							{careN == "Delivery" && (
+								<Tabs.Tab
+									value='delivery'
+									leftSection={<Cross style={iconStyle} />}
+								>
+									Delivery
+								</Tabs.Tab>
+							)}
+							{careN == "Operation" && (
+								<Tabs.Tab
+									value='operation'
+									leftSection={<Scissors style={iconStyle} />}
+								>
+									Operation
+								</Tabs.Tab>
+							)}
 
-						{careN == "Immunization" && (
-							<Tabs.Tab
-								value='immunization'
-								leftSection={<Syringe style={iconStyle} />}
-							>
-								Immunization
-							</Tabs.Tab>
-						)}
-						{careN == "ANC" && (
-							<Tabs.Tab
-								value='anc'
-								leftSection={<IconWoman style={iconStyle} />}
-							>
-								Antinatal Care
-							</Tabs.Tab>
-						)}
-					</Tabs.List>
-					<Tabs.Panel value='diagnosis'>
-						<Diagnosis enc_id={id} />
-					</Tabs.Panel>
-					<Tabs.Panel value='drugs'>
-						<DrugsGiven enc_id={id} />
-					</Tabs.Panel>
-					<Tabs.Panel value='tests'>
-						<Labtest enc_id={id} />
-					</Tabs.Panel>
-					<Tabs.Panel value='delivery'>
-						<Delivery enc_id={id} diagnosis={diags} />
-					</Tabs.Panel>
-					<Tabs.Panel value='operation'>
-						<Operations enc_id={id} />
-					</Tabs.Panel>
-					<Tabs.Panel value='immunization'>
-						<Immunization enc_id={id} />
-					</Tabs.Panel>
-					<Tabs.Panel value='anc'>
-						<ANC enc_id={id} />
-					</Tabs.Panel>
-				</Tabs>
-			</main>
-		</section>
+							{careN == "Immunization" && (
+								<Tabs.Tab
+									value='immunization'
+									leftSection={<Syringe style={iconStyle} />}
+								>
+									Immunization
+								</Tabs.Tab>
+							)}
+							{careN == "ANC" && (
+								<Tabs.Tab
+									value='anc'
+									leftSection={<IconWoman style={iconStyle} />}
+								>
+									Antinatal Care
+								</Tabs.Tab>
+							)}
+						</Tabs.List>
+						<Tabs.Panel value='diagnosis'>
+							<Diagnosis enc_id={id} />
+						</Tabs.Panel>
+						<Tabs.Panel value='drugs'>
+							<DrugsGiven enc_id={id} />
+						</Tabs.Panel>
+						<Tabs.Panel value='tests'>
+							<Labtest enc_id={id} />
+						</Tabs.Panel>
+						<Tabs.Panel value='delivery'>
+							<Delivery enc_id={id} diagnosis={diags} />
+						</Tabs.Panel>
+						<Tabs.Panel value='operation'>
+							<Operations enc_id={id} />
+						</Tabs.Panel>
+						<Tabs.Panel value='immunization'>
+							<Immunization enc_id={id} />
+						</Tabs.Panel>
+						<Tabs.Panel value='anc'>
+							<ANC enc_id={id} />
+						</Tabs.Panel>
+					</Tabs>
+				</main>
+			</section>
+		</Suspense>
 	);
 };
 
