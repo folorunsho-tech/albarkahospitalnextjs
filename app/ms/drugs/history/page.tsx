@@ -12,6 +12,7 @@ import { useReactToPrint } from "react-to-print";
 import Link from "next/link";
 const Drughistory = () => {
 	const [queryData, setQueryData] = useState<any[]>([]);
+	const [loaded, setLoaded] = useState("");
 	const [sortedData, setSortedData] = useState<any[]>([]);
 	const [printData, setPrintData] = useState<any[]>(queryData);
 	const { post, loading } = usePostNormal();
@@ -68,6 +69,7 @@ const Drughistory = () => {
 			<div className='flex items-end justify-between w-full'>
 				<DataLoader
 					post={post}
+					setLoaded={setLoaded}
 					setQueryData={setQueryData}
 					link='/drugsinventory/stocks'
 				/>
@@ -109,7 +111,7 @@ const Drughistory = () => {
 					"Date",
 				]}
 				printRows={printRows}
-				tableReport='Drugs Stock record'
+				tableReport={`Drugs Stock record - ${loaded}`}
 				placeholder='Search by drug name'
 				setPrintData={setPrintData}
 			/>

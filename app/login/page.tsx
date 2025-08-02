@@ -9,12 +9,14 @@ import {
 	TextInput,
 	Title,
 } from "@mantine/core";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { notifications } from "@mantine/notifications";
 import { IconX, IconServerOff } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { userContext } from "@/context/User";
 
 const Login = () => {
+	const { setUser, setPerm } = useContext(userContext);
 	const { post, loading } = usePostNormal();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -36,7 +38,10 @@ const Login = () => {
 				onSubmit={async (e) => {
 					e.preventDefault();
 					const res = await post("/auth/login", { username, password });
+
 					if (res?.status === 200) {
+						setUser(res.data);
+						setPerm(JSON.parse(res.data?.menu));
 						notifications.show({
 							id: "AuthLogin",
 							withCloseButton: false,

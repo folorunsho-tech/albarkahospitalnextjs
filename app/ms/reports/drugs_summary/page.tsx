@@ -100,6 +100,7 @@ const page = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
+			await fetch(`/snapshot/drugs`);
 			const { data } = await fetch(`/snapshot/drugs/${year}n${month}`);
 			setQueryData(data);
 		};

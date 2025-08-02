@@ -42,16 +42,11 @@ const showNotification = (status: number) => {
 };
 
 export const useFetch = () => {
-	const { token } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState([]);
 	const fetch = async (url: string) => {
 		setLoading(true);
-		const getquery = await axios.get(url, {
-			headers: {
-				Authorization: token,
-			},
-		});
+		const getquery = await axios.get(url);
 		setData(getquery.data);
 		setLoading(false);
 		return {
@@ -64,16 +59,11 @@ export const useFetch = () => {
 	return { loading, fetch, data };
 };
 export const useFetchSingle = () => {
-	const { token } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState({});
 	const fetch = async (url: string) => {
 		setLoading(true);
-		const getquery = await axios.get(url, {
-			headers: {
-				Authorization: token,
-			},
-		});
+		const getquery = await axios.get(url);
 		setData(getquery.data);
 		setLoading(false);
 		return {
@@ -86,22 +76,13 @@ export const useFetchSingle = () => {
 	return { loading, fetch, data };
 };
 export const useHospNo = () => {
-	const { token } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const fetch = async (url: string) => {
 		setLoading(true);
-		const getquery = await axios.post(
-			url,
-			{
-				year: curYear,
-				month: curMonth,
-			},
-			{
-				headers: {
-					Authorization: token,
-				},
-			}
-		);
+		const getquery = await axios.post(url, {
+			year: curYear,
+			month: curMonth,
+		});
 		setLoading(false);
 		return {
 			data: getquery.data,
@@ -114,22 +95,13 @@ export const useHospNo = () => {
 };
 
 export const usePostNormal = () => {
-	const { token } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState([]);
 	const post = async (url: string, postData: any) => {
 		setLoading(true);
-		const postquery = await axios.post(
-			url,
-			{
-				...postData,
-			},
-			{
-				headers: {
-					Authorization: token,
-				},
-			}
-		);
+		const postquery = await axios.post(url, {
+			...postData,
+		});
 		setData(postquery.data);
 		setLoading(false);
 
@@ -142,24 +114,16 @@ export const usePostNormal = () => {
 	return { loading, post, data };
 };
 export const useCreate = () => {
-	const { user, token } = React.useContext(userContext);
+	const { user } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState([]);
 	const post = async (url: string, postData: any) => {
 		setLoading(true);
-		const postquery = await axios.post(
-			url,
-			{
-				...postData,
-				createdById: user?.id,
-				updatedById: user?.id,
-			},
-			{
-				headers: {
-					Authorization: token,
-				},
-			}
-		);
+		const postquery = await axios.post(url, {
+			...postData,
+			createdById: user?.id,
+			updatedById: user?.id,
+		});
 		setData(postquery.data);
 		setLoading(false);
 		showNotification(postquery.status);
@@ -172,23 +136,15 @@ export const useCreate = () => {
 	return { loading, post, data };
 };
 export const usePost = () => {
-	const { user, token } = React.useContext(userContext);
+	const { user } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState([]);
 	const post = async (url: string, postData: any) => {
 		setLoading(true);
-		const postquery = await axios.post(
-			url,
-			{
-				...postData,
-				createdById: user?.id,
-			},
-			{
-				headers: {
-					Authorization: token,
-				},
-			}
-		);
+		const postquery = await axios.post(url, {
+			...postData,
+			createdById: user?.id,
+		});
 		setData(postquery.data);
 		setLoading(false);
 		showNotification(postquery.status);
@@ -201,24 +157,16 @@ export const usePost = () => {
 	return { loading, post, data };
 };
 export const usePostT = () => {
-	const { user, token } = React.useContext(userContext);
+	const { user } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState([]);
 	const post = async (url: string, postData: any) => {
 		setLoading(true);
-		const postquery = await axios.post(
-			url,
-			{
-				...postData,
-				createdById: user?.id,
-				time: format(new Date(), "PPpp").split(",")[2].trim(),
-			},
-			{
-				headers: {
-					Authorization: token,
-				},
-			}
-		);
+		const postquery = await axios.post(url, {
+			...postData,
+			createdById: user?.id,
+			time: format(new Date(), "PPpp").split(",")[2].trim(),
+		});
 		setData(postquery.data);
 		setLoading(false);
 		showNotification(postquery.status);
@@ -231,24 +179,16 @@ export const usePostT = () => {
 	return { loading, post, data };
 };
 export const useEditT = () => {
-	const { user, token } = React.useContext(userContext);
+	const { user } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState([]);
 	const edit = async (url: string, postData: any) => {
 		setLoading(true);
-		const postquery = await axios.post(
-			url,
-			{
-				...postData,
-				updatedById: user?.id,
-				time: format(new Date(), "PPpp").split(",")[2].trim(),
-			},
-			{
-				headers: {
-					Authorization: token,
-				},
-			}
-		);
+		const postquery = await axios.post(url, {
+			...postData,
+			updatedById: user?.id,
+			time: format(new Date(), "PPpp").split(",")[2].trim(),
+		});
 		setData(postquery.data);
 		setLoading(false);
 		showNotification(postquery.status);
@@ -262,23 +202,15 @@ export const useEditT = () => {
 	return { loading, edit, data };
 };
 export const useEdit = () => {
-	const { user, token } = React.useContext(userContext);
+	const { user } = React.useContext(userContext);
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState([]);
 	const edit = async (url: string, postData: any) => {
 		setLoading(true);
-		const postquery = await axios.post(
-			url,
-			{
-				...postData,
-				updatedById: user?.id,
-			},
-			{
-				headers: {
-					Authorization: token,
-				},
-			}
-		);
+		const postquery = await axios.post(url, {
+			...postData,
+			updatedById: user?.id,
+		});
 		setData(postquery.data);
 		setLoading(false);
 		showNotification(postquery.status);

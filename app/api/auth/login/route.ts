@@ -22,15 +22,19 @@ export async function POST(request: NextRequest) {
 			);
 		} else {
 			const token = jwt.sign(
-				{ userId: user?.id, username: user?.username },
-				JWT_SECRET,
 				{
-					expiresIn: "10h",
-				}
+					id: user?.id,
+					username: user?.username,
+					menu: user?.menu,
+					role: user?.role,
+					active: user?.active,
+				},
+				JWT_SECRET
 			);
 
-			const res = NextResponse.json({ success: true });
+			const res = NextResponse.json(user);
 			res.cookies.set("token", token, { httpOnly: true, path: "/" });
+
 			return res;
 		}
 	} catch (error) {

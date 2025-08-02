@@ -1,11 +1,9 @@
 // middleware.ts
-// export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
+import { verifyToken } from "./middlewares/jwt";
 
 const PUBLIC_PATHS = ["/login", "/register"];
-const JWT_SECRET = process.env.JWT_SECRET!;
 export function middleware(req: NextRequest) {
 	const { pathname } = req.nextUrl;
 
@@ -13,13 +11,10 @@ export function middleware(req: NextRequest) {
 	if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
 		return NextResponse.next();
 	}
-
 	const token = req.cookies.get("token")?.value;
 	if (!token) return NextResponse.redirect(new URL("/login", req.url));
-
 	try {
-		jwt.verify(token, JWT_SECRET);
-		return NextResponse.redirect("/ms");
+		verifyToken(req);
 	} catch (error) {
 		console.log(error);
 		return NextResponse.redirect(new URL("/login", req.url));

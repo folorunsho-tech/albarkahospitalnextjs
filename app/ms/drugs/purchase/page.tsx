@@ -47,6 +47,8 @@ const DrugPurchase = () => {
 	const [opened, { open, close }] = useDisclosure(false);
 	const [eOpened, { open: eOpen, close: eClose }] = useDisclosure(false);
 	const [updated, setUpdated] = useState(false);
+	const [loaded, setLoaded] = useState("");
+
 	const contentRef = useRef<HTMLDivElement>(null);
 	const reactToPrintFn = useReactToPrint({
 		contentRef,
@@ -129,6 +131,7 @@ const DrugPurchase = () => {
 					setQueryData={setQueryData}
 					link='/drugsinventory/purchases'
 					updated={updated}
+					setLoaded={setLoaded}
 				/>
 				<div className='flex gap-3 items-end'>
 					<Button
@@ -157,7 +160,7 @@ const DrugPurchase = () => {
 				ref={contentRef}
 				printHeaders={["S/N", "Date", "Name", "Quantity", "Price"]}
 				printRows={printRows}
-				tableReport='Drugs purchase record'
+				tableReport={`Drugs purchase record - ${loaded}`}
 				tableFoot={
 					<Table.Tr>
 						<Table.Td>Total</Table.Td>

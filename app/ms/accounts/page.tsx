@@ -19,12 +19,12 @@ const Accounts = () => {
 			<Table.Td>{row?.role}</Table.Td>
 			<Table.Td
 				className={
-					row?.status
+					row?.active
 						? "bg-green-500 text-white font-semibold"
 						: "bg-red-400 text-white font-semibold"
 				}
 			>
-				{row?.status ? "Active" : "Inactive"}
+				{row?.active ? "Active" : "Inactive"}
 			</Table.Td>
 			<Table.Td>{format(row?.createdAt, "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{format(row?.updatedAt, "dd/MM/yyyy, p")}</Table.Td>

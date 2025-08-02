@@ -1,6 +1,6 @@
-import prisma from "@/config/prisma.js";
+import prisma from "@/config/prisma";
 import { curMonth, curYear } from "@/config/ynm.js";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export const createShot = async () => {
 	try {
