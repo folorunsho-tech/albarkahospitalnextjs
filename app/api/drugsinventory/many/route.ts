@@ -3,10 +3,16 @@ import prisma from "@/config/prisma";
 
 export async function POST(request: NextRequest) {
 	// Parse the request body
-	const body = await request.json();
+	const { drugs, createdById } = await request.json();
+	const added = drugs.map((d: { id: string }) => {
+		return {
+			drugId: d.id,
+			createdById,
+		};
+	});
 	try {
-		const created = await prisma.groups.createMany({
-			data: [...body],
+		const created = await prisma.drugsInventory.createMany({
+			data: [...added],
 		});
 		return new Response(JSON.stringify(created), {
 			status: 200,

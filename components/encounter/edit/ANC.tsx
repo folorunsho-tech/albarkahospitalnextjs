@@ -22,7 +22,7 @@ const ANC = ({ enc_id }: { enc_id: string | null }) => {
 
 	useEffect(() => {
 		async function getData() {
-			const { data } = await fetch(`/encounters/${enc_id}`);
+			const { data } = await fetch(`/encounters/e/${enc_id}`);
 			const anc = data?.anc[0];
 			setANCId(anc?.id);
 			setEga(anc?.ega);
@@ -42,7 +42,7 @@ const ANC = ({ enc_id }: { enc_id: string | null }) => {
 			className='flex flex-wrap gap-3 mt-4 items-end'
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await edit("/encounters/edit/anc/" + enc_id, {
+				await edit(`/encounters/edit/${enc_id}/anc`, {
 					anc: {
 						ega,
 						fe_abnormality,

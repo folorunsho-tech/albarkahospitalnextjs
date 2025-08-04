@@ -59,6 +59,12 @@ export async function GET(request: Request) {
 				},
 			},
 		});
+		const given = await prisma.drugsGiven.groupBy({
+			by: ["name"],
+			_count: {
+				name: true,
+			},
+		});
 		const final = drugs.map((drug: any) => {
 			return {
 				name: drug.drug.name,
@@ -72,6 +78,7 @@ export async function GET(request: Request) {
 					},
 					0
 				),
+				encounters: given.find((g) => g.name == drug.drug.name)?._count.name,
 				totalSGain: drug.stockHistory.reduce(
 					(acc: any, stock: { type: string; added: any }) => {
 						if (stock.type === "gain") {

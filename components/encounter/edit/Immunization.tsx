@@ -16,7 +16,7 @@ const Immunization = ({ enc_id }: { enc_id: string | null }) => {
 
 	useEffect(() => {
 		async function getData() {
-			const { data } = await fetch(`/encounters/${enc_id}`);
+			const { data } = await fetch(`/encounters/e/${enc_id}`);
 
 			const imm = data?.immunization[0];
 			setImmId(imm?.id);
@@ -31,7 +31,7 @@ const Immunization = ({ enc_id }: { enc_id: string | null }) => {
 			className='flex gap-4 mt-4 items-end'
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await edit("/encounters/edit/immunization/" + enc_id, {
+				await edit(`/encounters/edit/${enc_id}/immunization`, {
 					immunization: {
 						date,
 						type,

@@ -19,7 +19,7 @@ const Operations = ({ enc_id }: { enc_id: string | null }) => {
 
 	const getAll = async () => {
 		const { data } = await fetch("/settings/procedures");
-		const { data: enc } = await fetch(`/encounters/${enc_id}`);
+		const { data: enc } = await fetch(`/encounters/e/${enc_id}`);
 		const ops = enc?.operations[0];
 
 		const mapped = data?.map((proc: any) => {
@@ -46,7 +46,7 @@ const Operations = ({ enc_id }: { enc_id: string | null }) => {
 			className='flex gap-4 flex-wrap items-end mt-4'
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await edit("/encounters/edit/operation/" + enc_id, {
+				await edit(`/encounters/edit/${enc_id}/operation`, {
 					operation: {
 						anaesthesia,
 						proc_date,

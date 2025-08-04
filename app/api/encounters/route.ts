@@ -148,7 +148,7 @@ export async function POST(request: Request) {
 		}
 
 		return new Response(JSON.stringify(created), {
-			status: 201,
+			status: 200,
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {

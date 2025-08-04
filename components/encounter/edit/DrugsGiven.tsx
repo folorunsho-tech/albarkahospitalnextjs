@@ -36,7 +36,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 	const [drugM, setDrugM] = useState([]);
 	const getAll = async () => {
 		const { data } = await fetch("/drugsinventory");
-		const { data: enc } = await fetch(`/encounters/${enc_id}`);
+		const { data: enc } = await fetch(`/encounters/e/${enc_id}`);
 		setDrugsList(data);
 		const sorted = data?.map((drug: any) => {
 			return {
@@ -72,7 +72,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 			className='space-y-6 my-4'
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await edit("/encounters/edit/drugs/" + enc_id, {
+				await edit(`/encounters/edit/${enc_id}/drugs`, {
 					drugs: drugsGiven,
 					stock_updates: drugsGiven.map((drug) => {
 						return {

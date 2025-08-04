@@ -12,7 +12,7 @@ const Diagnosis = ({ enc_id }: { enc_id: string | null }) => {
 	const [diagnosis, setDiagnosis] = useState<any[]>([]);
 	const getAll = async () => {
 		const { data: found } = await fetch("/settings/diagnosis");
-		const { data: enc } = await fetch(`/encounters/${enc_id}`);
+		const { data: enc } = await fetch(`/encounters/e/${enc_id}`);
 
 		const mapped = found?.map((diag: any) => {
 			return {
@@ -37,7 +37,7 @@ const Diagnosis = ({ enc_id }: { enc_id: string | null }) => {
 			onSubmit={async (e) => {
 				e.preventDefault();
 				const { data: res } = await edit(
-					"/encounters/edit/diagnosis/" + enc_id,
+					`/encounters/edit/${enc_id}/diagnosis`,
 					{
 						diagnosis,
 					}

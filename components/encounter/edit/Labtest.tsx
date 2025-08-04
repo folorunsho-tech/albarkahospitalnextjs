@@ -35,7 +35,7 @@ const Labtest = ({ enc_id }: { enc_id: string | null }) => {
 	useEffect(() => {
 		const getAll = async () => {
 			const { data: found } = await fetch("/settings/tests");
-			const { data: enc } = await fetch(`/encounters/${enc_id}`);
+			const { data: enc } = await fetch(`/encounters/e/${enc_id}`);
 
 			const mapped = found?.map((test: any) => {
 				return {
@@ -65,7 +65,7 @@ const Labtest = ({ enc_id }: { enc_id: string | null }) => {
 			className='space-y-6 my-4'
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await edit("/encounters/edit/labs/" + enc_id, {
+				await edit(`/encounters/edit/${enc_id}/labs`, {
 					labs: labTest,
 				});
 			}}

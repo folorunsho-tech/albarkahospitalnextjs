@@ -30,6 +30,7 @@ const page = () => {
 			totalPurchaseQty: number;
 			totalSGain: number;
 			totalSLoss: number;
+			encounters: number;
 		}[];
 		createdAt: Date | string;
 		updatedAt: Date | string;
@@ -68,6 +69,9 @@ const page = () => {
 					thousandSeparator
 				/>
 			</Table.Td>
+			<Table.Td>
+				<NumberFormatter value={row?.encounters} thousandSeparator />
+			</Table.Td>
 		</Table.Tr>
 	));
 	const printRows = queryData?.data?.map((row, i) => (
@@ -94,6 +98,9 @@ const page = () => {
 					value={row?.totalSGain + row?.totalSLoss - row?.prescriptions}
 					thousandSeparator
 				/>
+			</Table.Td>
+			<Table.Td>
+				<NumberFormatter value={row?.encounters} thousandSeparator />
 			</Table.Td>
 		</Table.Tr>
 	));
@@ -172,11 +179,12 @@ const page = () => {
 										"S/N",
 										"Drug",
 										"Purchases",
-										"Current Stock",
+										"Avl Stock",
 										"Prescriptions(P)",
 										"Gain(G)",
 										"Loss(L)",
 										"(G+L)-P",
+										"Encounters",
 									].map((head: string, index: number) => (
 										<Table.Th key={head + index + 1}>{head}</Table.Th>
 									))}
@@ -212,11 +220,12 @@ const page = () => {
 										"S/N",
 										"Drug",
 										"Purchases",
-										"Current Stock",
+										"Avl Stock",
 										"Prescriptions(P)",
 										"Gain(G)",
 										"Loss(L)",
 										"(G+L)-P",
+										"Encounters",
 									].map((head: string, index: number) => (
 										<Table.Th key={head + index}>{head}</Table.Th>
 									))}

@@ -39,7 +39,7 @@ const Delivery = ({
 	const [mother_diag, setMDiag] = useState("");
 	const [delivery_date, setDelveryDate] = useState<any>(null);
 	const getData = async () => {
-		const { data: enc } = await fetch(`/encounters/${enc_id}`);
+		const { data: enc } = await fetch(`/encounters/e/${enc_id}`);
 		const data = enc?.delivery[0];
 
 		setDelivId(data?.id);
@@ -66,7 +66,7 @@ const Delivery = ({
 			className='flex flex-wrap gap-6 items-end mt-4'
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await edit("/encounters/edit/delivery/" + enc_id, {
+				await edit(`/encounters/edit/${enc_id}/delivery`, {
 					delivery: {
 						baby_outcome,
 						delivery_date,

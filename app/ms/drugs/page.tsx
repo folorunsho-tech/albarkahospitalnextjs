@@ -9,7 +9,6 @@ import { useFetch } from "@/queries";
 import { useReactToPrint } from "react-to-print";
 import { format } from "date-fns";
 import Link from "next/link";
-import AddInventory from "@/components/AddInventory";
 import { userContext } from "@/context/User";
 
 const DrugsInventory = () => {
@@ -92,7 +91,12 @@ const DrugsInventory = () => {
 				<Button href='drugs/loss' color='red' component={Link}>
 					Add loss
 				</Button>
-				{user?.role == "admin" && <AddInventory />}
+
+				{user?.role == "admin" && (
+					<Button href='drugs/add-to-inventory' color='teal' component={Link}>
+						Add to inventory
+					</Button>
+				)}
 			</section>
 			<PaginatedTable
 				headers={[
