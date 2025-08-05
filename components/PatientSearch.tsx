@@ -1,30 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { userContext } from "@/context/User";
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Combobox, Loader, TextInput, useCombobox } from "@mantine/core";
 import axios from "@/lib/config";
 
-function getAsyncData(
-	searchQuery: string,
-	signal: AbortSignal,
-	token: string | null
-) {
+function getAsyncData(searchQuery: string, signal: AbortSignal) {
 	return new Promise<string[]>((resolve, reject) => {
 		signal.addEventListener("abort", () => {
 			reject(new Error("Request aborted"));
 		});
 		if (searchQuery !== "") {
 			axios
-				.post(
-					"/patients/search",
-					{ value: searchQuery },
-					{
-						headers: {
-							Authorization: token,
-						},
-					}
-				)
+				.post("/patients/search", { value: searchQuery })
 				.then((result: any) => {
 					resolve(result.data);
 				});
@@ -41,7 +28,6 @@ export default function PatientSearch({
 	setPatient: any;
 	cleared?: boolean;
 }) {
-	const { token } = useContext(userContext);
 	const combobox = useCombobox({
 		onDropdownClose: () => combobox.resetSelectedOption(),
 	});
@@ -57,7 +43,7 @@ export default function PatientSearch({
 		abortController.current = new AbortController();
 		setLoading(true);
 
-		getAsyncData(query, abortController.current.signal, token)
+		getAsyncData(query, abortController.current.signal)
 			.then((result) => {
 				setData(result);
 				setLoading(false);

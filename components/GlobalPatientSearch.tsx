@@ -1,32 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useRef, useState, useContext } from "react";
+import { useRef, useState } from "react";
 import { Combobox, Loader, TextInput, useCombobox } from "@mantine/core";
 import axios from "@/lib/config";
 import { IconSearch } from "@tabler/icons-react";
 import Link from "next/link";
-import { userContext } from "@/context/User";
 
-function getAsyncData(
-	searchQuery: string,
-	signal: AbortSignal,
-	token: string | null
-) {
+function getAsyncData(searchQuery: string, signal: AbortSignal) {
 	return new Promise<string[]>((resolve, reject) => {
 		signal.addEventListener("abort", () => {
 			reject(new Error("Request aborted"));
 		});
 		axios
-			.post(
-				"/patients/search",
-				{ value: searchQuery },
-				{
-					headers: {
-						Authorization: token,
-					},
-				}
-			)
+			.post("/patients/search", { value: searchQuery })
 			.then((result: any) => {
 				resolve(result.data);
 			});
@@ -34,7 +21,6 @@ function getAsyncData(
 }
 
 export default function GlobalPatientSearch() {
-	const { token } = useContext(userContext);
 	const combobox = useCombobox({
 		onDropdownClose: () => combobox.resetSelectedOption(),
 	});
@@ -50,7 +36,7 @@ export default function GlobalPatientSearch() {
 		abortController.current = new AbortController();
 		setLoading(true);
 
-		getAsyncData(query, abortController.current.signal, token)
+		getAsyncData(query, abortController.current.signal)
 			.then((result) => {
 				setData(result);
 				setLoading(false);
@@ -61,7 +47,7 @@ export default function GlobalPatientSearch() {
 	};
 
 	const options = (data || []).map((item) => (
-		<Link href={`patients/view/?id=${item?.id}`} key={item?.hosp_no}>
+		<Link href={`/ms/patients/view/${item?.id}`} key={item?.hosp_no}>
 			<Combobox.Option value={item?.hosp_no}>
 				{item?.hosp_no} - {item?.name}
 			</Combobox.Option>

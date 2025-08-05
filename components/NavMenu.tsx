@@ -9,7 +9,6 @@ import axios from "@/lib/config";
 import {
 	Pill,
 	Contact,
-	DatabaseBackup,
 	Users,
 	ReceiptText,
 	Settings,
@@ -35,8 +34,6 @@ const NavMenu = () => {
 			return <Users />;
 		} else if (name == "accounts") {
 			return <Contact />;
-		} else if (name == "backup") {
-			return <DatabaseBackup />;
 		} else if (name == "reports") {
 			return <IconReport />;
 		}

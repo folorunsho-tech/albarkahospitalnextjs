@@ -38,7 +38,7 @@ const Encounters = ({ hosp_no, id }: { hosp_no: string; id: string }) => {
 						</ActionIcon>
 					</Menu.Target>
 					<Menu.Dropdown>
-						<Link href={`/ms/encounters/view/?id=${row?.id}`}>
+						<Link href={`/ms/encounters/view/${row?.id}`}>
 							<Menu.Item
 								leftSection={
 									<Eye style={{ width: rem(14), height: rem(14) }} />

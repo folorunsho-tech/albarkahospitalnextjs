@@ -60,7 +60,7 @@ const Payments = () => {
 		if (criteria == "Cashier") {
 			return (
 				<TextInput
-					label='Ward matron'
+					label='Cashier'
 					placeholder='name'
 					value={value}
 					onChange={(e) => {

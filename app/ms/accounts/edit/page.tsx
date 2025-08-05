@@ -143,7 +143,6 @@ const page = () => {
 				>
 					<Group mt='xs'>
 						<Checkbox value='accounts' label='Accounts' />
-						<Checkbox value='backup' label='Backup' />
 						<Checkbox value='drugs' label='Drugs' />
 						<Checkbox value='encounters' label='Encounters' />
 						<Checkbox value='patients' label='Patients' />

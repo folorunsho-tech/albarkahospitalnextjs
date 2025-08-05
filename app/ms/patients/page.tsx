@@ -42,7 +42,7 @@ const Patients = () => {
 						</ActionIcon>
 					</Menu.Target>
 					<Menu.Dropdown>
-						<Link href={`patients/view/?id=${row?.id}`}>
+						<Link href={`patients/view/${row?.id}`}>
 							<Menu.Item
 								leftSection={
 									<Eye style={{ width: rem(14), height: rem(14) }} />
@@ -52,7 +52,7 @@ const Patients = () => {
 								View
 							</Menu.Item>
 						</Link>
-						<Link href={`patients/edit/?id=${row?.id}`}>
+						<Link href={`patients/edit/${row?.id}`}>
 							<Menu.Item
 								color='teal'
 								leftSection={

@@ -8,7 +8,7 @@ import { notifications } from "@mantine/notifications";
 import { format } from "date-fns";
 import { curMonth, curYear } from "@/lib/ynm";
 const showNotification = (status: number) => {
-	if (status == 200) {
+	if (status == 200 || status == 201) {
 		notifications.show({
 			title: "Success !!!",
 			message: "Operation sucessfull",
@@ -32,7 +32,7 @@ const showNotification = (status: number) => {
 			message: "Data not Found",
 			color: "red",
 		});
-	} else {
+	} else if (status >= 500) {
 		notifications.show({
 			title: "Server Error !!!",
 			message: "Seems the server is having issues",

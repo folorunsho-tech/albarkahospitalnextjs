@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyToken } from "./middlewares/jwt";
 
-const PUBLIC_PATHS = ["/login", "/register"];
+const PUBLIC_PATHS = ["/login", "/tacheyon/register"];
 export function middleware(req: NextRequest) {
 	const { pathname } = req.nextUrl;
 

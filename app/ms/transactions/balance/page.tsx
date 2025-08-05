@@ -18,12 +18,10 @@ import { useEdit, useFetch } from "@/queries";
 import { IconPencil, IconReceipt, IconX } from "@tabler/icons-react";
 import { format } from "date-fns";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import convert from "@/lib/numberConvert";
 import TnxSearch from "@/components/TnxSearch";
 
 const page = () => {
-	const tnxId = useSearchParams().get("tnxId");
 	const { fetch, loading: Floading } = useFetch();
 	const { edit, loading } = useEdit();
 	const [reciept, setReciept] = useState<any | null>(null);
@@ -33,7 +31,7 @@ const page = () => {
 	} | null>(null);
 	const [method, setMethod] = useState<string | null>(null);
 	const [paid, setPaid] = useState<string | number>("");
-	const [id, setId] = useState(tnxId || "");
+	const [id, setId] = useState("");
 	const [criteria, setCriteria] = useState<
 		"Reciept / Tnx No" | "Hosp No" | null | string
 	>("Hosp No");
@@ -132,12 +130,7 @@ const page = () => {
 			});
 		}
 	}, [items.length, totalBalance]);
-	useEffect(() => {
-		if (tnxId) {
-			setCriteria("Reciept / Tnx No");
-			loadTnx();
-		}
-	}, [tnxId]);
+
 	return (
 		<Suspense>
 			<main className='space-y-12'>

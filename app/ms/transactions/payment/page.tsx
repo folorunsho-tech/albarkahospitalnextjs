@@ -607,16 +607,6 @@ const page = () => {
 									thousandSeparator
 								/>
 							</Table.Td>
-							<Table.Td>
-								<Button
-									color='green'
-									component={Link}
-									target='_blank'
-									href={`/ms/transactions/${row?.transactionId}`}
-								>
-									<IconExternalLink />
-								</Button>
-							</Table.Td>
 						</Table.Tr>
 					))}
 				/>
@@ -678,22 +668,6 @@ const page = () => {
 									value={row?.balance}
 									thousandSeparator
 								/>
-							</Table.Td>
-							<Table.Td>
-								<Button
-									color='green'
-									component={Link}
-									target='_blank'
-									rightSection={<IconExternalLink />}
-									onClick={() => {
-										setCleared(true);
-										close();
-										setOutstanding([]);
-									}}
-									href={`/ms/transactions/balance?tnxId=${row?.transactionId}`}
-								>
-									Pay Balance
-								</Button>
 							</Table.Td>
 						</Table.Tr>
 					))}

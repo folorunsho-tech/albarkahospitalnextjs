@@ -22,7 +22,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en' suppressHydrationWarning={true}>
+		<html lang='en' suppressHydrationWarning={true} className='h-full'>
 			<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
 
 			<body className={` antialiased`}>

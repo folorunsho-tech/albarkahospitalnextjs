@@ -8,17 +8,21 @@ export async function GET(
 	const id = (await params).id;
 
 	try {
-		const prevTnx = await prisma.tnxItem.findMany({
+		const outstandingFees = await prisma.tnxItem.findMany({
 			where: {
 				transaction: {
 					patientId: id,
 				},
+				balance: {
+					gt: 0,
+				},
+				active: true,
 			},
 			include: {
 				fee: true,
 			},
 		});
-		return new Response(JSON.stringify(prevTnx), {
+		return new Response(JSON.stringify(outstandingFees), {
 			status: 200,
 			headers: { "Content-Type": "application/json" },
 		});

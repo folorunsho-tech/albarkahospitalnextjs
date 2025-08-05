@@ -143,10 +143,13 @@ export async function GET(request: Request) {
 			});
 		}
 	} catch (error) {
-		console.log(error);
-		return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-			status: 500,
-			headers: { "Content-Type": "application/json" },
-		});
+		// console.log(error);
+		return new Response(
+			JSON.stringify({ message: "Internal Server Error", error }),
+			{
+				status: 500,
+				headers: { "Content-Type": "application/json" },
+			}
+		);
 	}
 }

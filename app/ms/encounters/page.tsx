@@ -40,7 +40,7 @@ const Encounter = () => {
 						</ActionIcon>
 					</Menu.Target>
 					<Menu.Dropdown>
-						<Link href={`encounters/view/?id=${row?.id}`}>
+						<Link href={`encounters/view/${row?.id}`}>
 							<Menu.Item
 								leftSection={
 									<Eye style={{ width: rem(14), height: rem(14) }} />
@@ -50,7 +50,7 @@ const Encounter = () => {
 								View
 							</Menu.Item>
 						</Link>
-						<Link href={`encounters/edit/?id=${row?.id}`}>
+						<Link href={`encounters/edit/${row?.id}`}>
 							<Menu.Item
 								color='teal'
 								leftSection={
