@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import prisma from "@/config/prisma";
 import { curMonth, curYear } from "@/config/ynm.js";
 
@@ -114,23 +116,32 @@ export async function POST(request: Request) {
 			});
 		});
 		await prisma.prescriptionHist.createMany({
-			data: drugsGiven?.map((d: any) => {
-				return {
-					drug: d?.name,
-					hosp_no: created.patient?.hosp_no,
-					quantity: d?.quantity,
-					rate: d?.rate,
-					price: d?.price,
-					stock_remain: d?.curr_stock,
-					year: curYear,
-					month: curMonth,
-					date: new Date(new Date().setUTCHours(0, 0, 0, 0)),
-					time,
+			data: drugsGiven?.map(
+				(d: {
+					name: string;
+					quantity: string | number;
+					rate: string | number;
+					price: string | number;
+					curr_stock: string | number;
+					id: string | null;
+				}) => {
+					return {
+						drug: d?.name,
+						hosp_no: created.patient?.hosp_no,
+						quantity: d?.quantity,
+						rate: d?.rate,
+						price: d?.price,
+						stock_remain: d?.curr_stock,
+						year: curYear,
+						month: curMonth,
+						date: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+						time,
 
-					given_id: created?.drugsGiven?.find((g) => g?.drug_id == d?.id)?.id,
-					enc_id: created.id,
-				};
-			}),
+						given_id: created?.drugsGiven?.find((g) => g?.drug_id == d?.id)?.id,
+						enc_id: created.id,
+					};
+				}
+			),
 		});
 		if (admitted) {
 			await prisma.admission.create({

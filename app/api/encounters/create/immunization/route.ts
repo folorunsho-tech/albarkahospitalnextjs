@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import prisma from "@/config/prisma";
 import { curMonth, curYear } from "@/config/ynm.js";
 
