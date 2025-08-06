@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 import { verifyToken } from "./middlewares/jwt";
 
 const PUBLIC_PATHS = ["/login", "/tacheyon/register"];
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
 	const { pathname } = req.nextUrl;
 
 	// Allow public routes
@@ -14,7 +14,8 @@ export function middleware(req: NextRequest) {
 	const token = req.cookies.get("token")?.value;
 	if (!token) return NextResponse.redirect(new URL("/login", req.url));
 	try {
-		verifyToken(req);
+		await verifyToken(req);
+		return NextResponse.next();
 	} catch (error) {
 		console.log(error);
 		return NextResponse.redirect(new URL("/login", req.url));

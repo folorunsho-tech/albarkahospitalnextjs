@@ -1,9 +1,8 @@
 export const runtime = "nodejs";
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import prisma from "@/config/prisma";
 import bcrypt from "bcrypt";
-const JWT_SECRET = process.env.JWT_SECRET!;
+import { generateToken } from "@/middlewares/jwt";
 
 export async function POST(request: NextRequest) {
 	const body = await request.json();
@@ -21,17 +20,13 @@ export async function POST(request: NextRequest) {
 				{ status: 401 }
 			);
 		} else {
-			const token = jwt.sign(
-				{
-					id: user?.id,
-					username: user?.username,
-					menu: user?.menu,
-					role: user?.role,
-					active: user?.active,
-				},
-				JWT_SECRET
-			);
-
+			const token = await generateToken({
+				id: user?.id,
+				username: user?.username,
+				menu: user?.menu,
+				role: user?.role,
+				active: user?.active,
+			});
 			const res = NextResponse.json(user);
 			res.cookies.set("token", token, { httpOnly: true, path: "/" });
 

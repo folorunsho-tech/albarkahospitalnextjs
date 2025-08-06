@@ -1,7 +1,5 @@
-export const runtime = "nodejs";
-import jwt from "jsonwebtoken";
+import { verifyToken } from "@/middlewares/jwt";
 import { NextRequest, NextResponse } from "next/server";
-const JWT_SECRET = process.env.JWT_SECRET!;
 export async function GET(request: NextRequest) {
 	const token = request.cookies.get("token");
 	if (!token)
@@ -10,7 +8,7 @@ export async function GET(request: NextRequest) {
 			headers: { "Content-Type": "application/json" },
 		});
 	try {
-		const user = jwt.verify(token.value, JWT_SECRET);
+		const user = await verifyToken(request);
 		const res = NextResponse.json(user);
 		return res;
 	} catch (err) {

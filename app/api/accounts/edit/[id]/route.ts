@@ -1,9 +1,9 @@
+export const runtime = "nodejs";
+
 import { NextRequest } from "next/server";
 import prisma from "@/config/prisma";
-const { createHash } = await import("node:crypto");
-const hashpass = (password: string) => {
-	return createHash("sha256").update(password).digest("hex");
-};
+import bcrypt from "bcrypt";
+
 export async function POST(
 	request: NextRequest,
 	{ params }: { params: Promise<{ id: string }> }
@@ -12,6 +12,8 @@ export async function POST(
 	const id = (await params).id;
 	const body = await request.json();
 	const { password, menu, updatedById, role, active } = body;
+	const hashedPassword = await bcrypt.hash(password, 10);
+
 	try {
 		if (password) {
 			const updated = await prisma.accounts.update({
@@ -19,7 +21,7 @@ export async function POST(
 					id,
 				},
 				data: {
-					passHash: hashpass(password),
+					passHash: hashedPassword,
 					menu,
 					updatedById,
 					role,
