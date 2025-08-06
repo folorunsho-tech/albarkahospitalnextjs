@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
 	/* config options here */
 	output: "standalone",
+	outputFileTracingIncludes: {
+		"./": ["prisma/**/*"],
+	},
 	experimental: {
 		optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
 	},
