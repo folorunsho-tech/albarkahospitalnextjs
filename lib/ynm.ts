@@ -1,5 +1,5 @@
 const generateYear = (from: number, to: number) => {
-	const generated = [];
+	const generated: string[] = [];
 	for (let index = from; index <= to; index++) {
 		generated.push(String(index));
 	}
