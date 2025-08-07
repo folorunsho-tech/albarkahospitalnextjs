@@ -51,7 +51,6 @@ const page = () => {
 					label='Username'
 					placeholder='username'
 					value={username}
-					autoComplete=''
 					onChange={(e) => {
 						setUsername(e.currentTarget.value);
 					}}
@@ -60,7 +59,6 @@ const page = () => {
 				<PasswordInput
 					label='Password'
 					placeholder='Your password'
-					autoComplete=''
 					value={password}
 					onChange={(e) => {
 						setPassword(e.currentTarget.value);

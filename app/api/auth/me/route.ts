@@ -11,7 +11,9 @@ export async function GET(request: NextRequest) {
 		const user = await verifyToken(request);
 		const res = NextResponse.json(user);
 		return res;
-	} catch (err) {
+	} catch (error) {
+		console.log(error);
+
 		return new Response(JSON.stringify({ error: "Invalid Token" }), {
 			status: 403,
 			headers: { "Content-Type": "application/json" },
