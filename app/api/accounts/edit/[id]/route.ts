@@ -12,10 +12,12 @@ export async function POST(
 	const id = (await params).id;
 	const body = await request.json();
 	const { password, menu, updatedById, role, active } = body;
-	const hashedPassword = await bcrypt.hash(password, 10);
 
 	try {
-		if (password) {
+		let hashedPassword: string | undefined;
+		if (password && password.trim() !== "") {
+			hashedPassword = await bcrypt.hash(password, 10);
+
 			const updated = await prisma.accounts.update({
 				where: {
 					id,

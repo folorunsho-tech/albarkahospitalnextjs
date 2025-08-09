@@ -17,7 +17,7 @@ import {
 } from "@mantine/core";
 import { useReactToPrint } from "react-to-print";
 import { useFetch, usePost } from "@/queries";
-import { IconExternalLink, IconReceipt, IconX } from "@tabler/icons-react";
+import { IconReceipt, IconX } from "@tabler/icons-react";
 import { format } from "date-fns";
 import Image from "next/image";
 import PatientSearch from "@/components/PatientSearch";
@@ -43,7 +43,16 @@ const page = () => {
 	const [price, setPrice] = useState<string | number>("");
 	const [paid, setPaid] = useState<string | number>("");
 	const [fees, setFees] = useState<{ value: string; label: string }[]>([]);
-	const [patientData, setPatientData] = useState<any>(null);
+	const [patientData, setPatientData] = useState<{
+		hosp_no: string;
+		name: string;
+		id: string;
+		age: string;
+		phone_no: string;
+		sex: string;
+		town: { name: string };
+		no: number;
+	} | null>(null);
 	const [outstanding, setOutstanding] = useState<any[]>([]);
 	const [prevTnx, setPrevTnx] = useState<any[]>([]);
 
@@ -85,12 +94,15 @@ const page = () => {
 		0
 	);
 	const reset = () => {
+		setCleared(true);
 		setFeeId(null);
 		setFee(null);
 		setPrice("");
 		setPaid("");
 		setMethod(null);
 		setItems([]);
+		setPrevTnx([]);
+		setOutstanding([]);
 	};
 	useEffect(() => {
 		if (totalBalance == 0) {
@@ -133,6 +145,7 @@ const page = () => {
 	};
 	useEffect(() => {
 		if (patientData) {
+			// console.log(patientData);
 			setData();
 		}
 	}, [patientData]);
@@ -357,7 +370,7 @@ const page = () => {
 							const rec = data?.reciepts[0];
 
 							setReciept({ ...rec, items: JSON.parse(rec?.items) });
-							reset();
+
 							setData();
 						}}
 					>
@@ -366,7 +379,11 @@ const page = () => {
 							placeholder='Select an Item'
 							data={fees}
 							value={feeId}
+							disabled={!patientData?.hosp_no}
 							clearable
+							error={
+								!patientData?.hosp_no ? "Select patient to continue" : null
+							}
 							searchable
 							className='w-40'
 							onChange={(value: any) => {
@@ -442,18 +459,18 @@ const page = () => {
 							Add to List
 						</Button>
 
-						<Button type='submit' color='teal' disabled={items.length == 0}>
+						<Button type='submit' color='teal' disabled={items.length < 1}>
 							Complete transaction
 						</Button>
-						<ActionIcon
-							size={35}
+						<Button
+							leftSection={<IconReceipt />}
 							disabled={!reciept}
 							onClick={() => {
 								reactToPrintFn();
 							}}
 						>
-							<IconReceipt />
-						</ActionIcon>
+							Reciept
+						</Button>
 						<Button color='red' onClick={reset}>
 							Reset
 						</Button>

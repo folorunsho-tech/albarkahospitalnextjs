@@ -430,15 +430,15 @@ const page = () => {
 						<Button type='submit' color='teal' disabled={items.length == 0}>
 							Complete Balance payment
 						</Button>
-						<ActionIcon
-							size={35}
+						<Button
+							leftSection={<IconReceipt />}
 							disabled={!reciept}
 							onClick={() => {
 								reactToPrintFn();
 							}}
 						>
-							<IconReceipt />
-						</ActionIcon>
+							Reciept
+						</Button>
 					</form>
 
 					<div className='flex gap-1 items-center'>
