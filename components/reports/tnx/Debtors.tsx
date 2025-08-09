@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import {
-	Text,
-	Table,
-	Select,
-	Button,
-	TextInput,
-	NumberFormatter,
-} from "@mantine/core";
+import { Text, Table, Select, Button, NumberFormatter } from "@mantine/core";
 import { usePostNormal, useFetch } from "@/queries";
 import { useEffect, useState } from "react";
 import DataLoader from "@/components/DataLoader";

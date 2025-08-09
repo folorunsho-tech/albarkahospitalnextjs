@@ -46,7 +46,7 @@ export default function page() {
 		);
 	};
 	const getDrugs = async () => {
-		const { data }: { data: any[] } = await fetch("/settings/drugs");
+		const { data } = await fetch("/settings/drugs");
 		const sorted = data.map(
 			(
 				d: {
