@@ -1,10 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useFetch } from "@/queries";
-import { ArrowLeft } from "lucide-react";
-import { Select, Text } from "@mantine/core";
+import { ArrowLeft, Printer } from "lucide-react";
+import {
+	Select,
+	Modal,
+	Text,
+	Button,
+	NumberFormatter,
+	Table,
+} from "@mantine/core";
+import { format } from "date-fns";
+import { useReactToPrint } from "react-to-print";
 import { DatePickerInput } from "@mantine/dates";
 import PatientSearch from "@/components/PatientSearch";
 import Link from "next/link";
@@ -13,9 +22,12 @@ import ANC from "@/components/encounter/cares/ANC";
 import Delivery from "@/components/encounter/cares/Delivery";
 import Immunization from "@/components/encounter/cares/Immunization";
 import Operation from "@/components/encounter/cares/Operation";
+import { useDisclosure } from "@mantine/hooks";
 
 const Create = () => {
 	const { fetch } = useFetch();
+	const contentRef = useRef<HTMLTableElement>(null);
+
 	const [patientData, setPatientData] = useState<any>(null);
 	const [cares, setCares] = useState([]);
 	const [care, setCare] = useState("");
@@ -23,7 +35,13 @@ const Create = () => {
 	const [follow_up_to, setFollowUPTo] = useState<string | null>(null);
 	const [follow_ups, setFollowUps] = useState<any[]>([]);
 	const [enc_date, setEncDate] = useState<any>(new Date());
-
+	const [prescription, setPrescription] = useState<any>(null);
+	const [opened, { open, close }] = useDisclosure(false);
+	const reactToPrintFn = useReactToPrint({
+		contentRef,
+		bodyClass: "print",
+		documentTitle: "prescription-list",
+	});
 	const getFollows = async () => {
 		const { data } = await fetch(`/encounters/e/${patientData?.id}/followup`);
 		const sorted = data.map((enc: any) => {
@@ -59,6 +77,8 @@ const Create = () => {
 						patient_id={patientData?.id}
 						follow_up_to={follow_up_to}
 						enc_date={enc_date}
+						setPrescription={setPrescription}
+						openModal={open}
 					/>
 				);
 			}
@@ -69,6 +89,8 @@ const Create = () => {
 						patient_id={patientData?.id}
 						follow_up_to={follow_up_to}
 						enc_date={enc_date}
+						setPrescription={setPrescription}
+						openModal={open}
 					/>
 				);
 			}
@@ -79,6 +101,8 @@ const Create = () => {
 						patient_id={patientData?.id}
 						follow_up_to={follow_up_to}
 						enc_date={enc_date}
+						setPrescription={setPrescription}
+						openModal={open}
 					/>
 				);
 			}
@@ -89,6 +113,8 @@ const Create = () => {
 						patient_id={patientData?.id}
 						follow_up_to={follow_up_to}
 						enc_date={enc_date}
+						setPrescription={setPrescription}
+						openModal={open}
 					/>
 				);
 			}
@@ -98,6 +124,8 @@ const Create = () => {
 					patient_id={patientData?.id}
 					follow_up_to={follow_up_to}
 					enc_date={enc_date}
+					setPrescription={setPrescription}
+					openModal={open}
 				/>
 			);
 		} else {
@@ -108,6 +136,12 @@ const Create = () => {
 			);
 		}
 	};
+	const total = prescription?.reduce(
+		(prev: number, curr: { price: number }) => {
+			return Number(prev) + Number(curr?.price);
+		},
+		0
+	);
 	return (
 		<section className='space-y-6'>
 			<section>
@@ -191,6 +225,78 @@ const Create = () => {
 			</section>
 
 			{getUI()}
+			<Modal
+				opened={opened}
+				onClose={close}
+				title='Print Prescription'
+				size='auto'
+				closeOnClickOutside={false}
+			>
+				<Button
+					onClick={() => {
+						reactToPrintFn();
+					}}
+				>
+					<Printer />
+				</Button>
+				<div id='prescription' ref={contentRef}>
+					<label htmlFor='drugs' className='font-bold mr-12'>
+						Prescriptions for Hosp No: {patientData?.hosp_no} - Name:{" "}
+						{patientData?.name} on {format(new Date(), "dd/MM/yyyy HH:mm")}
+					</label>
+					<section className='printable'>
+						<Table id='drugs'>
+							<Table.Thead>
+								<Table.Tr>
+									<Table.Th>S/N</Table.Th>
+									<Table.Th>Name</Table.Th>
+									<Table.Th>Rate</Table.Th>
+									<Table.Th>Quantity</Table.Th>
+									<Table.Th>Price</Table.Th>
+								</Table.Tr>
+							</Table.Thead>
+							<Table.Tbody>
+								{prescription?.map((drug: any, i: number) => (
+									<Table.Tr key={drug?.id}>
+										<Table.Td>{i + 1}</Table.Td>
+										<Table.Td>{drug?.name}</Table.Td>
+										<Table.Td>
+											<NumberFormatter
+												prefix='NGN '
+												value={Number(drug?.rate)}
+												thousandSeparator
+											/>
+										</Table.Td>
+										<Table.Td>{drug?.quantity}</Table.Td>
+										<Table.Td>
+											<NumberFormatter
+												prefix='NGN '
+												value={Number(drug?.rate) * Number(drug?.quantity)}
+												thousandSeparator
+											/>
+										</Table.Td>
+									</Table.Tr>
+								))}
+							</Table.Tbody>
+							<Table.Tfoot className='bg-gray-300 font-bold'>
+								<Table.Tr>
+									<Table.Td></Table.Td>
+									<Table.Td></Table.Td>
+									<Table.Td></Table.Td>
+									<Table.Td>Total: </Table.Td>
+									<Table.Td>
+										<NumberFormatter
+											prefix='NGN '
+											value={total}
+											thousandSeparator
+										/>
+									</Table.Td>
+								</Table.Tr>
+							</Table.Tfoot>
+						</Table>
+					</section>
+				</div>
+			</Modal>
 		</section>
 	);
 };

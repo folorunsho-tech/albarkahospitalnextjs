@@ -17,18 +17,22 @@ import { useRouter } from "next/navigation";
 import Diagnosis from "../create/Diagnosis";
 import DrugsGiven from "../create/DrugsGiven";
 import Labtest from "../create/Labtest";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 const ANC = ({
 	careId,
 	patient_id,
 	follow_up_to,
 	enc_date,
+	setPrescription,
+	openModal,
 }: {
 	careId: string;
 	patient_id: string;
 	follow_up_to: string | null;
 	enc_date: Date | null;
+	setPrescription: React.Dispatch<React.SetStateAction<any>>;
+	openModal: () => void;
 }) => {
 	const { post, loading } = usePostT();
 	const [drugsGiven, setDrugsGiven] = useState<any[]>([]);
@@ -52,7 +56,7 @@ const ANC = ({
 	const [admitted_for, setAdmittedFor] = useState<number | string>();
 	const router = useRouter();
 	const handleSubmit = async () => {
-		await post("/encounters/create/anc", {
+		const encounter = await post("/encounters/create/anc", {
 			careId,
 			patient_id,
 			month: months[new Date().getMonth()],
@@ -90,6 +94,8 @@ const ANC = ({
 				edd,
 			},
 		});
+		setPrescription(encounter.data?.drugsGiven);
+		openModal();
 		setPosted(true);
 		setDrugsGiven([]);
 		setLabTest([]);

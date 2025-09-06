@@ -25,11 +25,15 @@ const Others = ({
 	patient_id,
 	follow_up_to,
 	enc_date,
+	setPrescription,
+	openModal,
 }: {
 	careId: string;
 	patient_id: string;
 	follow_up_to: string | null;
 	enc_date: Date | null;
+	setPrescription: React.Dispatch<React.SetStateAction<any>>;
+	openModal: () => void;
 }) => {
 	const { post, loading } = usePostT();
 	const [drugsGiven, setDrugsGiven] = useState<any[]>([]);
@@ -45,7 +49,7 @@ const Others = ({
 	const router = useRouter();
 
 	const handleSubmit = async () => {
-		await post("/encounters", {
+		const encounter = await post("/encounters", {
 			careId,
 			patient_id,
 			month: months[new Date().getMonth()],
@@ -72,6 +76,8 @@ const Others = ({
 				};
 			}),
 		});
+		setPrescription(encounter.data?.drugsGiven);
+		openModal();
 		setPosted(true);
 		setDrugsGiven([]);
 		setLabTest([]);
