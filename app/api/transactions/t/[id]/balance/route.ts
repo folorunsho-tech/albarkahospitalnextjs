@@ -43,7 +43,7 @@ export async function POST(
 	const recieptId = await Rgenerator(id);
 	try {
 		tnxItems.forEach(async (i: any) => {
-			await prisma.tnxItem.update({
+			await prisma.tnxitem.update({
 				where: {
 					id: i?.id,
 				},

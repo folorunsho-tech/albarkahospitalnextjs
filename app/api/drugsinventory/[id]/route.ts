@@ -8,7 +8,7 @@ export async function GET(
 	const id = (await params).id;
 
 	try {
-		const found = await prisma.drugsInventory.findFirst({
+		const found = await prisma.drugsinventory.findFirst({
 			where: {
 				id,
 			},

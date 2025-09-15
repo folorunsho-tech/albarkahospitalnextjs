@@ -25,7 +25,7 @@ export async function POST(
 
 	try {
 		toReverse.forEach(async (i: any) => {
-			await prisma.tnxItem.update({
+			await prisma.tnxitem.update({
 				where: {
 					id: i?.id,
 				},

@@ -24,9 +24,9 @@ model accounts {
 
   patients       patients[]
   encounters     encounters[]
-  drugsInventory drugsInventory[]
-  stocksHistory  stocksHistory[]
-  drugPurchases  drugPurchases[]
+  drugsInventory drugsinventory[]
+  stocksHistory  stockshistory[]
+  drugPurchases  drugpurchases[]
   transactions   transaction[]
   reciepts       reciept[]
   payments       payment[]
@@ -70,9 +70,9 @@ model encounters {
   outcome          String?
   care_id          String?
   care             care?              @relation(fields: [care_id], references: [id])
-  drugsGiven       drugsGiven[]
-  prescriptionHist prescriptionHist[]
-  labTest          labTest[]
+  drugsGiven       drugsgiven[]
+  prescriptionHist prescriptionhist[]
+  labTest          labtest[]
   diagnosis        diagnosis[]
   delivery         delivery[]
   follow_ups       followups[]
@@ -162,13 +162,13 @@ model delivery {
   updatedAt         DateTime    @updatedAt
 }
 
-model drugsGiven {
+model drugsgiven {
   id               String             @id @default(cuid())
   rate             Int?               @default(0)
   price            Int?               @default(0)
   quantity         Int?               @default(0)
   drug_id          String?
-  drug             drugsInventory?    @relation(fields: [drug_id], references: [id])
+  drug             drugsinventory?    @relation(fields: [drug_id], references: [id])
   name             String?
   encounter_id     String?
   encounter        encounters?        @relation(fields: [encounter_id], references: [id])
@@ -177,9 +177,7 @@ model drugsGiven {
   month            String?
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-  prescriptionHist prescriptionHist[]
-
-  @@map("drugsgiven")
+  prescriptionHist prescriptionhist[]
 }
 
 model operations {
@@ -199,7 +197,7 @@ model operations {
   updatedAt    DateTime    @updatedAt
 }
 
-model labTest {
+model labtest {
   id           String      @id @default(cuid())
   encounter_id String?
   encounter    encounters? @relation(fields: [encounter_id], references: [id])
@@ -213,13 +211,11 @@ model labTest {
   month        String?
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
-
-  @@map("labtest")
 }
 
 model transaction {
   id          String    @id
-  items       tnxItem[]
+  items       tnxitem[]
   total       Int
   balance     Int
   year        Int
@@ -236,7 +232,7 @@ model transaction {
   payments    payment[]
 }
 
-model tnxItem {
+model tnxitem {
   id            String      @id @default(uuid())
   transactionId String
   transaction   transaction @relation(fields: [transactionId], references: [id])
@@ -251,8 +247,6 @@ model tnxItem {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   payments      payment[]
-
-  @@map("tnxitem")
 }
 
 model payment {
@@ -260,7 +254,7 @@ model payment {
   tnxId       String?
   transaction transaction? @relation(fields: [tnxId], references: [id])
   itemId      String
-  tnxItem     tnxItem      @relation(fields: [itemId], references: [id])
+  tnxItem     tnxitem      @relation(fields: [itemId], references: [id])
   name        String
   paid        Int
   method      String?
@@ -297,7 +291,7 @@ model snapshot {
   updatedAt DateTime @updatedAt
 }
 
-model drugsInventory {
+model drugsinventory {
   id            String          @id @default(uuid())
   stock_qty     Int             @default(0)
   added         Int?            @default(0)
@@ -307,16 +301,14 @@ model drugsInventory {
   updatedBy     accounts?       @relation(fields: [updatedById], references: [id])
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
-  givenHistory  drugsGiven[]
-  stockHistory  stocksHistory[]
-  drugPurchases drugPurchases[]
+  givenHistory  drugsgiven[]
+  stockHistory  stockshistory[]
+  drugPurchases drugpurchases[]
   drugId        String          @unique
   drug          drugs?          @relation(fields: [drugId], references: [id])
-
-  @@map("drugsinventory")
 }
 
-model prescriptionHist {
+model prescriptionhist {
   id           Int         @id @default(autoincrement())
   drug         String
   hosp_no      String
@@ -329,19 +321,17 @@ model prescriptionHist {
   time         String?
   year         Int?
   given_id     String?
-  given        drugsGiven? @relation(fields: [given_id], references: [id])
+  given        drugsgiven? @relation(fields: [given_id], references: [id])
   enc_id       String?
   encounter    encounters? @relation(fields: [enc_id], references: [id])
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
-
-  @@map("prescriptionhist")
 }
 
-model stocksHistory {
+model stockshistory {
   id          Int             @id @default(autoincrement())
   drug_id     String?
-  drug        drugsInventory? @relation(fields: [drug_id], references: [id])
+  drug        drugsinventory? @relation(fields: [drug_id], references: [id])
   name        String?
   type        String?
   stock_qty   Int?
@@ -352,14 +342,12 @@ model stocksHistory {
   updatedBy   accounts?       @relation(fields: [updatedById], references: [id])
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
-
-  @@map("stockshistory")
 }
 
-model drugPurchases {
+model drugpurchases {
   id          String          @id @default(uuid())
   drug_id     String?
-  drug        drugsInventory? @relation(fields: [drug_id], references: [id])
+  drug        drugsinventory? @relation(fields: [drug_id], references: [id])
   name        String?
   quantity    Int?
   price       Int?
@@ -371,8 +359,6 @@ model drugPurchases {
   updatedAt   DateTime        @updatedAt
   createdById String?
   createdBy   accounts?       @relation(fields: [createdById], references: [id])
-
-  @@map("drugpurchases")
 }
 
 model drugs {
@@ -380,7 +366,7 @@ model drugs {
   name      String?
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
-  inventory drugsInventory?
+  inventory drugsinventory?
 }
 
 model diagnosis {
@@ -401,7 +387,7 @@ model tests {
   id        String    @id @default(cuid())
   name      String?
   createdAt DateTime  @default(now())
-  labTests  labTest[]
+  labTests  labtest[]
 }
 
 model procedures {
@@ -416,7 +402,7 @@ model fees {
   name      String?
   amount    Int?
   createdAt DateTime  @default(now())
-  tnxItems  tnxItem[]
+  tnxItems  tnxitem[]
 }
 
 model care {

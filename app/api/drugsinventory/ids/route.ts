@@ -2,7 +2,7 @@ import prisma from "@/config/prisma";
 
 export async function GET(request: Request) {
 	try {
-		const found = await prisma.drugsInventory.findMany({
+		const found = await prisma.drugsinventory.findMany({
 			select: {
 				drugId: true,
 			},

@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 		};
 	});
 	try {
-		const created = await prisma.drugsInventory.createMany({
+		const created = await prisma.drugsinventory.createMany({
 			data: [...added],
 		});
 		return new Response(JSON.stringify(created), {

@@ -9,7 +9,7 @@ export async function POST(
 	const { value } = body;
 	try {
 		if (criteria == "year") {
-			const drugsgiven = await prisma.drugsGiven.groupBy({
+			const drugsgiven = await prisma.drugsgiven.groupBy({
 				by: ["name"],
 				_sum: {
 					quantity: true,
@@ -34,7 +34,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "yearnmonth") {
-			const drugsgiven = await prisma.drugsGiven.groupBy({
+			const drugsgiven = await prisma.drugsgiven.groupBy({
 				by: ["name"],
 				_sum: {
 					quantity: true,
@@ -60,7 +60,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "date") {
-			const drugsgiven = await prisma.drugsGiven.groupBy({
+			const drugsgiven = await prisma.drugsgiven.groupBy({
 				by: ["name"],
 				_sum: {
 					quantity: true,
@@ -96,7 +96,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "range") {
-			const drugsgiven = await prisma.drugsGiven.groupBy({
+			const drugsgiven = await prisma.drugsgiven.groupBy({
 				by: ["name"],
 				_sum: {
 					quantity: true,

@@ -2,7 +2,7 @@ import prisma from "@/config/prisma";
 import { curMonth, curYear } from "@/config/ynm.js";
 export async function GET(request: Request) {
 	try {
-		const drugs = await prisma.drugsInventory.findMany({
+		const drugs = await prisma.drugsinventory.findMany({
 			where: {
 				OR: [
 					{
@@ -59,7 +59,7 @@ export async function GET(request: Request) {
 				},
 			},
 		});
-		const given = await prisma.drugsGiven.groupBy({
+		const given = await prisma.drugsgiven.groupBy({
 			by: ["name"],
 			_count: {
 				name: true,

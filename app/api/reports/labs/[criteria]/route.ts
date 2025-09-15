@@ -9,7 +9,7 @@ export async function POST(
 	const { value } = body;
 	try {
 		if (criteria == "year") {
-			const found = await prisma.labTest.findMany({
+			const found = await prisma.labtest.findMany({
 				where: {
 					encounter: {
 						year: value,
@@ -32,7 +32,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "yearnmonth") {
-			const found = await prisma.labTest.findMany({
+			const found = await prisma.labtest.findMany({
 				where: {
 					encounter: {
 						year: value?.year,
@@ -56,7 +56,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "date") {
-			const found = await prisma.labTest.findMany({
+			const found = await prisma.labtest.findMany({
 				where: {
 					AND: [
 						{
@@ -88,7 +88,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "range") {
-			const found = await prisma.labTest.findMany({
+			const found = await prisma.labtest.findMany({
 				where: {
 					AND: [
 						{

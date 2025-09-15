@@ -9,7 +9,7 @@ export async function POST(
 	const { value } = body;
 	try {
 		if (criteria == "year") {
-			const found = await prisma.drugsGiven.findMany({
+			const found = await prisma.drugsgiven.findMany({
 				where: {
 					year: value,
 				},
@@ -29,7 +29,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "yearnmonth") {
-			const found = await prisma.drugsGiven.findMany({
+			const found = await prisma.drugsgiven.findMany({
 				where: {
 					year: value?.year,
 					month: value?.month,
@@ -50,7 +50,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "date") {
-			const found = await prisma.drugsGiven.findMany({
+			const found = await prisma.drugsgiven.findMany({
 				where: {
 					AND: [
 						{
@@ -81,7 +81,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "range") {
-			const found = await prisma.drugsGiven.findMany({
+			const found = await prisma.drugsgiven.findMany({
 				where: {
 					AND: [
 						{

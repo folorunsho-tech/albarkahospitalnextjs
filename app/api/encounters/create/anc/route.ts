@@ -106,7 +106,7 @@ export async function POST(request: Request) {
 			},
 		});
 		stock_updates.forEach(async (update: any) => {
-			await prisma.drugsInventory.update({
+			await prisma.drugsinventory.update({
 				where: {
 					id: update?.id,
 				},
@@ -115,7 +115,7 @@ export async function POST(request: Request) {
 				},
 			});
 		});
-		await prisma.prescriptionHist.createMany({
+		await prisma.prescriptionhist.createMany({
 			data: drugsGiven?.map(
 				(d: {
 					name: string;

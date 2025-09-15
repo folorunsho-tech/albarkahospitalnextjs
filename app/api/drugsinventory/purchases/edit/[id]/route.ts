@@ -8,7 +8,7 @@ export async function POST(
 
 	const id = (await params).id;
 	try {
-		const updated = await prisma.drugPurchases.update({
+		const updated = await prisma.drugpurchases.update({
 			where: {
 				id,
 			},

@@ -25,7 +25,7 @@ export async function POST(
 
 	const { stock_qty, added, rate, prevStock, updatedById } = body;
 	try {
-		const updated = await prisma.drugsInventory.update({
+		const updated = await prisma.drugsinventory.update({
 			where: {
 				id,
 			},
@@ -39,7 +39,7 @@ export async function POST(
 				drug: true,
 			},
 		});
-		const drugHist = await prisma.stocksHistory.create({
+		const drugHist = await prisma.stockshistory.create({
 			data: {
 				drug_id: updated.id,
 				updatedById: updated.updatedById,

@@ -8,7 +8,7 @@ export async function GET(
 	const id = (await params).id;
 
 	try {
-		const outstandingFees = await prisma.tnxItem.findMany({
+		const outstandingFees = await prisma.tnxitem.findMany({
 			where: {
 				transaction: {
 					patientId: id,
