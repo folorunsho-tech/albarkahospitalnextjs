@@ -9,7 +9,7 @@ RUN \
     elif [ -f pnpm-lock.yaml ]; then npm install -g pnpm && pnpm install; \
     elif [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
     else npm install; fi
-
+RUN npx prisma generate
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
