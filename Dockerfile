@@ -9,30 +9,33 @@ RUN \
     elif [ -f pnpm-lock.yaml ]; then npm install -g pnpm && pnpm install; \
     elif [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
     else npm install; fi
-RUN npx prisma generate
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED 1
 RUN npx prisma generate
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
 # Production image, copy only necessary files
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# If you use custom server, expose the port
-EXPOSE 3000
+# Create user
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
 
-# Copy built assets and node_modules
-COPY --from=builder /app/.next ./.next
+# Copy build artifacts
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
-CMD ["npm", "start"]
+USER nextjs
+
+EXPOSE 3000
+CMD ["node", "server.js"]
