@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export const createShot = async () => {
 	try {
-		const drugs = await prisma.drugsInventory.findMany({
+		const drugs = await prisma.drugsinventory.findMany({
 			where: {
 				OR: [
 					{

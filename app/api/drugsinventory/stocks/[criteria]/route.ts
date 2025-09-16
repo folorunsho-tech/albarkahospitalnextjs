@@ -9,7 +9,7 @@ export async function POST(
 	const { value } = body;
 	try {
 		if (criteria == "year") {
-			const found = await prisma.stocksHistory.findMany({
+			const found = await prisma.stockshistory.findMany({
 				where: {
 					year: value,
 				},
@@ -25,7 +25,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "yearnmonth") {
-			const found = await prisma.stocksHistory.findMany({
+			const found = await prisma.stockshistory.findMany({
 				where: {
 					year: value?.year,
 					month: value?.month,
@@ -42,7 +42,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "date") {
-			const found = await prisma.stocksHistory.findMany({
+			const found = await prisma.stockshistory.findMany({
 				where: {
 					updatedAt: new Date(new Date(value).setUTCHours(0, 0, 0, 0)),
 				},
@@ -58,7 +58,7 @@ export async function POST(
 				headers: { "Content-Type": "application/json" },
 			});
 		} else if (criteria == "range") {
-			const found = await prisma.stocksHistory.findMany({
+			const found = await prisma.stockshistory.findMany({
 				where: {
 					AND: [
 						{

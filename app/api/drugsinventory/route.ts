@@ -2,7 +2,7 @@ import prisma from "@/config/prisma";
 
 export async function GET(request: Request) {
 	try {
-		const found = await prisma.drugsInventory.findMany({
+		const found = await prisma.drugsinventory.findMany({
 			orderBy: {
 				drug: {
 					name: "asc",
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 		};
 	});
 	try {
-		const created = await prisma.drugsInventory.createMany({
+		const created = await prisma.drugsinventory.createMany({
 			data: [...toAdd],
 		});
 		return new Response(JSON.stringify(created), {
