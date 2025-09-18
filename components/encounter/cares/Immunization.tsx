@@ -98,130 +98,129 @@ const Immunization = ({
 				handleSubmit();
 			}}
 		>
-			<ScrollArea h={500}>
-				<section className='space-y-4'>
-					<Diagnosis setDiagnosis={setDiagnosis} diagnosis={diagnosis} />
-					<div className='flex flex-col gap-2'>
-						<label className='font-bold underline'>Immunization</label>
-						<div className='flex gap-4'>
-							<DatePickerInput
-								label='Immunization Date'
-								value={date}
-								placeholder='imm date'
-								className='w-44'
-								onChange={setDate}
-								clearable
-								required
-							/>
-							<Select
-								label='Type'
-								placeholder='Select a value'
-								data={["TT", "EPI"]}
-								className='w-[12rem]'
-								clearable
-								value={type}
-								onChange={(value: any) => {
-									setType(value);
-								}}
-								nothingFoundMessage='Nothing found...'
-							/>
-							<DatePickerInput
-								label='Next Appt Date'
-								value={next_date}
-								placeholder='next date'
-								className='w-44'
-								onChange={setNDate}
-								clearable
-							/>
-						</div>
-					</div>
-					<div className='flex flex-col gap-2'>
-						<label className='font-bold underline'>Pharmacy</label>
-						<DrugsGiven
-							setDrugsGiven={setDrugsGiven}
-							drugsGiven={drugsGiven}
-							posted={posted}
+			<section className='space-y-4'>
+				<Diagnosis setDiagnosis={setDiagnosis} diagnosis={diagnosis} />
+				<div className='flex flex-col gap-2'>
+					<label className='font-bold underline'>Immunization</label>
+					<div className='flex gap-4'>
+						<DatePickerInput
+							label='Immunization Date'
+							value={date}
+							placeholder='imm date'
+							className='w-44'
+							onChange={setDate}
+							clearable
+							required
+						/>
+						<Select
+							label='Type'
+							placeholder='Select a value'
+							data={["TT", "EPI"]}
+							className='w-[12rem]'
+							clearable
+							value={type}
+							onChange={(value: any) => {
+								setType(value);
+							}}
+							nothingFoundMessage='Nothing found...'
+						/>
+						<DatePickerInput
+							label='Next Appt Date'
+							value={next_date}
+							placeholder='next date'
+							className='w-44'
+							onChange={setNDate}
+							clearable
 						/>
 					</div>
-					<div className='flex flex-col gap-2'>
-						<label className='font-bold underline'>Lab</label>
-						<Labtest setLabTest={setLabTest} labTest={labTest} />
-					</div>
-
-					<Select
-						placeholder='outcome'
-						label='Outcome'
-						className='w-max'
-						data={[
-							"Admitted",
-							"DAMA",
-							"Dead",
-							"Discharged",
-							"Police Case",
-							"ReferGH",
-							"ReferFMC",
-							"ReferUITH",
-							"Treated",
-						]}
-						onChange={(value) => {
-							setOutcome(value);
-						}}
+				</div>
+				<div className='flex flex-col gap-2'>
+					<label className='font-bold underline'>Pharmacy</label>
+					<DrugsGiven
+						setDrugsGiven={setDrugsGiven}
+						drugsGiven={drugsGiven}
+						posted={posted}
 					/>
-					{outcome == "Admitted" && (
-						<div className='flex flex-col gap-2'>
-							<label className='font-bold underline'>Admission</label>
-							<div className='flex flex-wrap gap-4'>
-								<DatePickerInput
-									value={adm_date}
-									onChange={setAdmDate}
-									label='Admission date'
-									placeholder='adm date'
-									className='w-44'
-									allowDeselect
-									clearable
-									closeOnChange={false}
-								/>
-								<TextInput
-									label='NOK Phone'
-									placeholder='phone number'
-									value={nok_phone}
-									onChange={(e) => {
-										setNokPhone(e.currentTarget.value);
-									}}
-								/>
-								<NumberInput
-									label='Days of Admission'
-									placeholder='Days of Admission'
-									value={admitted_for}
-									suffix=' Days'
-									onChange={(value) => {
-										setAdmittedFor(value);
-									}}
-								/>
-								<DatePickerInput
-									value={discharged_on}
-									onChange={setDischargedOn}
-									label='Date of Discharge'
-									placeholder='Discharged date'
-									className='w-44'
-									allowDeselect
-									clearable
-									closeOnChange={false}
-								/>
-								<TextInput
-									label='Ward Matron'
-									placeholder='Ward Matron'
-									value={ward_matron}
-									onChange={(e) => {
-										setMatron(e.currentTarget.value);
-									}}
-								/>
-							</div>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<label className='font-bold underline'>Lab</label>
+					<Labtest setLabTest={setLabTest} labTest={labTest} />
+				</div>
+
+				<Select
+					placeholder='outcome'
+					label='Outcome'
+					className='w-max'
+					data={[
+						"Admitted",
+						"DAMA",
+						"Dead",
+						"Discharged",
+						"Police Case",
+						"ReferGH",
+						"ReferFMC",
+						"ReferUITH",
+						"Treated",
+					]}
+					onChange={(value) => {
+						setOutcome(value);
+					}}
+				/>
+				{outcome == "Admitted" && (
+					<div className='flex flex-col gap-2'>
+						<label className='font-bold underline'>Admission</label>
+						<div className='flex flex-wrap gap-4'>
+							<DatePickerInput
+								value={adm_date}
+								onChange={setAdmDate}
+								label='Admission date'
+								placeholder='adm date'
+								className='w-44'
+								allowDeselect
+								clearable
+								closeOnChange={false}
+							/>
+							<TextInput
+								label='NOK Phone'
+								placeholder='phone number'
+								value={nok_phone}
+								onChange={(e) => {
+									setNokPhone(e.currentTarget.value);
+								}}
+							/>
+							<NumberInput
+								label='Days of Admission'
+								placeholder='Days of Admission'
+								value={admitted_for}
+								suffix=' Days'
+								onChange={(value) => {
+									setAdmittedFor(value);
+								}}
+							/>
+							<DatePickerInput
+								value={discharged_on}
+								onChange={setDischargedOn}
+								label='Date of Discharge'
+								placeholder='Discharged date'
+								className='w-44'
+								allowDeselect
+								clearable
+								closeOnChange={false}
+							/>
+							<TextInput
+								label='Ward Matron'
+								placeholder='Ward Matron'
+								value={ward_matron}
+								onChange={(e) => {
+									setMatron(e.currentTarget.value);
+								}}
+							/>
 						</div>
-					)}
-				</section>
-			</ScrollArea>
-			<Group mt={20} justify='start'>
+					</div>
+				)}
+			</section>
+
+			<Group mt={10} justify='start'>
 				<Button
 					onClick={() => {
 						router.push("/ms/encounters");

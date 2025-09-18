@@ -132,243 +132,242 @@ const Delivery = ({
 				handleSubmit();
 			}}
 		>
-			<ScrollArea h={500}>
-				<section className='space-y-4'>
-					<Diagnosis setDiagnosis={setDiagnosis} diagnosis={diagnosis} />
+			<section className='space-y-4'>
+				<Diagnosis setDiagnosis={setDiagnosis} diagnosis={diagnosis} />
+				<div className='flex flex-col gap-2'>
+					<label className='font-bold underline'>Delivery</label>
+					<div className='flex gap-4 flex-wrap'>
+						<DatePickerInput
+							label='Delivery date'
+							placeholder='Delivery date...'
+							className='w-44'
+							value={delivery_date}
+							onChange={setDelveryDate}
+							allowDeselect
+							clearable
+							closeOnChange={false}
+						/>
+						<TextInput
+							label='Parity'
+							placeholder='parity'
+							value={parity}
+							onChange={(e) => {
+								setParity(e.currentTarget.value);
+							}}
+						/>
+						<TextInput
+							label='Labour Duration'
+							placeholder='labour duration'
+							value={labour_duration}
+							onChange={(e) => {
+								setDuration(e.currentTarget.value);
+							}}
+						/>
+						<TextInput
+							label='Placenta deivery'
+							placeholder='placenta delivery'
+							value={placenta_delivery}
+							onChange={(e) => {
+								setPlacenta(e.currentTarget.value);
+							}}
+						/>
+						<Select
+							label='Delivery Type'
+							placeholder='Select a type'
+							data={[
+								"Delivery breech",
+								"Delivery multiple",
+								"Delivery SVD",
+								"Delivery Vacuum",
+							]}
+							className='w-[10rem]'
+							clearable
+							value={delivery_type}
+							onChange={(value: any) => {
+								setDelivType(value);
+							}}
+							nothingFoundMessage='Nothing found...'
+						/>
+						<Select
+							label='Mother Diagnosis'
+							placeholder='Select a diagnosis'
+							data={diagnosisL}
+							className='w-[20rem]'
+							searchable
+							clearable
+							value={mother_diag}
+							onChange={(value: any) => {
+								setMDiag(value);
+							}}
+							nothingFoundMessage='Nothing found...'
+						/>
+						<Select
+							label='Mother Outcome'
+							placeholder='Select an outcome'
+							data={["Alive", "Mat Death"]}
+							className='w-[11rem]'
+							clearable
+							value={mother_outcome}
+							onChange={(value: any) => {
+								setMOutcome(value);
+							}}
+							nothingFoundMessage='Nothing found...'
+						/>
+						<Select
+							label='Baby Outcome'
+							placeholder='Select an outcome'
+							data={["Live Birth", "Still Birth"]}
+							className='w-[11rem]'
+							clearable
+							value={baby_outcome}
+							onChange={(value: any) => {
+								setBOutcome(value);
+							}}
+							nothingFoundMessage='Nothing found...'
+						/>
+						<Select
+							label='Baby Sex'
+							placeholder='Select a sex'
+							data={["Male", "Female"]}
+							className='w-[8rem]'
+							clearable
+							value={baby_sex}
+							onChange={(value: any) => {
+								setbabySex(value);
+							}}
+							nothingFoundMessage='Nothing found...'
+						/>
+						<NumberInput
+							label='Baby Weight'
+							placeholder='baby weight'
+							value={baby_weight}
+							min={0}
+							suffix=' KG'
+							onChange={(value: any) => {
+								setBabyWeight(value);
+							}}
+						/>
+						<TextInput
+							label='Baby Maturity'
+							placeholder='Baby Maturity'
+							value={baby_maturity}
+							onChange={(e) => {
+								setBabyMaturity(e.currentTarget.value);
+							}}
+						/>
+						<TextInput
+							label='Baby Activity'
+							placeholder='APGAR score'
+							value={apgar_score}
+							onChange={(e) => {
+								setApgarScore(e.currentTarget.value);
+							}}
+						/>
+						<TextInput
+							label='Baby Congenital Malform'
+							placeholder='Image No'
+							value={congenital_no}
+							onChange={(e) => {
+								setCongenital(Number(e.currentTarget.value));
+							}}
+						/>
+						<TextInput
+							label='Midwife'
+							placeholder='midwife'
+							value={midwife}
+							onChange={(e) => {
+								setMidWife(e.currentTarget.value);
+							}}
+						/>
+					</div>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<label className='font-bold underline'>Pharmacy</label>
+					<DrugsGiven
+						setDrugsGiven={setDrugsGiven}
+						drugsGiven={drugsGiven}
+						posted={posted}
+					/>
+				</div>
+				<div className='flex flex-col gap-2'>
+					<label className='font-bold underline'>Lab</label>
+					<Labtest setLabTest={setLabTest} labTest={labTest} />
+				</div>
+
+				<Select
+					placeholder='outcome'
+					label='Outcome'
+					className='w-max'
+					data={[
+						"Admitted",
+						"DAMA",
+						"Dead",
+						"Discharged",
+						"Police Case",
+						"ReferGH",
+						"ReferFMC",
+						"ReferUITH",
+						"Treated",
+					]}
+					onChange={(value) => {
+						setOutcome(value);
+					}}
+				/>
+				{outcome == "Admitted" && (
 					<div className='flex flex-col gap-2'>
-						<label className='font-bold underline'>Delivery</label>
-						<div className='flex gap-4 flex-wrap'>
+						<label className='font-bold underline'>Admission</label>
+						<div className='flex flex-wrap gap-4'>
 							<DatePickerInput
-								label='Delivery date'
-								placeholder='Delivery date...'
+								value={adm_date}
+								onChange={setAdmDate}
+								label='Admission date'
+								placeholder='adm date'
 								className='w-44'
-								value={delivery_date}
-								onChange={setDelveryDate}
 								allowDeselect
 								clearable
 								closeOnChange={false}
 							/>
 							<TextInput
-								label='Parity'
-								placeholder='parity'
-								value={parity}
+								label='NOK Phone'
+								placeholder='phone number'
+								value={nok_phone}
 								onChange={(e) => {
-									setParity(e.currentTarget.value);
+									setNokPhone(e.currentTarget.value);
 								}}
-							/>
-							<TextInput
-								label='Labour Duration'
-								placeholder='labour duration'
-								value={labour_duration}
-								onChange={(e) => {
-									setDuration(e.currentTarget.value);
-								}}
-							/>
-							<TextInput
-								label='Placenta deivery'
-								placeholder='placenta delivery'
-								value={placenta_delivery}
-								onChange={(e) => {
-									setPlacenta(e.currentTarget.value);
-								}}
-							/>
-							<Select
-								label='Delivery Type'
-								placeholder='Select a type'
-								data={[
-									"Delivery breech",
-									"Delivery multiple",
-									"Delivery SVD",
-									"Delivery Vacuum",
-								]}
-								className='w-[10rem]'
-								clearable
-								value={delivery_type}
-								onChange={(value: any) => {
-									setDelivType(value);
-								}}
-								nothingFoundMessage='Nothing found...'
-							/>
-							<Select
-								label='Mother Diagnosis'
-								placeholder='Select a diagnosis'
-								data={diagnosisL}
-								className='w-[20rem]'
-								searchable
-								clearable
-								value={mother_diag}
-								onChange={(value: any) => {
-									setMDiag(value);
-								}}
-								nothingFoundMessage='Nothing found...'
-							/>
-							<Select
-								label='Mother Outcome'
-								placeholder='Select an outcome'
-								data={["Alive", "Mat Death"]}
-								className='w-[11rem]'
-								clearable
-								value={mother_outcome}
-								onChange={(value: any) => {
-									setMOutcome(value);
-								}}
-								nothingFoundMessage='Nothing found...'
-							/>
-							<Select
-								label='Baby Outcome'
-								placeholder='Select an outcome'
-								data={["Live Birth", "Still Birth"]}
-								className='w-[11rem]'
-								clearable
-								value={baby_outcome}
-								onChange={(value: any) => {
-									setBOutcome(value);
-								}}
-								nothingFoundMessage='Nothing found...'
-							/>
-							<Select
-								label='Baby Sex'
-								placeholder='Select a sex'
-								data={["Male", "Female"]}
-								className='w-[8rem]'
-								clearable
-								value={baby_sex}
-								onChange={(value: any) => {
-									setbabySex(value);
-								}}
-								nothingFoundMessage='Nothing found...'
 							/>
 							<NumberInput
-								label='Baby Weight'
-								placeholder='baby weight'
-								value={baby_weight}
-								min={0}
-								suffix=' KG'
-								onChange={(value: any) => {
-									setBabyWeight(value);
+								label='Days of Admission'
+								placeholder='Days of Admission'
+								value={admitted_for}
+								suffix=' Days'
+								onChange={(value) => {
+									setAdmittedFor(value);
 								}}
 							/>
-							<TextInput
-								label='Baby Maturity'
-								placeholder='Baby Maturity'
-								value={baby_maturity}
-								onChange={(e) => {
-									setBabyMaturity(e.currentTarget.value);
-								}}
+							<DatePickerInput
+								value={discharged_on}
+								onChange={setDischargedOn}
+								label='Date of Discharge'
+								placeholder='Discharged date'
+								className='w-44'
+								allowDeselect
+								clearable
+								closeOnChange={false}
 							/>
 							<TextInput
-								label='Baby Activity'
-								placeholder='APGAR score'
-								value={apgar_score}
+								label='Ward Matron'
+								placeholder='Ward Matron'
+								value={ward_matron}
 								onChange={(e) => {
-									setApgarScore(e.currentTarget.value);
-								}}
-							/>
-							<TextInput
-								label='Baby Congenital Malform'
-								placeholder='Image No'
-								value={congenital_no}
-								onChange={(e) => {
-									setCongenital(Number(e.currentTarget.value));
-								}}
-							/>
-							<TextInput
-								label='Midwife'
-								placeholder='midwife'
-								value={midwife}
-								onChange={(e) => {
-									setMidWife(e.currentTarget.value);
+									setMatron(e.currentTarget.value);
 								}}
 							/>
 						</div>
 					</div>
-					<div className='flex flex-col gap-2'>
-						<label className='font-bold underline'>Pharmacy</label>
-						<DrugsGiven
-							setDrugsGiven={setDrugsGiven}
-							drugsGiven={drugsGiven}
-							posted={posted}
-						/>
-					</div>
-					<div className='flex flex-col gap-2'>
-						<label className='font-bold underline'>Lab</label>
-						<Labtest setLabTest={setLabTest} labTest={labTest} />
-					</div>
+				)}
+			</section>
 
-					<Select
-						placeholder='outcome'
-						label='Outcome'
-						className='w-max'
-						data={[
-							"Admitted",
-							"DAMA",
-							"Dead",
-							"Discharged",
-							"Police Case",
-							"ReferGH",
-							"ReferFMC",
-							"ReferUITH",
-							"Treated",
-						]}
-						onChange={(value) => {
-							setOutcome(value);
-						}}
-					/>
-					{outcome == "Admitted" && (
-						<div className='flex flex-col gap-2'>
-							<label className='font-bold underline'>Admission</label>
-							<div className='flex flex-wrap gap-4'>
-								<DatePickerInput
-									value={adm_date}
-									onChange={setAdmDate}
-									label='Admission date'
-									placeholder='adm date'
-									className='w-44'
-									allowDeselect
-									clearable
-									closeOnChange={false}
-								/>
-								<TextInput
-									label='NOK Phone'
-									placeholder='phone number'
-									value={nok_phone}
-									onChange={(e) => {
-										setNokPhone(e.currentTarget.value);
-									}}
-								/>
-								<NumberInput
-									label='Days of Admission'
-									placeholder='Days of Admission'
-									value={admitted_for}
-									suffix=' Days'
-									onChange={(value) => {
-										setAdmittedFor(value);
-									}}
-								/>
-								<DatePickerInput
-									value={discharged_on}
-									onChange={setDischargedOn}
-									label='Date of Discharge'
-									placeholder='Discharged date'
-									className='w-44'
-									allowDeselect
-									clearable
-									closeOnChange={false}
-								/>
-								<TextInput
-									label='Ward Matron'
-									placeholder='Ward Matron'
-									value={ward_matron}
-									onChange={(e) => {
-										setMatron(e.currentTarget.value);
-									}}
-								/>
-							</div>
-						</div>
-					)}
-				</section>
-			</ScrollArea>
-			<Group mt={20} justify='start'>
+			<Group mt={10} justify='start'>
 				<Button
 					onClick={() => {
 						router.push("/ms/encounters");

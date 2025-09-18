@@ -21,10 +21,11 @@ import Delivery from "@/components/encounter/edit/Delivery";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import Admission from "@/components/encounter/edit/Admission";
-import { IconWoman } from "@tabler/icons-react";
+import { IconOutbound, IconWoman } from "@tabler/icons-react";
 import Operations from "@/components/encounter/edit/Operations";
 import Immunization from "@/components/encounter/edit/Immunization";
 import ANC from "@/components/encounter/edit/ANC";
+import Outcome from "@/components/encounter/edit/Outcome";
 
 const Edit = () => {
 	const { fetch } = useFetch();
@@ -32,7 +33,6 @@ const Edit = () => {
 	const [cares, setCares] = useState([]);
 	const [care, setCare] = useState("");
 	const [careN, setCareN] = useState("");
-	const [outcome, setOutcome] = useState("");
 	const [enc_date, setDate] = useState<Date | null | string>(null);
 	const [admission, setAdmission] = useState(null);
 	const [diags, setDiags] = useState<any[]>([]);
@@ -58,7 +58,6 @@ const Edit = () => {
 		setCares(sorted);
 		setCare(found?.care?.id);
 		setCareN(found?.care?.name);
-		setOutcome(found?.outcome);
 		setAdmission(found?.admission);
 	};
 	useEffect(() => {
@@ -129,35 +128,7 @@ const Edit = () => {
 					onChange={setDate}
 				/>
 			</section>
-			<section className='flex gap-6'>
-				<Select
-					placeholder='outcome'
-					label='Outcome'
-					className='w-max'
-					data={[
-						"Admitted",
-						"DAMA",
-						"Dead",
-						"Discharged",
-						"Police Case",
-						"ReferGH",
-						"ReferFMC",
-						"ReferUITH",
-						"Treated",
-					]}
-					value={outcome}
-					disabled
-					onChange={(value: any) => {
-						setOutcome(value);
-					}}
-				/>
-				{outcome == "Admitted" && (
-					<div className='flex flex-col gap-2'>
-						<label className='font-bold underline'>Admission</label>
-						<Admission admission={admission} />
-					</div>
-				)}
-			</section>
+
 			<main>
 				<Tabs defaultValue='diagnosis' keepMounted={false}>
 					<Tabs.List>
@@ -212,6 +183,13 @@ const Edit = () => {
 								Antinatal Care
 							</Tabs.Tab>
 						)}
+
+						<Tabs.Tab
+							value='outcome'
+							leftSection={<IconOutbound style={iconStyle} />}
+						>
+							Outcome
+						</Tabs.Tab>
 					</Tabs.List>
 					<Tabs.Panel value='diagnosis'>
 						<Diagnosis enc_id={id} />
@@ -233,6 +211,9 @@ const Edit = () => {
 					</Tabs.Panel>
 					<Tabs.Panel value='anc'>
 						<ANC enc_id={id} />
+					</Tabs.Panel>
+					<Tabs.Panel value='outcome'>
+						<Outcome enc_id={id} />
 					</Tabs.Panel>
 				</Tabs>
 			</main>

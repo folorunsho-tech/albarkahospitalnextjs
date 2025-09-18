@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { IconReport } from "@tabler/icons-react";
+import { format } from "date-fns";
 const NavMenu = () => {
 	const url = usePathname();
 	const currPath = url.split("/");
@@ -84,7 +85,7 @@ const NavMenu = () => {
 					fw={500}
 					style={{ textDecoration: "underline" }}
 				>
-					{user?.username} - {new Date().toLocaleDateString()}
+					{user?.username} - {format(new Date(), "dd/MM/yyyy")}
 				</Text>
 
 				<Button

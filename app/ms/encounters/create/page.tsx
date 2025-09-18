@@ -23,7 +23,7 @@ import Delivery from "@/components/encounter/cares/Delivery";
 import Immunization from "@/components/encounter/cares/Immunization";
 import Operation from "@/components/encounter/cares/Operation";
 import { useDisclosure } from "@mantine/hooks";
-
+import Image from "next/image";
 const Create = () => {
 	const { fetch } = useFetch();
 	const contentRef = useRef<HTMLTableElement>(null);
@@ -240,6 +240,27 @@ const Create = () => {
 					<Printer />
 				</Button>
 				<div id='prescription' ref={contentRef}>
+					<div className='flex items-start gap-4 mb-1'>
+						<Image
+							src='/hospital.svg'
+							height={100}
+							width={100}
+							alt='Albarka logo'
+							loading='eager'
+						/>
+						<div className='space-y-1'>
+							<div className='flex flex-col'>
+								<h2 className='text-xl font-extrabold font-serif '>
+									AL-BARKA HOSPITAL, WAWA
+								</h2>
+								<p>{format(new Date(), "PPPpp")}</p>
+							</div>
+							<h3 className='text-lg '>P.O. Box 169 Tel: 08056713322</h3>
+							<p className='text-md  italic'>
+								E-mail: hospitalalbarka@gmail.com
+							</p>
+						</div>
+					</div>
 					<label htmlFor='drugs' className='font-bold mr-12'>
 						Prescriptions for Hosp No: {patientData?.hosp_no} - Name:{" "}
 						{patientData?.name} on {format(new Date(), "dd/MM/yyyy HH:mm")}

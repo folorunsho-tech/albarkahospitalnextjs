@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import DataLoader from "@/components/DataLoader";
 
 import ReportsTable from "@/components/ReportsTable";
+import { format } from "date-fns";
 
 const Detailed = () => {
 	const { post, loading } = usePostNormal();
@@ -20,9 +21,9 @@ const Detailed = () => {
 	const rows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>
-				{new Date(row?.encounter?.enc_date).toLocaleDateString()}
+				{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy")}
 			</Table.Td>
-			<Table.Td>{new Date(row?.date).toLocaleDateString()}</Table.Td>
+			<Table.Td>{format(new Date(row?.date), "dd/MM/yyyy")}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.name}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
@@ -40,9 +41,9 @@ const Detailed = () => {
 	const printRows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>
-				{new Date(row?.encounter?.enc_date).toLocaleDateString()}
+				{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy")}
 			</Table.Td>
-			<Table.Td>{new Date(row?.date).toLocaleDateString()}</Table.Td>
+			<Table.Td>{format(new Date(row?.date), "dd/MM/yyyy")}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.name}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
@@ -57,6 +58,7 @@ const Detailed = () => {
 			</Table.Td>
 		</Table.Tr>
 	));
+
 	const filters = (
 		<section className='w-full'>
 			<label htmlFor='filters'>Filters</label>

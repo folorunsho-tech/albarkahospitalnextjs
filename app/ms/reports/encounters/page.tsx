@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import DataLoader from "@/components/DataLoader";
 
 import ReportsTable from "@/components/ReportsTable";
+import { format } from "date-fns";
 
 const page = () => {
 	const { post, loading, data } = usePostNormal();
@@ -20,9 +21,7 @@ const page = () => {
 	const [loaded, setLoaded] = useState<any>("");
 	const rows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
-			<Table.Td>
-				{new Date(row?.enc_date).toLocaleDateString() + " - " + row?.time}
-			</Table.Td>
+			<Table.Td>{format(new Date(row?.enc_date), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.patient?.name}</Table.Td>
 			<Table.Td>{row?.patient?.age}</Table.Td>
@@ -48,9 +47,7 @@ const page = () => {
 
 	const printRows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
-			<Table.Td>
-				{new Date(row?.enc_date).toLocaleDateString() + " - " + row?.time}
-			</Table.Td>
+			<Table.Td>{format(new Date(row?.enc_date), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.patient?.name}</Table.Td>
 			<Table.Td>{row?.patient?.age}</Table.Td>

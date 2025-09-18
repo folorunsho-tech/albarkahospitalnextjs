@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import DataLoader from "@/components/DataLoader";
 
 import ReportsTable from "@/components/ReportsTable";
+import { format } from "date-fns";
 
 const page = () => {
 	const { post, loading } = usePostNormal();
@@ -29,9 +30,9 @@ const page = () => {
 	const rows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>
-				{new Date(row?.encounter?.enc_date).toLocaleDateString()}
+				{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy")}
 			</Table.Td>
-			<Table.Td>{new Date(row?.date).toLocaleDateString()}</Table.Td>
+			<Table.Td>{format(new Date(row?.date), "dd/MM/yyyy")}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.name}</Table.Td>
 			<Table.Td>{row?.testType?.name}</Table.Td>
@@ -45,9 +46,9 @@ const page = () => {
 	const printRows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>
-				{new Date(row?.encounter?.enc_date).toLocaleDateString()}
+				{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy")}
 			</Table.Td>
-			<Table.Td>{new Date(row?.date).toLocaleDateString()}</Table.Td>
+			<Table.Td>{format(new Date(row?.date), "dd/MM/yyyy")}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.name}</Table.Td>
 			<Table.Td>{row?.testType?.name}</Table.Td>

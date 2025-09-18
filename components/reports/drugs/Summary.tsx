@@ -45,7 +45,6 @@ const Summary = () => {
 			</Table.Td>
 		</Table.Tr>
 	));
-
 	return (
 		<main className='space-y-6'>
 			<div className='flex justify-between items-end'>

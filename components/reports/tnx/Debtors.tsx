@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import DataLoader from "@/components/DataLoader";
 
 import ReportsTable from "@/components/ReportsTable";
+import { format } from "date-fns";
 const Debtors = () => {
 	const { post, loading } = usePostNormal();
 	const { fetch } = useFetch();
@@ -18,7 +19,7 @@ const Debtors = () => {
 	const [loaded, setLoaded] = useState<any>("");
 	const rows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
-			<Table.Td>{new Date(row?.updatedAt).toLocaleDateString()}</Table.Td>
+			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy")}</Table.Td>
 			<Table.Td>{row?.transactionId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
@@ -36,7 +37,7 @@ const Debtors = () => {
 	));
 	const printRows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
-			<Table.Td>{new Date(row?.updatedAt).toLocaleDateString()}</Table.Td>
+			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy")}</Table.Td>
 			<Table.Td>{row?.transactionId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>

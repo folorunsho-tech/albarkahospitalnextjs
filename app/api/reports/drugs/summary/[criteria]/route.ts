@@ -15,13 +15,7 @@ export async function POST(
 					quantity: true,
 					price: true,
 				},
-				having: {
-					quantity: {
-						_sum: {
-							gt: 0,
-						},
-					},
-				},
+
 				orderBy: {
 					name: "asc",
 				},
@@ -40,13 +34,7 @@ export async function POST(
 					quantity: true,
 					price: true,
 				},
-				having: {
-					quantity: {
-						_sum: {
-							gt: 0,
-						},
-					},
-				},
+
 				orderBy: {
 					name: "asc",
 				},
@@ -66,13 +54,7 @@ export async function POST(
 					quantity: true,
 					price: true,
 				},
-				having: {
-					quantity: {
-						_sum: {
-							gt: 0,
-						},
-					},
-				},
+
 				orderBy: {
 					name: "asc",
 				},
@@ -102,13 +84,7 @@ export async function POST(
 					quantity: true,
 					price: true,
 				},
-				having: {
-					quantity: {
-						_sum: {
-							gt: 0,
-						},
-					},
-				},
+
 				orderBy: {
 					name: "asc",
 				},

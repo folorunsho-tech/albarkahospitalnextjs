@@ -31,6 +31,7 @@ const Encounter = () => {
 			<Table.Td>{row?._count?.drugsGiven}</Table.Td>
 			<Table.Td>{row?._count?.labTest}</Table.Td>
 			<Table.Td>{format(new Date(row?.enc_date), "dd/MM/yyyy")}</Table.Td>
+			<Table.Td>{row?.admitted ? "Yes" : "No"}</Table.Td>
 			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>
 				<Menu shadow='md' width={200}>
@@ -75,6 +76,7 @@ const Encounter = () => {
 			<Table.Td>{row?._count?.drugsGiven}</Table.Td>
 			<Table.Td>{row?._count?.labTest}</Table.Td>
 			<Table.Td>{format(new Date(row?.enc_date), "dd/MM/yyyy")}</Table.Td>
+			<Table.Td>{row?.admitted ? "Yes" : "No"}</Table.Td>
 		</Table.Tr>
 	));
 
@@ -110,6 +112,7 @@ const Encounter = () => {
 					"Drugs Count",
 					"Tests Count",
 					"Enc Date",
+					"Admitted",
 					"Last UpdatedAt",
 					"Actions",
 				]}
@@ -132,6 +135,7 @@ const Encounter = () => {
 					"Drugs Count",
 					"Tests Count",
 					"Enc Date",
+					"Admitted",
 				]}
 				printRows={printRows}
 				tableReport='Patients encounter record'

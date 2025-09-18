@@ -511,7 +511,7 @@ const View = () => {
 							</div>
 						</div>
 					</section>
-					<div id='labs' className='flex gap-2 flex-wrap'>
+					<div id='labs' className='flex gap-2 flex-wrap mb-3'>
 						<label htmlFor='diag' className='font-bold'>
 							Labs
 						</label>

@@ -13,7 +13,7 @@ import {
 import { usePostNormal, useFetch } from "@/queries";
 import { useEffect, useState } from "react";
 import DataLoader from "@/components/DataLoader";
-import { isEqual } from "date-fns";
+import { format, isEqual } from "date-fns";
 import ReportsTable from "@/components/ReportsTable";
 import { DatePickerInput } from "@mantine/dates";
 
@@ -42,9 +42,9 @@ const page = () => {
 		) => (
 			<Table.Tr key={row?.id}>
 				<Table.Td>
-					{new Date(row?.encounter?.enc_date).toLocaleDateString()}
+					{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy")}
 				</Table.Td>
-				<Table.Td>{new Date(row?.adm_date).toLocaleDateString()}</Table.Td>
+				<Table.Td>{format(new Date(row?.adm_date), "dd/MM/yyyy")}</Table.Td>
 				<Table.Td>{row?.encounter?.patient?.hosp_no}</Table.Td>
 				<Table.Td>{row?.encounter?.patient?.name}</Table.Td>
 				<Table.Td>
@@ -61,7 +61,9 @@ const page = () => {
 					)}
 				</Table.Td>
 				<Table.Td>{row?.admitted_for} Day(s)</Table.Td>
-				<Table.Td>{new Date(row?.discharged_on).toLocaleDateString()}</Table.Td>
+				<Table.Td>
+					{format(new Date(row?.discharged_on), "dd/MM/yyyy")}
+				</Table.Td>
 				<Table.Td>{row?.nok_phone}</Table.Td>
 				<Table.Td>{row?.ward_matron}</Table.Td>
 			</Table.Tr>
@@ -70,9 +72,9 @@ const page = () => {
 	const printRows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>
-				{new Date(row?.encounter?.enc_date).toLocaleDateString()}
+				{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy, p")}
 			</Table.Td>
-			<Table.Td>{new Date(row?.adm_date).toLocaleDateString()}</Table.Td>
+			<Table.Td> {format(new Date(row?.adm_date), "dd/MM/yyyy")}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.name}</Table.Td>
 			<Table.Td>
@@ -89,7 +91,7 @@ const page = () => {
 				)}
 			</Table.Td>
 			<Table.Td>{row?.admitted_for} Day(s)</Table.Td>
-			<Table.Td>{new Date(row?.discharged_on).toLocaleDateString()}</Table.Td>
+			<Table.Td>{format(new Date(row?.discharged_on), "dd/MM/yyyy")}</Table.Td>
 			<Table.Td>{row?.nok_phone}</Table.Td>
 			<Table.Td>{row?.ward_matron}</Table.Td>
 		</Table.Tr>

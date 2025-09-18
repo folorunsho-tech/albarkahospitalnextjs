@@ -5,7 +5,7 @@ import { Text, Table, Select, Button } from "@mantine/core";
 import { usePostNormal } from "@/queries";
 import { useEffect, useState } from "react";
 import DataLoader from "@/components/DataLoader";
-import { isEqual } from "date-fns";
+import { format, isEqual } from "date-fns";
 import ReportsTable from "@/components/ReportsTable";
 import { DatePickerInput } from "@mantine/dates";
 
@@ -19,17 +19,17 @@ const page = () => {
 	const rows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>
-				{new Date(row?.encounter?.enc_date).toLocaleDateString()}
+				{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy")}
 			</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.name}</Table.Td>
 			<Table.Td>{row?.type}</Table.Td>
 			<Table.Td>
-				{row?.date !== null ? new Date(row?.date).toLocaleDateString() : ""}
+				{row?.date !== null ? format(new Date(row?.date), "dd/MM/yyyy") : ""}
 			</Table.Td>
 			<Table.Td>
 				{row?.next_date !== null
-					? new Date(row?.next_date).toLocaleDateString()
+					? format(new Date(row?.next_date), "dd/MM/yyyy")
 					: ""}
 			</Table.Td>
 		</Table.Tr>
@@ -37,17 +37,17 @@ const page = () => {
 	const printRows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>
-				{new Date(row?.encounter?.enc_date).toLocaleDateString()}
+				{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy")}
 			</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.encounter?.patient?.name}</Table.Td>
 			<Table.Td>{row?.type}</Table.Td>
 			<Table.Td>
-				{row?.date !== null ? new Date(row?.date).toLocaleDateString() : ""}
+				{row?.date !== null ? format(new Date(row?.date), "dd/MM/yyyy") : ""}
 			</Table.Td>
 			<Table.Td>
 				{row?.next_date !== null
-					? new Date(row?.next_date).toLocaleDateString()
+					? format(new Date(row?.next_date), "dd/MM/yyyy")
 					: ""}
 			</Table.Td>
 		</Table.Tr>

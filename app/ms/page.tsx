@@ -2,6 +2,7 @@
 import React from "react";
 import { userContext } from "@/context/User";
 import Image from "next/image";
+import { format } from "date-fns";
 
 const Home = () => {
 	const { user } = React.useContext(userContext);
@@ -23,7 +24,7 @@ const Home = () => {
 			<div className='flex gap-10 '>
 				<p>
 					Operation Date:{" "}
-					<i className='font-semibold'>{new Date().toLocaleDateString()}</i>
+					<i className='font-semibold'>{format(new Date(), "dd/MM/yyyy")}</i>
 				</p>
 			</div>
 		</section>
