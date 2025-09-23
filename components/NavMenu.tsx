@@ -57,9 +57,9 @@ const NavMenu = () => {
 				/>
 				<h2 className='font-semibold text-md text-white'>AHW</h2>
 			</div>
-			<div className='flex gap-1 text-gray-300 text-sm'>
+			<div className='flex flex-wrap gap-1 text-gray-300 text-sm'>
 				<Link
-					className='flex gap-1 items-center w-full transition duration-300 ease-in-out data-[active]:font-semibold data-[active]:bg-indigo-500 data-[active]:text-white hover:bg-indigo-500 p-2'
+					className='flex gap-1 items-center transition duration-300 ease-in-out data-[active]:font-semibold data-[active]:bg-indigo-500 data-[active]:text-white hover:bg-indigo-500 p-2'
 					data-active={`/ms` === url || undefined}
 					href={`/ms`}
 				>
@@ -68,7 +68,7 @@ const NavMenu = () => {
 				</Link>
 				{menu?.map((item: any) => (
 					<Link
-						className='flex gap-2 items-center p-2 w-full hover:text-white capitalize hover:bg-indigo-500 transition duration-300 ease-in-out data-[active]:font-semibold data-[active]:bg-indigo-500 data-[active]:text-white'
+						className='flex flex-wrap gap-2 items-center p-2  hover:text-white capitalize hover:bg-indigo-500 transition duration-300 ease-in-out data-[active]:font-semibold data-[active]:bg-indigo-500 data-[active]:text-white'
 						data-active={item?.link.toLowerCase() === currPath[2] || undefined}
 						href={`/ms/${item?.link}`}
 						key={item?.link}
@@ -78,7 +78,7 @@ const NavMenu = () => {
 					</Link>
 				))}
 			</div>
-			<div className='flex gap-2 items-center pr-2'>
+			<div className='flex flex-wrap gap-2 items-center pr-2'>
 				<Text
 					size='sm'
 					c='white'

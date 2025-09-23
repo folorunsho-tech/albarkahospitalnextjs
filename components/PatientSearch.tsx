@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Combobox, Loader, TextInput, useCombobox } from "@mantine/core";
 import axios from "@/lib/config";
+import { Search } from "lucide-react";
 
 function getAsyncData(searchQuery: string, signal: AbortSignal) {
 	return new Promise<string[]>((resolve, reject) => {
@@ -83,8 +84,8 @@ export default function PatientSearch({
 		>
 			<Combobox.Target>
 				<TextInput
-					label='Patient Hosp No'
-					placeholder='Search by hosp no '
+					label='Patient Hosp No / Name'
+					placeholder='Search by hosp no or name'
 					value={value}
 					onChange={(event) => {
 						setValue(event.currentTarget.value);
@@ -100,7 +101,7 @@ export default function PatientSearch({
 						}
 					}}
 					onBlur={() => combobox.closeDropdown()}
-					rightSection={loading && <Loader size={18} />}
+					rightSection={loading ? <Loader size={18} /> : <Search size={18} />}
 					className='w-[25rem]'
 				/>
 			</Combobox.Target>

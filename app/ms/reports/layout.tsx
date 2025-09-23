@@ -8,14 +8,14 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<main>
-			<nav className='flex items-center bg-teal-700 text-white navs rounded-r-full mb-3 '>
+			<nav className='flex scroll-auto items-center bg-teal-700 text-white navs rounded-r-full mb-3 '>
 				<NavLink
 					variant='filled'
 					color='teal'
 					component={Link}
 					href='/ms/reports'
 					label='Patients'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports` == url}
 				/>
 				<NavLink
@@ -24,7 +24,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/encounters'
 					label='Encounters'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports/encounters` == url}
 				/>
 				<NavLink
@@ -33,7 +33,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/admissions'
 					label='Admissions'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports/admissions` == url}
 				/>
 				<NavLink
@@ -42,7 +42,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/prescriptions'
 					label='Prescriptions'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports/drugs` == url}
 				/>
 				<NavLink
@@ -51,7 +51,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/deliveries'
 					label='Delivery'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports/deliveries` == url}
 				/>
 				<NavLink
@@ -60,7 +60,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/labs'
 					label='Labs'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports/labs` == url}
 				/>
 				<NavLink
@@ -69,7 +69,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/operations'
 					label='Operation'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports/operations` == url}
 				/>
 				<NavLink
@@ -78,7 +78,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/anc'
 					label='ANC'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports/anc` == url}
 				/>
 				<NavLink
@@ -87,7 +87,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/immunizations'
 					label='Immunizations'
-					className='rounded-r-full'
+					className='rounded-r-full w-fit'
 					active={`/ms/reports/immunizations` == url}
 				/>
 				<NavLink
@@ -96,8 +96,17 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					component={Link}
 					href='/ms/reports/drugs_summary'
 					label='Drugs Summary'
-					className='rounded-r-full text-xs'
+					className='rounded-r-full w-fit text-xs'
 					active={`/ms/reports/drugs_summary` == url}
+				/>
+				<NavLink
+					variant='filled'
+					color='teal'
+					component={Link}
+					href='/ms/reports/statement'
+					label='Tnx Statement'
+					className='rounded-r-full w-fit text-xs'
+					active={`/ms/reports/statement` == url}
 				/>
 			</nav>
 			{children}

@@ -33,7 +33,7 @@ const DataLoader = ({
 	const loadValue = (criteria: string) => {
 		if (criteria == "yearnmonth") {
 			return (
-				<div className='flex items-end gap-6'>
+				<div className='flex flex-wrap items-end gap-6'>
 					<Select
 						label='Load Year'
 						placeholder='Select a year'
@@ -71,7 +71,7 @@ const DataLoader = ({
 			);
 		} else if (criteria == "range") {
 			return (
-				<div className='flex items-start gap-4'>
+				<div className='flex flex-wrap items-start gap-4'>
 					<DatePickerInput
 						label='From date'
 						placeholder='Pick a date'
@@ -154,7 +154,7 @@ const DataLoader = ({
 
 	return (
 		<form
-			className='flex items-end gap-6 '
+			className='flex flex-wrap items-end gap-6 '
 			onSubmit={async (e) => {
 				e.preventDefault();
 				getData();
