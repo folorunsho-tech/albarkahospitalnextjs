@@ -251,13 +251,16 @@ const Create = () => {
 						<div className='space-y-1'>
 							<div className='flex flex-col'>
 								<h2 className='text-xl font-extrabold font-serif '>
-									AL-BARKA HOSPITAL, WAWA
+									ALBARKA HOSPITAL, WAWA
 								</h2>
 								<p>{format(new Date(), "PPPpp")}</p>
 							</div>
 							<h3 className='text-lg '>P.O. Box 169 Tel: 08056713322</h3>
 							<p className='text-md  italic'>
 								E-mail: hospitalalbarka@gmail.com
+							</p>
+							<p className='text-md  italic'>
+								Malale road, Off Rofia road, Wawa New Bussa Niger state Nigeria.
 							</p>
 						</div>
 					</div>

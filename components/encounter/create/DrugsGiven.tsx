@@ -11,7 +11,7 @@ import {
 	Select,
 	Table,
 } from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
+import { IconPencil, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 const DrugsGiven = ({
 	setDrugsGiven,
@@ -44,7 +44,29 @@ const DrugsGiven = ({
 	}, 0);
 	return (
 		<main className='space-y-4'>
-			<section className='flex items-end gap-4'>
+			<form
+				className='flex items-end gap-4'
+				onSubmit={(e) => {
+					e.preventDefault();
+					const filtered = drugsGiven.filter((d: any) => drugId !== d?.id);
+					setDrugsGiven([
+						{
+							id: drugId,
+							name: drugName,
+							rate: drugRate,
+							quantity: drugQnty,
+							curr_stock: Number(selectedDrug?.stock_qty) - Number(drugQnty),
+							price: Number(drugRate) * Number(drugQnty),
+						},
+						...filtered,
+					]);
+					setDrugQnty(0);
+					setDrugRate(0);
+					setDrugId("");
+					setSearch("");
+					setSelectedDrug(null);
+				}}
+			>
 				<Select
 					label='Drugs Given'
 					placeholder='Search and select for drugs given'
@@ -56,6 +78,7 @@ const DrugsGiven = ({
 					})}
 					className='w-[18rem]'
 					clearable
+					required
 					onFocus={() => {
 						getAll();
 					}}
@@ -78,6 +101,7 @@ const DrugsGiven = ({
 					thousandSeparator
 					disabled
 					className='w-24'
+					required
 				/>
 				<NumberInput
 					label='Quantity'
@@ -93,6 +117,7 @@ const DrugsGiven = ({
 					onChange={(value) => {
 						setDrugQnty(Number(value));
 					}}
+					required
 				/>
 				<NumberInput
 					label='Rate'
@@ -100,7 +125,7 @@ const DrugsGiven = ({
 					placeholder='rate'
 					min={0}
 					prefix='NGN '
-					// className='w-32'
+					required
 					stepHoldDelay={500}
 					stepHoldInterval={100}
 					value={drugRate}
@@ -109,32 +134,11 @@ const DrugsGiven = ({
 						setDrugRate(Number(value));
 					}}
 				/>
-				<Button
-					disabled={!drugId}
-					onClick={() => {
-						const filtered = drugsGiven.filter((d: any) => drugId !== d?.id);
-						setDrugsGiven([
-							{
-								id: drugId,
-								name: drugName,
-								rate: drugRate,
-								quantity: drugQnty,
-								curr_stock: Number(selectedDrug?.stock_qty) - Number(drugQnty),
-								price: Number(drugRate) * Number(drugQnty),
-							},
-							...filtered,
-						]);
-						setDrugQnty(0);
-						setDrugRate(0);
-						setDrugId("");
-						setSearch("");
-						setSelectedDrug(null);
-					}}
-				>
+				<Button disabled={!drugId} type='submit'>
 					Add to list
 				</Button>
-			</section>
-			<ScrollArea h={200}>
+			</form>
+			<ScrollArea h={200} maw={900}>
 				<Table>
 					<Table.Thead>
 						<Table.Tr>
@@ -166,7 +170,19 @@ const DrugsGiven = ({
 										thousandSeparator
 									/>
 								</Table.Td>
-								<Table.Td>
+								<Table.Td className='flex items-center gap-4'>
+									<ActionIcon
+										color='green'
+										onClick={() => {
+											setDrugId(drug?.id);
+											setDrugName(drug?.name);
+											setDrugQnty(drug?.quantity);
+											setDrugRate(drug?.rate);
+											setSelectedDrug(drugId);
+										}}
+									>
+										<IconPencil />
+									</ActionIcon>
 									<ActionIcon
 										color='red'
 										onClick={() => {

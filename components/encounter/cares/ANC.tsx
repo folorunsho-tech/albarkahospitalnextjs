@@ -104,12 +104,7 @@ const ANC = ({
 		setPosted(false);
 	};
 	return (
-		<form
-			onSubmit={(e) => {
-				e.preventDefault();
-				handleSubmit();
-			}}
-		>
+		<section>
 			<section className='space-y-4'>
 				<Diagnosis setDiagnosis={setDiagnosis} diagnosis={diagnosis} />
 				<div className='flex flex-col gap-2'>
@@ -355,10 +350,17 @@ const ANC = ({
 				>
 					Cancel
 				</Button>
-				<Button type='submit'>Add encounter</Button>
+				<Button
+					onClick={(e) => {
+						e.preventDefault();
+						handleSubmit();
+					}}
+				>
+					Add encounter
+				</Button>
 			</Group>
 			<LoadingOverlay visible={loading} />
-		</form>
+		</section>
 	);
 };
 

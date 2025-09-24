@@ -12,7 +12,7 @@ import {
 	Table,
 	TextInput,
 } from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
+import { IconPencil, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 const Labtest = ({
@@ -47,7 +47,27 @@ const Labtest = ({
 
 	return (
 		<main className='space-y-4'>
-			<section className='flex items-end gap-4'>
+			<form
+				className='flex items-end gap-4'
+				onSubmit={(e) => {
+					e.preventDefault();
+					const filtered = labTest.filter((t: any) => testId !== t?.id);
+					setLabTest([
+						{
+							lab_id: nanoid(10),
+							id: testId,
+							name: testName,
+							result: testResult,
+							rate: testRate,
+							info: testInfo,
+						},
+						...filtered,
+					]);
+					setTestId("");
+					setSearch("");
+					setTestResult("");
+				}}
+			>
 				<Select
 					label='Test'
 					placeholder='Select test'
@@ -66,6 +86,7 @@ const Labtest = ({
 						setTestName(found?.label);
 					}}
 					nothingFoundMessage='Nothing found...'
+					required
 				/>
 				<TextInput
 					label='Test Result'
@@ -98,30 +119,11 @@ const Labtest = ({
 					}}
 				/>
 
-				<Button
-					disabled={!testId}
-					onClick={() => {
-						const filtered = labTest.filter((t: any) => testId !== t?.id);
-						setLabTest([
-							{
-								lab_id: nanoid(10),
-								id: testId,
-								name: testName,
-								result: testResult,
-								rate: testRate,
-								info: testInfo,
-							},
-							...filtered,
-						]);
-						setTestId("");
-						setSearch("");
-						setTestResult("");
-					}}
-				>
+				<Button disabled={!testId} type='submit'>
 					Add to list
 				</Button>
-			</section>
-			<ScrollArea h={200} w={900}>
+			</form>
+			<ScrollArea h={200} maw={900}>
 				<Table>
 					<Table.Thead>
 						<Table.Tr>
@@ -148,7 +150,19 @@ const Labtest = ({
 									/>
 								</Table.Td>
 
-								<Table.Td>
+								<Table.Td className='flex items-center gap-4'>
+									<ActionIcon
+										color='green'
+										onClick={() => {
+											setTestId(test?.id);
+											setTestName(test?.name);
+											setTestResult(test?.result);
+											setTestInfo(test?.info);
+											setTestRate(test?.rate);
+										}}
+									>
+										<IconPencil />
+									</ActionIcon>
 									<ActionIcon
 										color='red'
 										onClick={() => {

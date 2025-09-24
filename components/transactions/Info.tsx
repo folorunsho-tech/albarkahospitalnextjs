@@ -41,12 +41,16 @@ const Info = ({ tnx }: { tnx: any }) => {
 					<div className='space-y-1 w-full'>
 						<div className='flex items-center w-full justify-between'>
 							<h2 className='text-xl font-extrabold font-serif '>
-								AL-BARKA HOSPITAL, WAWA
+								ALBARKA HOSPITAL
 							</h2>
 							<p>{format(new Date(), "PPPpp")}</p>
 						</div>
 						<h3 className='text-lg '>P.O. Box 169 Tel: 08056713322</h3>
 						<p className='text-md  italic'>E-mail: hospitalalbarka@gmail.com</p>
+						<p className='text-md  italic'>
+							<b>Address:</b> Malale road, Off Rofia road, Wawa, New Bussa Niger
+							state Nigeria.
+						</p>
 					</div>
 				</div>
 				<div className='flex flex-wrap gap-2 mb-1'>

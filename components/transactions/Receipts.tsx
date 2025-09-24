@@ -108,7 +108,7 @@ const Receipts = ({ id }: { id: string }) => {
 							<div className='space-y-1 w-full'>
 								<div className='flex items-center w-full justify-between'>
 									<h2 className='text-xl font-extrabold font-serif '>
-										AL-BARKA HOSPITAL, WAWA
+										ALBARKA HOSPITAL
 									</h2>
 									<p>{format(new Date(), "PPPpp")}</p>
 								</div>
@@ -116,54 +116,66 @@ const Receipts = ({ id }: { id: string }) => {
 								<p className='text-md  italic'>
 									E-mail: hospitalalbarka@gmail.com
 								</p>
+								<p className='text-md  italic'>
+									<b>Address:</b> Malale road, Off Rofia road, Wawa New Bussa
+									Niger state Nigeria.
+								</p>
 							</div>
 						</div>
 						<div className='flex flex-wrap gap-2 mb-1'>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
+								<h2 className='text-sm font-extrabold uppercase font-serif '>
 									Receipt No:
 								</h2>
-								<p className='underline pl-1.5'>{selected?.id}</p>
+								<p className='italic font-semibold pl-1.5'>{selected?.id}</p>
 							</div>
 							{selected && (
 								<div className='flex items-center'>
-									<h2 className='text-sm font-extrabold font-serif '>
+									<h2 className='text-sm font-extrabold uppercase font-serif '>
 										Tnx Date:
 									</h2>
-									<p className='underline pl-1.5'>
+									<p className='italic font-semibold pl-1.5'>
 										{format(new Date(selected?.createdAt), "PPPpp")}
 									</p>
 								</div>
 							)}
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
+								<h2 className='text-sm font-extrabold uppercase font-serif '>
 									Patient name:
 								</h2>
-								<p className='underline pl-1.5'>
+								<p className='italic font-semibold pl-1.5'>
 									{selected?.transaction?.patient?.name}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>Hosp No:</h2>
-								<p className='underline pl-1.5'>
+								<h2 className='text-sm font-extrabold uppercase font-serif '>
+									Hosp No:
+								</h2>
+								<p className='italic font-semibold pl-1.5'>
 									{selected?.transaction?.patient?.hosp_no}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>Address:</h2>
-								<p className='underline pl-1.5'>
+								<h2 className='text-sm font-extrabold uppercase font-serif '>
+									Address:
+								</h2>
+								<p className='italic font-semibold pl-1.5'>
 									{selected?.transaction?.patient?.town?.name}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold font-serif '>
+								<h2 className='text-sm font-extrabold uppercase font-serif '>
 									Phone No:
 								</h2>
-								<p className='underline pl-1.5'>08056713362, 08080854480</p>
+								<p className='italic font-semibold pl-1.5'>
+									08056713362, 08080854480
+								</p>
 							</div>
 							<div className='flex items-center '>
-								<h2 className='text-sm font-extrabold font-serif '>Cashier:</h2>
-								<p className='underline pl-1.5'>
+								<h2 className='text-sm font-extrabold uppercase font-serif '>
+									Cashier:
+								</h2>
+								<p className='italic font-semibold pl-1.5'>
 									{selected?.createdBy?.username}
 								</p>
 							</div>
