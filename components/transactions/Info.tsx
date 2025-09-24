@@ -80,7 +80,7 @@ const Info = ({ tnx }: { tnx: any }) => {
 					</div>
 					<div className='flex items-center'>
 						<h2 className='text-sm font-extrabold font-serif '>Phone No:</h2>
-						<p className='underline pl-1.5'>{tnx?.patient?.phone_no}</p>
+						<p className='underline pl-1.5'>08056713362, 08080854480</p>
 					</div>
 					<div className='flex items-center '>
 						<h2 className='text-sm font-extrabold font-serif '>Created By:</h2>
@@ -99,7 +99,7 @@ const Info = ({ tnx }: { tnx: any }) => {
 					<Table.Thead>
 						<Table.Tr>
 							<Table.Th>S/N</Table.Th>
-							<Table.Th>Name</Table.Th>
+							<Table.Th>Item</Table.Th>
 							<Table.Th>Amount</Table.Th>
 							<Table.Th>Paid</Table.Th>
 							<Table.Th>Balance</Table.Th>

@@ -9,6 +9,7 @@ import {
 	Table,
 	ActionIcon,
 	Text,
+	Button,
 } from "@mantine/core";
 import { format } from "date-fns";
 import { useReactToPrint } from "react-to-print";
@@ -78,7 +79,20 @@ const Receipts = ({ id }: { id: string }) => {
 			<Drawer
 				opened={opened}
 				onClose={close}
-				title={`Reciept no: ${selected?.id}`}
+				title={
+					<div className='flex items-center gap-5'>
+						<p>Reciept no: {selected?.id}</p>{" "}
+						<Button
+							leftSection={<IconReceipt />}
+							mt={6}
+							onClick={() => {
+								reactToPrintFn();
+							}}
+						>
+							Print Receipt
+						</Button>
+					</div>
+				}
 				size='xl'
 			>
 				{selected && (
@@ -97,15 +111,6 @@ const Receipts = ({ id }: { id: string }) => {
 										AL-BARKA HOSPITAL, WAWA
 									</h2>
 									<p>{format(new Date(), "PPPpp")}</p>
-									<ActionIcon
-										size={35}
-										mt={6}
-										onClick={() => {
-											reactToPrintFn();
-										}}
-									>
-										<IconReceipt />
-									</ActionIcon>
 								</div>
 								<h3 className='text-lg '>P.O. Box 169 Tel: 08056713322</h3>
 								<p className='text-md  italic'>
@@ -154,9 +159,7 @@ const Receipts = ({ id }: { id: string }) => {
 								<h2 className='text-sm font-extrabold font-serif '>
 									Phone No:
 								</h2>
-								<p className='underline pl-1.5'>
-									{selected?.transaction?.patient?.phone_no}
-								</p>
+								<p className='underline pl-1.5'>08056713362, 08080854480</p>
 							</div>
 							<div className='flex items-center '>
 								<h2 className='text-sm font-extrabold font-serif '>Cashier:</h2>
@@ -169,7 +172,7 @@ const Receipts = ({ id }: { id: string }) => {
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th>S/N</Table.Th>
-									<Table.Th>Name</Table.Th>
+									<Table.Th>Item</Table.Th>
 									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
 
