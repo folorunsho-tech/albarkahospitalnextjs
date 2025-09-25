@@ -7,9 +7,10 @@ import { ActionIcon, Button, NumberFormatter, rem, Table } from "@mantine/core";
 import { format } from "date-fns";
 import { Eye } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-
+import { useState, useContext } from "react";
+import { userContext } from "@/context/User";
 const Payments = () => {
+	const { user } = useContext(userContext);
 	const { post, loading } = usePostNormal();
 	const [queryData, setQueryData] = useState<any[]>([]);
 	const [sortedData, setSortedData] = useState<any[]>([]);
@@ -75,9 +76,11 @@ const Payments = () => {
 					<Button color='orange' href='transactions/balance' component={Link}>
 						Balance payment
 					</Button>
-					<Button color='red' href='transactions/reversal' component={Link}>
-						Reversal
-					</Button>
+					{user?.role == "admin" && (
+						<Button color='red' href='transactions/reversal' component={Link}>
+							Reversal
+						</Button>
+					)}
 				</div>
 			</div>
 			<PaginatedTable

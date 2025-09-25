@@ -45,7 +45,7 @@ const Info = ({ tnx }: { tnx: any }) => {
 							</h2>
 							<p>{format(new Date(), "PPPpp")}</p>
 						</div>
-						<h3 className='text-lg '>P.O. Box 169 Tel: 08056713322</h3>
+						<h3 className='text-lg '>Tel: 08056713362, 08080854480</h3>
 						<p className='text-md  italic'>E-mail: hospitalalbarka@gmail.com</p>
 						<p className='text-md  italic'>
 							<b>Address:</b> Malale road, Off Rofia road, Wawa, New Bussa Niger
