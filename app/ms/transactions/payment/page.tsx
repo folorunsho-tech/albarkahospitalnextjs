@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
 	ActionIcon,
 	Button,
+	Divider,
 	Drawer,
 	LoadingOverlay,
 	NumberFormatter,
@@ -304,6 +305,12 @@ const page = () => {
 								<i className='text-sm pl-2 capitalize'>
 									{convert(Number(rPay))} Naira
 								</i>
+							</Text>
+						</div>
+						<Divider my='sm' size='xs' color='black' />
+						<div className='text-center mt-4'>
+							<Text fw={600} className='italic'>
+								*** Thanks. And when I am ill it is God who heals me.***
 							</Text>
 						</div>
 					</div>

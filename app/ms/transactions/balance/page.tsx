@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, Suspense } from "react";
 import {
 	ActionIcon,
 	Button,
+	Divider,
 	LoadingOverlay,
 	NumberFormatter,
 	NumberInput,
@@ -290,6 +291,12 @@ const page = () => {
 									</i>
 								</Text>
 							</div>
+							<Divider my='sm' size='xs' color='black' />
+							<div className='text-center mt-4'>
+								<Text fw={600} className='italic'>
+									*** Thanks. And when I am ill it is God who heals me.***
+								</Text>
+							</div>
 						</div>
 					</section>
 				)}
@@ -352,16 +359,19 @@ const page = () => {
 						className='flex flex-wrap gap-2 items-end'
 						onSubmit={async (e) => {
 							e.preventDefault();
-							const { data } = await edit(`/transactions/t/${id}/balance`, {
-								balance: itemBalance - totalPay,
-								status: status?.label,
-								items,
-							});
+							const { data } = await edit(
+								`/transactions/t/${tnx?.id}/balance`,
+								{
+									balance: itemBalance - totalPay,
+									status: status?.label,
+									items,
+								}
+							);
 							const rec = data?.reciepts[0];
 
 							setReciept({ ...rec, items: JSON.parse(rec?.items) });
 							setItems([]);
-							const { data: t } = await fetch(`/transactions/t/${id}`);
+							const { data: t } = await fetch(`/transactions/t/${tnx?.id}`);
 							setTnx(t);
 						}}
 					>

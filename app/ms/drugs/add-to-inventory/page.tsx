@@ -18,7 +18,6 @@ import { IconSearch } from "@tabler/icons-react";
 export default function page() {
 	const { fetch } = useFetch();
 	const { post, loading } = usePost();
-	const [search, setSearch] = useState("");
 	const [data, setData] = useState<
 		{
 			sn: number;
@@ -97,11 +96,6 @@ export default function page() {
 			</Table.Tr>
 		);
 	});
-	useEffect(() => {
-		if (!search) {
-			setData(drugs);
-		}
-	}, [search]);
 	return (
 		<main className='space-y-6 relative'>
 			<Text size='xl' fw={500}>
@@ -109,33 +103,31 @@ export default function page() {
 			</Text>
 			<Group>
 				<TextInput
-					placeholder='search for drug'
+					placeholder='search for drug by name or id'
 					className='w-2/3'
 					rightSection={<IconSearch />}
-					value={search}
 					onChange={(e) => {
-						setSearch(e.currentTarget.value);
-					}}
-				/>
-				<Button
-					onClick={() => {
-						const filtered = data.filter((drug) => {
-							return drug.name
-								.toLocaleLowerCase()
-								.includes(search.toLocaleLowerCase());
+						const filtered = drugs.filter((drug) => {
+							return (
+								drug.name
+									.toLocaleLowerCase()
+									.includes(e.target.value.toLocaleLowerCase()) ||
+								drug.id
+									.toLocaleLowerCase()
+									.includes(e.target.value.toLocaleLowerCase())
+							);
 						});
 						setData(filtered);
 					}}
-				>
-					Search
-				</Button>
+				/>
+
 				<Button
 					onClick={() => {
 						addToInv();
 					}}
 					color='teal'
 				>
-					Add {selection.length} to inventory
+					Add {selection.length} drugs to inventory
 				</Button>
 			</Group>
 			<ScrollArea>

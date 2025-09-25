@@ -10,9 +10,23 @@ export async function POST(request: NextRequest) {
 			createdById,
 		};
 	});
+	const existing = await prisma.drugsinventory.findMany({
+		where: {
+			drugId: {
+				in: drugs.map((d: { id: string }) => d.id),
+			},
+		},
+		select: {
+			drugId: true,
+		},
+	});
+	const existingIds = new Set(existing.map((e) => e.drugId));
+	const filteredAdded = added.filter(
+		(a: { drugId: string }) => !existingIds.has(a.drugId)
+	);
 	try {
 		const created = await prisma.drugsinventory.createMany({
-			data: [...added],
+			data: [...filteredAdded],
 		});
 		return new Response(JSON.stringify(created), {
 			status: 200,

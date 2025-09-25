@@ -61,12 +61,16 @@ const page = () => {
 			>
 				<Select
 					label='Drug'
-					placeholder='Pick a drug'
+					placeholder='Pick or Search for a drug'
 					data={mapped}
 					onChange={(value) => {
 						const found = queryData.find((d: any) => d?.id == value);
 						setDrug(found);
 					}}
+					searchable
+					nothingFoundMessage='No drug found'
+					required
+					value={drug?.id}
 				/>
 				<NumberInput
 					label='Stock quantity'

@@ -10,6 +10,7 @@ import {
 	ActionIcon,
 	Text,
 	Button,
+	Divider,
 } from "@mantine/core";
 import { format } from "date-fns";
 import { useReactToPrint } from "react-to-print";
@@ -274,6 +275,12 @@ const Receipts = ({ id }: { id: string }) => {
 									)}{" "}
 									Naira
 								</i>
+							</Text>
+						</div>
+						<Divider my='sm' size='xs' color='black' />
+						<div className='text-center mt-4'>
+							<Text fw={600} className='italic'>
+								*** Thanks. And when I am ill it is God who heals me.***
 							</Text>
 						</div>
 					</div>
