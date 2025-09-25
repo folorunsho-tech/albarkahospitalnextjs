@@ -3,13 +3,7 @@ import React, { useContext } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { userContext } from "@/context/User";
-import {
-	Button,
-	Divider,
-	Group,
-	ScrollAreaAutosize,
-	Text,
-} from "@mantine/core";
+import { Button, Text } from "@mantine/core";
 import { ChevronRight, HomeIcon } from "lucide-react";
 import axios from "@/lib/config";
 import {
@@ -27,7 +21,7 @@ const NavMenu = () => {
 	const url = usePathname();
 	const currPath = url.split("/");
 	const router = useRouter();
-	const { permissions: menu, user } = useContext(userContext);
+	const { permissions, user } = useContext(userContext);
 	const getIcon = (name: string) => {
 		if (name == "transactions") {
 			return <ReceiptText />;
@@ -66,17 +60,21 @@ const NavMenu = () => {
 					<HomeIcon />
 					<span>Home</span>
 				</Link>
-				{menu?.map((item: any) => (
-					<Link
-						className='flex flex-wrap gap-2 items-center p-2  hover:text-white capitalize hover:bg-indigo-500 transition duration-300 ease-in-out data-[active]:font-semibold data-[active]:bg-indigo-500 data-[active]:text-white'
-						data-active={item?.link.toLowerCase() === currPath[2] || undefined}
-						href={`/ms/${item?.link}`}
-						key={item?.link}
-					>
-						{getIcon(item?.link)}
-						<span>{item?.label}</span>
-					</Link>
-				))}
+				{permissions?.map((item) => {
+					return (
+						<Link
+							className='flex flex-wrap gap-2 items-center p-2  hover:text-white capitalize hover:bg-indigo-500 transition duration-300 ease-in-out data-[active]:font-semibold data-[active]:bg-indigo-500 data-[active]:text-white'
+							data-active={
+								item?.link.toLowerCase() === currPath[2] || undefined
+							}
+							href={`/ms/${item?.link}`}
+							key={item?.link}
+						>
+							{getIcon(item?.link)}
+							<span>{item?.label}</span>
+						</Link>
+					);
+				})}
 			</div>
 			<div className='flex flex-wrap gap-2 items-center pr-2'>
 				<Text

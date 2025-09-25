@@ -40,8 +40,8 @@ const Login = () => {
 					const res = await post("/auth/login", { username, password });
 
 					if (res?.status === 200) {
-						setUser(res.data);
-						setPerm(JSON.parse(res.data?.menu));
+						// setUser(res.data);
+						// setPerm(JSON.parse(res.data?.menu));
 						notifications.show({
 							id: "AuthLogin",
 							withCloseButton: false,

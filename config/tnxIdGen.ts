@@ -40,6 +40,6 @@ export const Rgenerator = async (id) => {
 			},
 		},
 	});
-	const lastId = Ids.reciepts[0]?.id;
+	const lastId = Ids?.reciepts[0]?.id;
 	return String(Number(lastId) + 1);
 };

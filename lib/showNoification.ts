@@ -25,7 +25,7 @@ const showNotification = (status: number) => {
 		304: "Nothing has changed since your last request",
 		307: "Temporary redirect – try again at the new location",
 		308: "Permanent redirect – use the new location",
-		400: "There was a problem with your request",
+		400: "This data already exists or the request was invalid",
 		401: "You need to log in to continue",
 		403: "You don’t have permission to access this",
 		404: "We couldn’t find what you’re looking for",
