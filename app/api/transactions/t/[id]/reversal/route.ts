@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import prisma from "@/config/prisma";
 import { nanoid } from "nanoid";
-import { curMonth, curYear } from "@/config/ynm.js";
+import { curMonth, curYear } from "@/config/ynm";
 export async function POST(
 	request: NextRequest,
 	{ params }: { params: Promise<{ id: string }> }

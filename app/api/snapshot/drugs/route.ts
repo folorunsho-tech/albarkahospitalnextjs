@@ -1,5 +1,5 @@
 import prisma from "@/config/prisma";
-import { curMonth, curYear } from "@/config/ynm.js";
+import { curMonth, curYear } from "@/config/ynm";
 export async function GET(request: Request) {
 	try {
 		const drugs = await prisma.drugsinventory.findMany({

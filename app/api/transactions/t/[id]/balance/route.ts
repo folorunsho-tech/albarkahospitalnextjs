@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 import prisma from "@/config/prisma";
 import { nanoid } from "nanoid";
-import { curMonth, curYear } from "@/config/ynm.js";
-import { Rgenerator } from "@/config/tnxIdGen.js";
+import { curMonth, curYear } from "@/config/ynm";
+import { Rgenerator } from "@/config/tnxIdGen";
 export async function POST(
 	request: NextRequest,
 	{ params }: { params: Promise<{ id: string }> }

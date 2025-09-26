@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import prisma from "@/config/prisma";
-import { curMonth, curYear } from "@/config/ynm.js";
+import { curMonth, curYear } from "@/config/ynm";
 
 export async function POST(request: Request) {
 	// Parse the request body

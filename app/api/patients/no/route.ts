@@ -1,5 +1,5 @@
 import prisma from "@/config/prisma";
-import { curYear } from "@/config/ynm.js";
+import { curYear } from "@/config/ynm";
 export async function POST(request: Request) {
 	// Parse the request body
 	const body = await request.json();
