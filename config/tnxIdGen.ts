@@ -1,5 +1,5 @@
 import prisma from "./prisma";
-import { mNo } from "./ynm.js";
+import { mNo } from "./ynm";
 
 export const generator = async (year, month) => {
 	const Ids = await prisma.transaction.findMany({
