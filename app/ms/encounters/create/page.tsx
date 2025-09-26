@@ -31,7 +31,7 @@ const Create = () => {
 	const [patientData, setPatientData] = useState<any>(null);
 	const [cares, setCares] = useState([]);
 	const [care, setCare] = useState("");
-	const [careId, setCareId] = useState("");
+	const [careId, setCareId] = useState<string | null>(null);
 	const [follow_up_to, setFollowUPTo] = useState<string | null>(null);
 	const [follow_ups, setFollowUps] = useState<any[]>([]);
 	const [enc_date, setEncDate] = useState<any>(new Date());
@@ -136,12 +136,18 @@ const Create = () => {
 			);
 		}
 	};
+
 	const total = prescription?.reduce(
 		(prev: number, curr: { price: number }) => {
 			return Number(prev) + Number(curr?.price);
 		},
 		0
 	);
+	useEffect(() => {
+		if (patientData) {
+			setCareId(null);
+		}
+	}, [patientData]);
 	return (
 		<section className='space-y-6'>
 			<section>
@@ -162,7 +168,6 @@ const Create = () => {
 					label='Care type'
 					placeholder='Select a care'
 					data={cares}
-					allowDeselect={false}
 					value={careId}
 					onChange={(value: any) => {
 						setCareId(value);
@@ -197,32 +202,34 @@ const Create = () => {
 					nothingFoundMessage='No previous encounters'
 				/>
 			</section>
-			<section className='flex gap-4 flex-wrap items-center'>
-				<div className='flex gap-3 items-center'>
-					<h3 className='font-semibold'>Hospital No: </h3>
-					<Text>{patientData?.hosp_no}</Text>
-				</div>
-				<div className='flex gap-3 items-center'>
-					<h3 className='font-semibold'>Patient Name: </h3>
-					<Text>{patientData?.name}</Text>
-				</div>
-				<div className='flex gap-3 items-center'>
-					<h3 className='font-semibold'>Sex: </h3>
-					<Text>{patientData?.sex}</Text>
-				</div>
-				<div className='flex gap-3 items-center'>
-					<h3 className='font-semibold'>Age: </h3>
-					<Text>{patientData?.age}</Text>
-				</div>
-				<div className='flex gap-3 items-center'>
-					<h3 className='font-semibold'>Address: </h3>
-					<Text>{patientData?.town?.name}</Text>
-				</div>
-				<div className='flex gap-3 items-center'>
-					<h3 className='font-semibold'>Group: </h3>
-					<Text>{patientData?.groups?.name}</Text>
-				</div>
-			</section>
+			{patientData && (
+				<section className='flex gap-4 flex-wrap items-center'>
+					<div className='flex gap-3 items-center'>
+						<h3 className='font-semibold'>Hospital No: </h3>
+						<Text>{patientData?.hosp_no}</Text>
+					</div>
+					<div className='flex gap-3 items-center'>
+						<h3 className='font-semibold'>Patient Name: </h3>
+						<Text>{patientData?.name}</Text>
+					</div>
+					<div className='flex gap-3 items-center'>
+						<h3 className='font-semibold'>Sex: </h3>
+						<Text>{patientData?.sex}</Text>
+					</div>
+					<div className='flex gap-3 items-center'>
+						<h3 className='font-semibold'>Age: </h3>
+						<Text>{patientData?.age}</Text>
+					</div>
+					<div className='flex gap-3 items-center'>
+						<h3 className='font-semibold'>Address: </h3>
+						<Text>{patientData?.town?.name}</Text>
+					</div>
+					<div className='flex gap-3 items-center'>
+						<h3 className='font-semibold'>Group: </h3>
+						<Text>{patientData?.groups?.name}</Text>
+					</div>
+				</section>
+			)}
 
 			{getUI()}
 			<Modal
@@ -251,16 +258,17 @@ const Create = () => {
 						<div className='space-y-1'>
 							<div className='flex flex-col'>
 								<h2 className='text-xl font-extrabold font-serif '>
-									ALBARKA HOSPITAL, WAWA
+									ALBARKA HOSPITAL
 								</h2>
 								<p>{format(new Date(), "PPPpp")}</p>
 							</div>
-							<h3 className='text-lg '>P.O. Box 169 Tel: 08056713322</h3>
+							<h3 className='text-lg '>Tel: 08056713362, 08080854480</h3>
 							<p className='text-md  italic'>
 								E-mail: hospitalalbarka@gmail.com
 							</p>
 							<p className='text-md  italic'>
-								Malale road, Off Rofia road, Wawa New Bussa Niger state Nigeria.
+								<b>Address:</b> Malale road, Off Rofia road, Wawa, New Bussa
+								Niger state Nigeria.
 							</p>
 						</div>
 					</div>
