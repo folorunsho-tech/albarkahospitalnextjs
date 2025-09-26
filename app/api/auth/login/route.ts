@@ -28,7 +28,10 @@ export async function POST(request: NextRequest) {
 				active: user?.active,
 			});
 			const res = NextResponse.json(user);
-			res.cookies.set("token", token, { httpOnly: true, path: "/" });
+			res.cookies.set("albarkahospitaltoken", token, {
+				httpOnly: true,
+				path: "/",
+			});
 
 			return res;
 		}

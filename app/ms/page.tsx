@@ -7,7 +7,7 @@ import { format } from "date-fns";
 const Home = () => {
 	const { user } = React.useContext(userContext);
 	return (
-		<section className='bg-white p-3 rounded-md flex flex-col items-center h-2/3 gap-6'>
+		<section className='bg-white p-3 rounded-md flex flex-col items-center gap-6'>
 			<Image
 				src='/hospital.svg'
 				alt='Hospital logo'
@@ -15,10 +15,10 @@ const Home = () => {
 				height={150}
 				loading='eager'
 			/>
-			<h2 className='text-5xl text-center'>
+			<h2 className='md:text-5xl text-2xl text-center'>
 				Albarka Hospital Wawa, Niger state
 			</h2>
-			<h3 className='text-3xl text-center'>
+			<h3 className='md:text-3xl text-xl text-center'>
 				Welcome back <i className='underline'>{user?.username} </i>!!!
 			</h3>
 			<div className='flex gap-10 '>

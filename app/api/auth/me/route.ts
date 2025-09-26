@@ -1,7 +1,7 @@
 import { verifyToken } from "@/middlewares/jwt";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
-	const token = request.cookies.get("token");
+	const token = request.cookies.get("albarkahospitaltoken");
 	if (!token)
 		return new Response(JSON.stringify({ error: "Unauthorized" }), {
 			status: 401,

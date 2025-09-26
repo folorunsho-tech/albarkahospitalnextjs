@@ -128,7 +128,6 @@ export const createShot = async () => {
 				status: 200,
 				headers: { "Content-Type": "application/json" },
 			});
-			return NextResponse.next();
 		}
 	} catch (error) {
 		console.log(error);

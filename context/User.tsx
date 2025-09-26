@@ -23,13 +23,13 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 	);
 
 	const getData = async () => {
-		const currUser: any = await getUser("token");
+		const currUser: any = await getUser("albarkahospitaltoken");
 		if (!currUser) {
 			router.push("/login");
+		} else {
+			setUser(currUser);
+			setPerm(JSON.parse(currUser?.menu || []));
 		}
-		setUser(currUser);
-
-		setPerm(JSON.parse(currUser?.menu || []));
 	};
 	useEffect(() => {
 		getData();
