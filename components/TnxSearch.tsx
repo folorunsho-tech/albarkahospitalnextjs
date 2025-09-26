@@ -162,7 +162,11 @@ export default function TnxSearch({
 				/>
 			</Combobox.Target>
 
-			<Combobox.Dropdown hidden={data === null}>
+			<Combobox.Dropdown
+				hidden={data === null}
+				mah={400}
+				style={{ overflowY: "auto" }}
+			>
 				<Combobox.Options>
 					{options}
 					{empty && <Combobox.Empty>No results found</Combobox.Empty>}

@@ -107,7 +107,7 @@ export default function PatientSearch({
 			</Combobox.Target>
 
 			<Combobox.Dropdown hidden={data === null}>
-				<Combobox.Options>
+				<Combobox.Options mah={200} style={{ overflowY: "auto" }}>
 					{options}
 					{empty && <Combobox.Empty>No results found</Combobox.Empty>}
 				</Combobox.Options>

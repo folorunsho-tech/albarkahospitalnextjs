@@ -97,7 +97,7 @@ export default function GlobalPatientSearch() {
 				hidden={data === null}
 				style={{ border: "1px solid grey", marginTop: "-4px" }}
 			>
-				<Combobox.Options>
+				<Combobox.Options mah={200} style={{ overflowY: "auto" }}>
 					{options}
 					{empty && <Combobox.Empty>No results found</Combobox.Empty>}
 				</Combobox.Options>
