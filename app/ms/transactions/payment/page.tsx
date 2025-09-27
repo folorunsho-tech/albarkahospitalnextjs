@@ -95,7 +95,7 @@ const page = () => {
 		0
 	);
 	const reset = () => {
-		setCleared(true);
+		setPatientData(null);
 		setFeeId(null);
 		setFee(null);
 		setPrice("");
@@ -146,7 +146,6 @@ const page = () => {
 	};
 	useEffect(() => {
 		if (patientData) {
-			// console.log(patientData);
 			setData();
 		}
 	}, [patientData]);
@@ -154,49 +153,51 @@ const page = () => {
 		<main className='space-y-4'>
 			{reciept && (
 				<section style={{ display: "none" }}>
-					<div ref={contentRef} className='printable text-sm'>
-						<div className='flex items-start gap-4 mb-1'>
+					<div ref={contentRef} className='printable text-xs'>
+						<div className='flex justify-between gap-1 w-full'>
 							<Image
 								src='/hospital.svg'
-								height={100}
-								width={100}
+								height={50}
+								width={50}
 								alt='Albarka logo'
 								loading='eager'
 							/>
-							<div className='space-y-1 w-full'>
-								<div className='flex items-center w-full justify-between'>
-									<h2 className='text-xl font-extrabold font-serif '>
-										ALBARKA HOSPITAL
-									</h2>
-									<p>{format(new Date(), "PPPpp")}</p>
-								</div>
-								<h3 className='text-lg '>P.O. Box 169 Tel: 08056713322</h3>
-								<p className='text-md  italic'>
-									E-mail: hospitalalbarka@gmail.com
-								</p>
-								<p className='text-md  italic'>
-									<b>Address:</b> Malale road, Off Rofia road, Wawa New Bussa
-									Niger state Nigeria.
+							<div className='w-full'>
+								<h2 className='font-extrabold font-serif '>ALBARKA HOSPITAL</h2>
+								<p className='italic'>Tel: 08056713362, 08080854480</p>
+								<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
+								<p className='italic'>
+									Malale road, Off Rofia road, Wawa New Bussa Niger state
+									Nigeria.
 								</p>
 							</div>
+							<p>{format(new Date(), "d/MM/Y , pp")}</p>
 						</div>
-						<div className='flex flex-wrap gap-2 mb-1'>
+						<div className='flex flex-wrap gap-2 my-1 text-xs'>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Receipt No:
 								</h2>
 								<p className='underline pl-1.5'>{reciept?.id}</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Tnx Date:
 								</h2>
 								<p className='underline pl-1.5'>
-									{format(new Date(reciept?.createdAt), "PPPpp")}
+									{format(new Date(reciept?.createdAt), "d/MM/Y , pp")}
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<div className='flex items-center'>
+									<h2 className='font-extrabold uppercase font-serif '>
+										Hosp No:
+									</h2>
+									<p className='underline pl-1.5'>
+										{reciept?.transaction?.patient?.hosp_no}
+									</p>
+								</div>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Patient name:
 								</h2>
 								<p className='underline pl-1.5'>
@@ -204,29 +205,16 @@ const page = () => {
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
-									Hosp No:
-								</h2>
-								<p className='underline pl-1.5'>
-									{reciept?.transaction?.patient?.hosp_no}
-								</p>
-							</div>
-							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Address:
 								</h2>
 								<p className='underline pl-1.5'>
 									{reciept?.transaction?.patient?.town?.name}
 								</p>
 							</div>
-							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
-									Phone No:
-								</h2>
-								<p className='underline pl-1.5'>08056713362, 08080854480</p>
-							</div>
+
 							<div className='flex items-center '>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Cashier:
 								</h2>
 								<p className='underline pl-1.5'>
@@ -234,82 +222,54 @@ const page = () => {
 								</p>
 							</div>
 						</div>
-						<Table>
+						<Table fz={12}>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>S/N</Table.Th>
 									<Table.Th>Item</Table.Th>
 									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
-									<Table.Th>Method</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
 								{reciept?.items?.map((item: any, i: number) => (
 									<Table.Tr key={i + 1}>
-										<Table.Td>{i + 1}</Table.Td>
 										<Table.Td>{item?.name}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
 												value={Number(item?.price)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
 												value={Number(item?.paid)}
 												thousandSeparator
 											/>
 										</Table.Td>
-										<Table.Td>{item?.method}</Table.Td>
 									</Table.Tr>
 								))}
 							</Table.Tbody>
 							<Table.Tfoot className='font-semibold border bg-gray-200'>
 								<Table.Tr>
-									<Table.Td></Table.Td>
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
-										<NumberFormatter
-											prefix='NGN '
-											value={rAmount}
-											thousandSeparator
-										/>
+										<NumberFormatter value={rAmount} thousandSeparator />
 									</Table.Td>
 									<Table.Td>
-										<NumberFormatter
-											prefix='NGN '
-											value={rPay}
-											thousandSeparator
-										/>
+										<NumberFormatter value={rPay} thousandSeparator />
 									</Table.Td>
-									<Table.Td></Table.Td>
 								</Table.Tr>
 							</Table.Tfoot>
 						</Table>
 						<div className='flex justify-between items-center px-2 py-2'>
-							<Text fw={600}>
-								Total amount paid:
-								<b className='text-sm pl-2'>
-									<NumberFormatter
-										prefix='NGN '
-										value={rPay}
-										thousandSeparator
-									/>
-								</b>
-							</Text>
-							<Text fw={600}>
-								Total amount paid in words:
-								<i className='text-sm pl-2 capitalize'>
-									{convert(Number(rPay))} Naira
-								</i>
+							<Text fw={600} fz={12}>
+								Total amount in words:
+								<i className='pl-2 capitalize'>{convert(Number(rPay))} Naira</i>
 							</Text>
 						</div>
 						<Divider my='sm' size='xs' color='black' />
-						<div className='text-center mt-4'>
-							<Text fw={600} className='italic'>
+						<div className='text-center mt-3'>
+							<Text fw={600} fz={12} className='italic'>
 								*** Thanks. And when I am ill it is God who heals me.***
 							</Text>
 						</div>
@@ -342,30 +302,30 @@ const page = () => {
 			</header>
 			<section className='space-y-4'>
 				<div className='flex gap-2 justify-between'>
-					<PatientSearch setPatient={setPatientData} cleared={cleared} />
+					<PatientSearch setPatient={setPatientData} patient={patientData} />
 					<TextInput
 						disabled
 						label='Hosp No'
 						placeholder='hosp no'
-						value={patientData?.hosp_no}
+						value={patientData?.hosp_no || ""}
 					/>
 					<TextInput
 						disabled
 						label='Name'
 						placeholder='name'
-						value={patientData?.name}
+						value={patientData?.name || ""}
 					/>
 					<TextInput
 						disabled
 						label='Phone No'
 						placeholder='phone no'
-						value={patientData?.phone_no}
+						value={patientData?.phone_no || ""}
 					/>
 					<TextInput
 						disabled
 						label='Address'
 						placeholder='address'
-						value={patientData?.town?.name}
+						value={patientData?.town?.name || ""}
 					/>
 				</div>
 
@@ -385,7 +345,7 @@ const page = () => {
 							const rec = data?.reciepts[0];
 
 							setReciept({ ...rec, items: JSON.parse(rec?.items) });
-
+							setItems([]);
 							setData();
 						}}
 					>

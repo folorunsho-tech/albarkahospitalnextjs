@@ -24,10 +24,10 @@ function getAsyncData(searchQuery: string, signal: AbortSignal) {
 
 export default function PatientSearch({
 	setPatient,
-	cleared = false,
+	patient,
 }: {
 	setPatient: any;
-	cleared?: boolean;
+	patient?: any;
 }) {
 	const combobox = useCombobox({
 		onDropdownClose: () => combobox.resetSelectedOption(),
@@ -60,15 +60,10 @@ export default function PatientSearch({
 		</Combobox.Option>
 	));
 	useEffect(() => {
-		if (value == "") {
-			setPatient(null);
-		}
-	}, [value]);
-	useEffect(() => {
-		if (cleared) {
+		if (!patient) {
 			setValue("");
 		}
-	}, [cleared]);
+	}, [patient]);
 	return (
 		<Combobox
 			onOptionSubmit={(optionValue) => {
@@ -96,7 +91,7 @@ export default function PatientSearch({
 					onClick={() => combobox.openDropdown()}
 					onFocus={() => {
 						combobox.openDropdown();
-						if (data === null) {
+						if (!data) {
 							fetchOptions(value);
 						}
 					}}

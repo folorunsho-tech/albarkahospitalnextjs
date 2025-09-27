@@ -142,7 +142,7 @@ export default function TnxSearch({
 				<TextInput
 					label='Search for outstanding tnx by Hosp No'
 					placeholder='Search by hosp no '
-					value={value}
+					value={value ?? ""}
 					onChange={(event) => {
 						setValue(event.currentTarget.value);
 						fetchOptions(event.currentTarget.value);

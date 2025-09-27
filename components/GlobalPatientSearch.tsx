@@ -74,7 +74,7 @@ export default function GlobalPatientSearch() {
 				<TextInput
 					label='Global patient search'
 					placeholder='Search for patient by hosp no or name'
-					value={value}
+					value={value ?? ""}
 					onChange={(event) => {
 						setValue(event.currentTarget.value);
 						fetchOptions(event.currentTarget.value);

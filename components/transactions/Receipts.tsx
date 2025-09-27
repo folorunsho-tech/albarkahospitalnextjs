@@ -97,51 +97,46 @@ const Receipts = ({ id }: { id: string }) => {
 				size='xl'
 			>
 				{selected && (
-					<div ref={contentRef} className='printable text-sm'>
-						<div className='flex items-start gap-4 mb-1'>
+					<div ref={contentRef} className='printable text-[10px]'>
+						<div className='flex gap-1 justify-between w-full'>
 							<Image
 								src='/hospital.svg'
-								height={100}
-								width={100}
+								height={45}
+								width={50}
 								alt='Albarka logo'
 								loading='eager'
 							/>
-							<div className='space-y-1 w-full'>
-								<div className='flex items-center w-full justify-between'>
-									<h2 className='text-xl font-extrabold font-serif '>
-										ALBARKA HOSPITAL
-									</h2>
-									<p>{format(new Date(), "PPPpp")}</p>
-								</div>
-								<h3 className='text-lg '>Tel: 08056713362, 08080854480</h3>
-								<p className='text-md  italic'>
-									E-mail: hospitalalbarka@gmail.com
-								</p>
-								<p className='text-md  italic'>
-									<b>Address:</b> Malale road, Off Rofia road, Wawa New Bussa
-									Niger state Nigeria.
+							<div className='w-full'>
+								<h2 className='font-extrabold font-serif '>ALBARKA HOSPITAL</h2>
+								<p className=''>Tel: 08056713362, 08080854480</p>
+								<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
+								<p className='italic'>
+									Malale road, Off Rofia road, Wawa New Bussa Niger state
+									Nigeria.
 								</p>
 							</div>
+							<p>{format(new Date(), "d/MM/Y , pp")}</p>
 						</div>
-						<div className='flex flex-wrap gap-2 mb-1'>
+
+						<div className='flex flex-wrap gap-1 my-2'>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className=' font-extrabold uppercase font-serif '>
 									Receipt No:
 								</h2>
 								<p className='italic font-semibold pl-1.5'>{selected?.id}</p>
 							</div>
 							{selected && (
 								<div className='flex items-center'>
-									<h2 className='text-sm font-extrabold uppercase font-serif '>
+									<h2 className=' font-extrabold uppercase font-serif '>
 										Tnx Date:
 									</h2>
 									<p className='italic font-semibold pl-1.5'>
-										{format(new Date(selected?.createdAt), "PPPpp")}
+										{format(new Date(selected?.createdAt), "d/MM/Y , pp")}
 									</p>
 								</div>
 							)}
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Patient name:
 								</h2>
 								<p className='italic font-semibold pl-1.5'>
@@ -149,7 +144,7 @@ const Receipts = ({ id }: { id: string }) => {
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Hosp No:
 								</h2>
 								<p className='italic font-semibold pl-1.5'>
@@ -157,23 +152,16 @@ const Receipts = ({ id }: { id: string }) => {
 								</p>
 							</div>
 							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Address:
 								</h2>
 								<p className='italic font-semibold pl-1.5'>
 									{selected?.transaction?.patient?.town?.name}
 								</p>
 							</div>
-							<div className='flex items-center'>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
-									Phone No:
-								</h2>
-								<p className='italic font-semibold pl-1.5'>
-									08056713362, 08080854480
-								</p>
-							</div>
+
 							<div className='flex items-center '>
-								<h2 className='text-sm font-extrabold uppercase font-serif '>
+								<h2 className='font-extrabold uppercase font-serif '>
 									Cashier:
 								</h2>
 								<p className='italic font-semibold pl-1.5'>
@@ -181,48 +169,38 @@ const Receipts = ({ id }: { id: string }) => {
 								</p>
 							</div>
 						</div>
-						<Table>
+						<Table fz={12}>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>S/N</Table.Th>
 									<Table.Th>Item</Table.Th>
 									<Table.Th>Amount</Table.Th>
 									<Table.Th>Paid</Table.Th>
-
-									<Table.Th>Method</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
 								{items?.map((item: any, i: number) => (
 									<Table.Tr key={i + 1}>
-										<Table.Td>{i + 1}</Table.Td>
 										<Table.Td>{item?.name}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
 												value={Number(item?.price)}
 												thousandSeparator
 											/>
 										</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
 												value={Number(item?.paid)}
 												thousandSeparator
 											/>
 										</Table.Td>
-
-										<Table.Td>{item?.method}</Table.Td>
 									</Table.Tr>
 								))}
 							</Table.Tbody>
 							<Table.Tfoot className='font-semibold border bg-gray-200'>
 								<Table.Tr>
-									<Table.Td></Table.Td>
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
 											value={items?.reduce(
 												(prev: any, curr: { paid: number }) => {
 													return Number(prev) + Number(curr.paid);
@@ -234,7 +212,6 @@ const Receipts = ({ id }: { id: string }) => {
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
-											prefix='NGN '
 											value={items?.reduce(
 												(prev: any, curr: { price: number }) => {
 													return prev + curr.price;
@@ -248,24 +225,9 @@ const Receipts = ({ id }: { id: string }) => {
 							</Table.Tfoot>
 						</Table>
 						<div className='flex justify-between items-center px-2 py-2'>
-							<Text fw={600}>
-								Total amount paid:
-								<b className='text-sm pl-2'>
-									<NumberFormatter
-										prefix='NGN '
-										value={items?.reduce(
-											(prev: any, curr: { price: number }) => {
-												return prev + curr.price;
-											},
-											0
-										)}
-										thousandSeparator
-									/>
-								</b>
-							</Text>
-							<Text fw={600}>
-								Total amount paid in words:
-								<i className='text-sm pl-2 capitalize'>
+							<Text fw={600} fz={12}>
+								Total amount in words:
+								<i className=' pl-2 capitalize'>
 									{convert(
 										Number(
 											items?.reduce((prev: any, curr: { price: number }) => {
@@ -278,8 +240,8 @@ const Receipts = ({ id }: { id: string }) => {
 							</Text>
 						</div>
 						<Divider my='sm' size='xs' color='black' />
-						<div className='text-center mt-4'>
-							<Text fw={600} className='italic'>
+						<div className='text-center mt-4 text-xs'>
+							<Text fw={600} className='italic' fz={12}>
 								*** Thanks. And when I am ill it is God who heals me.***
 							</Text>
 						</div>

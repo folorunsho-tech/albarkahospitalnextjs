@@ -43,7 +43,7 @@ const Info = ({ tnx }: { tnx: any }) => {
 							<h2 className='text-xl font-extrabold font-serif '>
 								ALBARKA HOSPITAL
 							</h2>
-							<p>{format(new Date(), "PPPpp")}</p>
+							<p>{format(new Date(), "d/MM/Y , pp")}</p>
 						</div>
 						<h3 className='text-lg '>Tel: 08056713362, 08080854480</h3>
 						<p className='text-md  italic'>E-mail: hospitalalbarka@gmail.com</p>
@@ -55,16 +55,14 @@ const Info = ({ tnx }: { tnx: any }) => {
 				</div>
 				<div className='flex flex-wrap gap-2 mb-1'>
 					<div className='flex items-center'>
-						<h2 className='text-sm font-extrabold font-serif '>
-							Transaction No:
-						</h2>
+						<h2 className='text-sm font-extrabold font-serif '>TNX No:</h2>
 						<p className='underline pl-1.5'>{tnx?.id}</p>
 					</div>
 					{tnx && (
 						<div className='flex items-center'>
-							<h2 className='text-sm font-extrabold font-serif '>Tnx Date:</h2>
+							<h2 className='text-sm font-extrabold font-serif '>Date:</h2>
 							<p className='underline pl-1.5'>
-								{format(new Date(tnx?.createdAt), "PPPpp")}
+								{format(new Date(tnx?.createdAt), "d/MM/Y , pp")}
 							</p>
 						</div>
 					)}
@@ -82,10 +80,7 @@ const Info = ({ tnx }: { tnx: any }) => {
 						<h2 className='text-sm font-extrabold font-serif '>Address:</h2>
 						<p className='underline pl-1.5'>{tnx?.patient?.town?.name}</p>
 					</div>
-					<div className='flex items-center'>
-						<h2 className='text-sm font-extrabold font-serif '>Phone No:</h2>
-						<p className='underline pl-1.5'>08056713362, 08080854480</p>
-					</div>
+
 					<div className='flex items-center '>
 						<h2 className='text-sm font-extrabold font-serif '>Created By:</h2>
 						<p className='underline pl-1.5'>{createdBy?.username}</p>
