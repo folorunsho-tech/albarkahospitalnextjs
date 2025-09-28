@@ -202,8 +202,8 @@ const Receipts = ({ id }: { id: string }) => {
 									<Table.Td>
 										<NumberFormatter
 											value={items?.reduce(
-												(prev: any, curr: { paid: number }) => {
-													return Number(prev) + Number(curr.paid);
+												(prev: any, curr: { price: number }) => {
+													return prev + curr.price;
 												},
 												0
 											)}
@@ -213,8 +213,8 @@ const Receipts = ({ id }: { id: string }) => {
 									<Table.Td>
 										<NumberFormatter
 											value={items?.reduce(
-												(prev: any, curr: { price: number }) => {
-													return prev + curr.price;
+												(prev: any, curr: { paid: number }) => {
+													return Number(prev) + Number(curr.paid);
 												},
 												0
 											)}
