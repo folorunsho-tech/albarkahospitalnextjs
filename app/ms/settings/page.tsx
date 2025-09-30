@@ -12,7 +12,7 @@ import {
 	Group,
 	List,
 	LocateIcon,
-	Pill,
+	// Pill,
 } from "lucide-react";
 import Care from "@/components/settings/Care";
 import Groups from "@/components/settings/Groups";
