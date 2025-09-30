@@ -4,9 +4,7 @@ export async function GET(request: Request) {
 	try {
 		const found = await prisma.drugsinventory.findMany({
 			orderBy: {
-				drug: {
-					name: "asc",
-				},
+				updatedAt: "desc",
 			},
 			include: {
 				drug: true,

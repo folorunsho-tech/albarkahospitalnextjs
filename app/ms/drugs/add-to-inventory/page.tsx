@@ -1,157 +1,148 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import { useEffect, useState } from "react";
-import cx from "clsx";
+import PaginatedTable from "@/components/PaginatedTable";
 import {
 	Button,
-	Checkbox,
+	Table,
+	rem,
+	ActionIcon,
+	Modal,
+	TextInput,
 	Group,
 	LoadingOverlay,
-	ScrollArea,
-	Table,
-	Text,
-	TextInput,
 } from "@mantine/core";
-import classes from "./TableSelection.module.css";
-import { useFetch, usePost } from "@/queries";
-import { IconSearch } from "@tabler/icons-react";
-
-export default function page() {
-	const { fetch } = useFetch();
-	const { post, loading } = usePost();
-	const [data, setData] = useState<
-		{
-			sn: number;
-			id: string;
-			name: string;
-		}[]
-	>([]);
-	const [drugs, setDrugs] = useState<
-		{
-			sn: number;
-			id: string;
-			name: string;
-		}[]
-	>([]);
-	const [selection, setSelection] = useState<string[]>([]);
-	const toggleRow = (id: string) =>
-		setSelection((current) =>
-			current.includes(id)
-				? current.filter((item) => item !== id)
-				: [...current, id]
-		);
-	const toggleAll = () => {
-		setSelection((current) =>
-			current.length === data.length ? [] : data.map((item) => item.id)
-		);
-	};
-	const getDrugs = async () => {
-		const { data } = await fetch("/settings/drugs");
-		const sorted = data.map(
-			(
-				d: {
-					id: string;
-					name: string;
-				},
-				i
-			) => {
-				return {
-					sn: i + 1,
-					name: d.name,
-					id: d.id,
-				};
-			}
-		);
-		setDrugs(sorted);
-		setData(sorted);
-	};
-	const addToInv = async () => {
-		const mapped = selection.map((sel) => {
-			return { id: sel };
-		});
-		await post("/drugsinventory/many", { drugs: mapped });
-	};
-	useEffect(() => {
-		getDrugs();
-	}, []);
-	const rows = data.map((item) => {
-		const selected = selection.includes(item.id);
-		return (
-			<Table.Tr
-				key={item.id}
-				className={cx({ [classes.rowSelected]: selected })}
-			>
-				<Table.Td>
-					<Checkbox
-						checked={selection.includes(item.id)}
-						onChange={() => toggleRow(item.id)}
-					/>
-				</Table.Td>
-				<Table.Td>{item.sn}</Table.Td>
-				<Table.Td>{item.id}</Table.Td>
-				<Table.Td>
-					<Text size='sm' fw={500}>
-						{item.name}
-					</Text>
-				</Table.Td>
-			</Table.Tr>
-		);
-	});
-	return (
-		<main className='space-y-6 relative'>
-			<Text size='xl' fw={500}>
-				Add drugs to Inventory - Init
-			</Text>
-			<Group>
-				<TextInput
-					placeholder='search for drug by name or id'
-					className='w-2/3'
-					rightSection={<IconSearch />}
-					onChange={(e) => {
-						const filtered = drugs.filter((drug) => {
-							return (
-								drug.name
-									.toLocaleLowerCase()
-									.includes(e.target.value.toLocaleLowerCase()) ||
-								drug.id
-									.toLocaleLowerCase()
-									.includes(e.target.value.toLocaleLowerCase())
-							);
-						});
-						setData(filtered);
-					}}
-				/>
-
-				<Button
+import { ArrowLeft, Pencil } from "lucide-react";
+import { useDisclosure } from "@mantine/hooks";
+import { useFetch, usePostNormal } from "@/queries";
+import Link from "next/link";
+const page = () => {
+	const { loading, fetch, data } = useFetch();
+	const { loading: pLoading, post } = usePostNormal();
+	const [opened, { open, close }] = useDisclosure(false);
+	const [queryData, setQueryData] = useState<any[]>(data);
+	const [sortedData, setSortedData] = useState<any[]>([]);
+	const [name, setName] = useState("");
+	const [eID, setEID] = useState<string>("");
+	const [Ename, setEName] = useState<string>("");
+	const rows = sortedData?.map((row, i: number) => (
+		<Table.Tr key={row?.id}>
+			<Table.Td>{i + 1}</Table.Td>
+			<Table.Td className='font-semibold'>{row?.id}</Table.Td>
+			<Table.Td className='font-semibold'>{row?.drug?.name}</Table.Td>
+			<Table.Td>
+				<ActionIcon
 					onClick={() => {
-						addToInv();
+						open();
+						setEID(row?.id);
+						setEName(row?.name);
 					}}
-					color='teal'
 				>
-					Add {selection.length} drugs to inventory
-				</Button>
-			</Group>
-			<ScrollArea>
-				<Table miw={800} verticalSpacing='sm'>
-					<Table.Thead>
-						<Table.Tr>
-							<Table.Th w={40}>
-								<Checkbox
-									onChange={toggleAll}
-									checked={selection.length === drugs.length}
-									indeterminate={
-										selection.length > 0 && selection.length !== data.length
-									}
-								/>
-							</Table.Th>
-							<Table.Th>S/N</Table.Th>
-							<Table.Th>id</Table.Th>
-							<Table.Th>Name</Table.Th>
-						</Table.Tr>
-					</Table.Thead>
-					<Table.Tbody>{rows}</Table.Tbody>
-				</Table>
-			</ScrollArea>
-			<LoadingOverlay visible={loading} />
+					<Pencil style={{ width: rem(14), height: rem(14) }} />
+				</ActionIcon>
+			</Table.Td>
+		</Table.Tr>
+	));
+	useEffect(() => {
+		async function getAll() {
+			const { data } = await fetch("/drugsinventory");
+			setQueryData(data);
+		}
+		getAll();
+	}, []);
+
+	return (
+		<main className=''>
+			<section className='flex flex-wrap gap-2 items-end justify-between mb-3'>
+				<div className='flex gap-4 items-center'>
+					<Link
+						className='bg-blue-500 hover:bg-blue-600 p-1 px-2 rounded-md text-white flex gap-3'
+						href='/ms/drugs'
+					>
+						<ArrowLeft />
+						Go back
+					</Link>
+					<h2 className='text-xl font-bold'>Add to Inventory</h2>
+				</div>
+
+				<form
+					className='flex gap-6 '
+					onSubmit={async (e) => {
+						e.preventDefault();
+						await post("/drugsinventory/single", {
+							name,
+						});
+						const { data } = await fetch("/drugsinventory");
+						setQueryData(data);
+						setName("");
+					}}
+				>
+					<TextInput
+						label='Name'
+						placeholder='Drug name...'
+						value={name}
+						required
+						onChange={(e) => {
+							setName(e.currentTarget.value);
+						}}
+					/>
+
+					<Group mt={20} justify='end'>
+						<Button disabled={!name} type='submit'>
+							Add to Inventory
+						</Button>
+					</Group>
+				</form>
+			</section>
+			<PaginatedTable
+				headers={["S/N", "Id", "Name", "Actions"]}
+				placeholder='Search by name'
+				sortedData={sortedData}
+				depth='drug'
+				rows={rows}
+				showSearch={true}
+				showPagination={true}
+				data={queryData}
+				setSortedData={setSortedData}
+				tableLoading={loading}
+			/>
+
+			<Modal opened={opened} onClose={close} title='Edit Drug'>
+				<form
+					className='relative'
+					onSubmit={async (e) => {
+						e.preventDefault();
+						await post(`/settings/drugs/edit/${eID}`, {
+							name: Ename,
+						});
+						const { data } = await fetch("/settings/drugs");
+						setQueryData(data);
+						close();
+					}}
+				>
+					<TextInput
+						label='Name'
+						placeholder='drug name...'
+						value={Ename}
+						onChange={(e) => {
+							setEName(e.currentTarget.value);
+						}}
+					/>
+
+					<Group mt={20} justify='end'>
+						<Button onClick={close} color='black'>
+							Cancel
+						</Button>
+						<Button disabled={!Ename} type='submit'>
+							Update Name
+						</Button>
+					</Group>
+				</form>
+				<LoadingOverlay visible={pLoading} />
+			</Modal>
 		</main>
 	);
-}
+};
+
+export default page;

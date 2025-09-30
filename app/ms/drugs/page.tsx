@@ -91,12 +91,9 @@ const DrugsInventory = () => {
 				<Button href='drugs/loss' color='red' component={Link}>
 					Add loss
 				</Button>
-
-				{user?.role == "admin" && (
-					<Button href='drugs/add-to-inventory' color='teal' component={Link}>
-						Add to inventory
-					</Button>
-				)}
+				<Button href='drugs/add-to-inventory' color='teal' component={Link}>
+					Add to inventory
+				</Button>
 			</section>
 			<PaginatedTable
 				headers={[
