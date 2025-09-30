@@ -7,7 +7,6 @@ import {
 	Group,
 	LoadingOverlay,
 	NumberInput,
-	ScrollArea,
 	Select,
 	TextInput,
 } from "@mantine/core";

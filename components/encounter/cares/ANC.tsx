@@ -7,7 +7,6 @@ import {
 	Group,
 	LoadingOverlay,
 	NumberInput,
-	ScrollArea,
 	Select,
 	TextInput,
 } from "@mantine/core";
@@ -17,7 +16,7 @@ import { useRouter } from "next/navigation";
 import Diagnosis from "../create/Diagnosis";
 import DrugsGiven from "../create/DrugsGiven";
 import Labtest from "../create/Labtest";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 
 const ANC = ({
 	careId,

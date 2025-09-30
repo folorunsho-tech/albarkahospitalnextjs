@@ -88,7 +88,7 @@ export async function POST(request: Request) {
 				operations: {
 					create: {
 						procedureId: operation?.procedureId,
-						proc_date: operation?.proc_date,
+						proc_date: new Date(operation?.proc_date),
 						surgeon: operation?.surgeon,
 						assistant: operation?.assistant,
 						outcome: operation?.outcome,
@@ -137,7 +137,7 @@ export async function POST(request: Request) {
 				data: {
 					encounter_id: created.id,
 					admitted_for: admission?.admitted_for,
-					discharged_on: admission?.discharged_on,
+					discharged_on: new Date(admission?.discharged_on),
 
 					nok_phone: admission?.nok_phone,
 					ward_matron: admission?.ward_matron,
@@ -151,6 +151,8 @@ export async function POST(request: Request) {
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {
+		console.log(error);
+
 		return new Response(JSON.stringify(error), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },

@@ -107,6 +107,7 @@ export async function POST(request: Request) {
 				drugsGiven: true,
 			},
 		});
+
 		stock_updates.forEach(async (update: any) => {
 			await prisma.drugsinventory.update({
 				where: {
@@ -140,8 +141,7 @@ export async function POST(request: Request) {
 				data: {
 					encounter_id: created.id,
 					admitted_for: admission?.admitted_for,
-					discharged_on: admission?.discharged_on,
-
+					discharged_on: new Date(admission?.discharged_on),
 					nok_phone: admission?.nok_phone,
 					ward_matron: admission?.ward_matron,
 					adm_date: new Date(admission?.adm_date),
@@ -154,6 +154,7 @@ export async function POST(request: Request) {
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {
+		console.log(error);
 		return new Response(JSON.stringify(error), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },

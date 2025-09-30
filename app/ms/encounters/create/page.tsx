@@ -24,6 +24,7 @@ import Immunization from "@/components/encounter/cares/Immunization";
 import Operation from "@/components/encounter/cares/Operation";
 import { useDisclosure } from "@mantine/hooks";
 import Image from "next/image";
+import convert from "@/lib/numberConvert";
 const Create = () => {
 	const { fetch } = useFetch();
 	const contentRef = useRef<HTMLTableElement>(null);
@@ -247,32 +248,25 @@ const Create = () => {
 					<Printer />
 				</Button>
 				<div id='prescription' ref={contentRef}>
-					<div className='flex items-start gap-4 mb-1'>
+					<div className='flex gap-1 justify-between w-full text-xs mt-4'>
 						<Image
 							src='/hospital.svg'
-							height={100}
-							width={100}
+							height={45}
+							width={50}
 							alt='Albarka logo'
 							loading='eager'
 						/>
-						<div className='space-y-1'>
-							<div className='flex flex-col'>
-								<h2 className='text-xl font-extrabold font-serif '>
-									ALBARKA HOSPITAL
-								</h2>
-								<p>{format(new Date(), "PPPpp")}</p>
-							</div>
-							<h3 className='text-lg '>Tel: 08056713362, 08080854480</h3>
-							<p className='text-md  italic'>
-								E-mail: hospitalalbarka@gmail.com
-							</p>
-							<p className='text-md  italic'>
-								<b>Address:</b> Malale road, Off Rofia road, Wawa, New Bussa
-								Niger state Nigeria.
+						<div className='w-full'>
+							<h2 className='font-extrabold font-serif '>ALBARKA HOSPITAL</h2>
+							<p className=''>Tel: 08056713362, 08080854480</p>
+							<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
+							<p className='italic'>
+								Malale road, Off Rofia road, Wawa New Bussa Niger state Nigeria.
 							</p>
 						</div>
+						<p>{format(new Date(), "d/MM/Y , pp")}</p>
 					</div>
-					<label htmlFor='drugs' className='font-bold mr-12'>
+					<label htmlFor='drugs' className='font-bold text-xs underline'>
 						Prescriptions for Hosp No: {patientData?.hosp_no} - Name:{" "}
 						{patientData?.name} on {format(new Date(), "dd/MM/yyyy HH:mm")}
 					</label>
@@ -280,7 +274,6 @@ const Create = () => {
 						<Table id='drugs'>
 							<Table.Thead>
 								<Table.Tr>
-									<Table.Th>S/N</Table.Th>
 									<Table.Th>Name</Table.Th>
 									<Table.Th>Rate</Table.Th>
 									<Table.Th>Quantity</Table.Th>
@@ -290,11 +283,9 @@ const Create = () => {
 							<Table.Tbody>
 								{prescription?.map((drug: any, i: number) => (
 									<Table.Tr key={drug?.id}>
-										<Table.Td>{i + 1}</Table.Td>
 										<Table.Td>{drug?.name}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
 												value={Number(drug?.rate)}
 												thousandSeparator
 											/>
@@ -302,7 +293,6 @@ const Create = () => {
 										<Table.Td>{drug?.quantity}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
-												prefix='NGN '
 												value={Number(drug?.rate) * Number(drug?.quantity)}
 												thousandSeparator
 											/>
@@ -314,18 +304,19 @@ const Create = () => {
 								<Table.Tr>
 									<Table.Td></Table.Td>
 									<Table.Td></Table.Td>
-									<Table.Td></Table.Td>
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
-										<NumberFormatter
-											prefix='NGN '
-											value={total}
-											thousandSeparator
-										/>
+										<NumberFormatter value={total} thousandSeparator />
 									</Table.Td>
 								</Table.Tr>
 							</Table.Tfoot>
 						</Table>
+						<Text fw={600}>
+							Total amount in words:
+							<i className='text-sm pl-2 capitalize'>
+								{convert(Number(total))} Naira
+							</i>
+						</Text>
 					</section>
 				</div>
 			</Modal>

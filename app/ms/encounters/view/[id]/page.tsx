@@ -416,40 +416,36 @@ const View = () => {
 						</Table>
 					</div>
 					<section style={{ display: "none" }}>
-						<div ref={contentRef} className='printable'>
-							<div className='flex items-start gap-4 mb-2'>
+						<div ref={contentRef} className='printable space-y-2 text-xs'>
+							<div className='flex gap-1 justify-between w-full'>
 								<Image
 									src='/hospital.svg'
-									height={120}
-									width={120}
+									height={45}
+									width={50}
 									alt='Albarka logo'
+									loading='eager'
 								/>
-								<div className='space-y-1 w-full'>
-									<div className='flex items-center w-full justify-between'>
-										<h2 className='text-xl font-extrabold font-serif '>
-											ALBARKA HOSPITAL
-										</h2>
-										<p>{format(new Date(), "PPPpp")}</p>
-									</div>
-									<h3 className='text-lg '>P.O. Box 169 Tel: 08056713322</h3>
-									<p className='text-md  italic'>
-										E-mail: hospitalalbarka@gmail.com
-									</p>
-									<p className='text-md  italic'>
-										<b>Address:</b> Malale road, Off Rofia road, Wawa New Bussa
-										Niger state Nigeria.
-									</p>
-									<p className='text-lg font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
-										Prescriptions for Hosp No: {queryData?.patient?.hosp_no} on{" "}
-										{new Date(queryData?.enc_date).toLocaleDateString()},{" "}
-										{queryData?.time}
+								<div className='w-full'>
+									<h2 className='font-extrabold font-serif '>
+										ALBARKA HOSPITAL
+									</h2>
+									<p className=''>Tel: 08056713362, 08080854480</p>
+									<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
+									<p className='italic'>
+										Malale road, Off Rofia road, Wawa New Bussa Niger state
+										Nigeria.
 									</p>
 								</div>
+								<p>{format(new Date(), "d/MM/Y , pp")}</p>
 							</div>
+							<p className='text-xs font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
+								Prescriptions for Hosp No: {queryData?.patient?.hosp_no} on{" "}
+								{new Date(queryData?.enc_date).toLocaleDateString()},{" "}
+								{queryData?.time}
+							</p>
 							<Table id='drugs'>
 								<Table.Thead>
 									<Table.Tr>
-										<Table.Th>S/N</Table.Th>
 										<Table.Th>Name</Table.Th>
 										<Table.Th>Rate</Table.Th>
 										<Table.Th>Quantity</Table.Th>
@@ -459,11 +455,9 @@ const View = () => {
 								<Table.Tbody>
 									{queryData?.drugsGiven?.map((drug: any, i: number) => (
 										<Table.Tr key={drug?.id}>
-											<Table.Td>{i + 1}</Table.Td>
 											<Table.Td>{drug?.name}</Table.Td>
 											<Table.Td>
 												<NumberFormatter
-													prefix='NGN '
 													value={Number(drug?.rate)}
 													thousandSeparator
 												/>
@@ -471,7 +465,6 @@ const View = () => {
 											<Table.Td>{drug?.quantity}</Table.Td>
 											<Table.Td>
 												<NumberFormatter
-													prefix='NGN '
 													value={Number(drug?.rate) * Number(drug?.quantity)}
 													thousandSeparator
 												/>
@@ -483,14 +476,9 @@ const View = () => {
 									<Table.Tr>
 										<Table.Td></Table.Td>
 										<Table.Td></Table.Td>
-										<Table.Td></Table.Td>
 										<Table.Td>Total: </Table.Td>
 										<Table.Td>
-											<NumberFormatter
-												prefix='NGN '
-												value={total}
-												thousandSeparator
-											/>
+											<NumberFormatter value={total} thousandSeparator />
 										</Table.Td>
 									</Table.Tr>
 								</Table.Tfoot>
@@ -499,15 +487,11 @@ const View = () => {
 								<Text fw={600}>
 									Total amount paid:
 									<b className='text-sm pl-2'>
-										<NumberFormatter
-											prefix='NGN '
-											value={total}
-											thousandSeparator
-										/>
+										<NumberFormatter value={total} thousandSeparator />
 									</b>
 								</Text>
 								<Text fw={600}>
-									Total amount paid in words:
+									Total amount in words:
 									<i className='text-sm pl-2 capitalize'>
 										{convert(Number(total))} Naira
 									</i>

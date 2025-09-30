@@ -94,7 +94,7 @@ export async function POST(request: Request) {
 						fe_diagnosis: anc?.fe_diagnosis,
 						fe_live: anc?.fe_live,
 						placenta_pos: anc?.placenta_pos,
-						edd: anc?.edd,
+						edd: new Date(anc?.edd),
 						date: new Date(anc?.date),
 					},
 				},
@@ -148,7 +148,7 @@ export async function POST(request: Request) {
 				data: {
 					encounter_id: created.id,
 					admitted_for: admission?.admitted_for,
-					discharged_on: admission?.discharged_on,
+					discharged_on: new Date(admission?.discharged_on),
 
 					nok_phone: admission?.nok_phone,
 					ward_matron: admission?.ward_matron,
@@ -162,6 +162,8 @@ export async function POST(request: Request) {
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {
+		console.log(error);
+
 		return new Response(JSON.stringify(error), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },
