@@ -19,7 +19,7 @@ import Groups from "@/components/settings/Groups";
 import Towns from "@/components/settings/Towns";
 // import Drugs from "@/components/settings/Drugs";
 const Settings = () => {
-	const iconStyle = { width: rem(22), height: rem(22) };
+	const iconStyle = { width: rem(21), height: rem(21) };
 	return (
 		<Tabs defaultValue='tests' keepMounted={false}>
 			<Tabs.List>
