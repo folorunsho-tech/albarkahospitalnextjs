@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PaginatedTable from "@/components/PaginatedTable";
 import {
 	Button,
@@ -12,8 +12,8 @@ import {
 	TextInput,
 	Group,
 	LoadingOverlay,
-	Drawer,
-	MultiSelect,
+	// Drawer,
+	// MultiSelect,
 } from "@mantine/core";
 import { ArrowLeft, Pencil } from "lucide-react";
 import { useDisclosure } from "@mantine/hooks";
@@ -23,14 +23,14 @@ const page = () => {
 	const { loading, fetch, data } = useFetch();
 	const { loading: pLoading, post } = usePostNormal();
 	const [opened, { open, close }] = useDisclosure(false);
-	const [dOpened, { open: dOpen, close: dClose }] = useDisclosure(false);
+	// const [dOpened, { open: dOpen, close: dClose }] = useDisclosure(false);
 	const [queryData, setQueryData] = useState<any[]>(data);
 	const [sortedData, setSortedData] = useState<any[]>([]);
 	const [name, setName] = useState("");
 	const [eID, setEID] = useState<string>("");
 	const [Ename, setEName] = useState<string>("");
-	const [selectedDrugs, setSelectedDrugs] = useState<string[]>([]);
-	const [drugs, setDrugs] = useState<{ value: string; label: string }[]>([]);
+	// const [selectedDrugs, setSelectedDrugs] = useState<string[]>([]);
+	// const [drugs, setDrugs] = useState<{ value: string; label: string }[]>([]);
 	const rows = sortedData?.map((row, i: number) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>{i + 1}</Table.Td>
@@ -52,13 +52,13 @@ const page = () => {
 	useEffect(() => {
 		async function getAll() {
 			const { data } = await fetch("/drugsinventory");
-			const { data: drugs } = await fetch("/settings/drugs");
-			setDrugs(
-				drugs?.map((d: { id: string; name: string }) => ({
-					value: d.id,
-					label: d.name,
-				}))
-			);
+			// const { data: drugs } = await fetch("/settings/drugs");
+			// setDrugs(
+			// 	drugs?.map((d: { id: string; name: string }) => ({
+			// 		value: d.id,
+			// 		label: d.name,
+			// 	}))
+			// );
 			setQueryData(data);
 		}
 		getAll();
@@ -77,9 +77,9 @@ const page = () => {
 					</Link>
 					<h2 className='text-xl font-bold'>Add to Inventory</h2>
 				</div>
-				<Button onClick={dOpen} className='bg-green-600 hover:bg-green-700'>
+				{/* <Button onClick={dOpen} className='bg-green-600 hover:bg-green-700'>
 					Add Existing Drug
-				</Button>
+				</Button> */}
 				<form
 					className='flex gap-6 '
 					onSubmit={async (e) => {
@@ -155,7 +155,7 @@ const page = () => {
 				</form>
 				<LoadingOverlay visible={pLoading} />
 			</Modal>
-			<Drawer opened={dOpened} onClose={dClose} title='Add existing Drug'>
+			{/* <Drawer opened={dOpened} onClose={dClose} title='Add existing Drug'>
 				<form
 					className='relative'
 					onSubmit={async (e) => {
@@ -186,7 +186,7 @@ const page = () => {
 						Add to Inventory
 					</Button>
 				</form>
-			</Drawer>
+			</Drawer> */}
 		</main>
 	);
 };

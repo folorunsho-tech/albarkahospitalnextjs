@@ -166,7 +166,7 @@ const Detailed = () => {
 							<NumberFormatter value={quantity} thousandSeparator />
 						</Table.Td>
 						<Table.Td>
-							<NumberFormatter prefix='NGN ' value={total} thousandSeparator />
+							<NumberFormatter prefix='N' value={total} thousandSeparator />
 						</Table.Td>
 						<Table.Td></Table.Td>
 					</Table.Tr>

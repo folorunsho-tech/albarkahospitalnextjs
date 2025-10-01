@@ -106,7 +106,7 @@ const PaginatedTable = ({
 	return (
 		<Box pos='relative'>
 			<section style={{ display: "none" }}>
-				<div ref={ref} className='printable'>
+				<div ref={ref} className='printable text-xs'>
 					<div className='flex items-start gap-4 mb-2'>
 						<Image
 							src='/hospital.svg'
@@ -122,15 +122,13 @@ const PaginatedTable = ({
 								</h2>
 								<p>{format(new Date(), "PPPpp")}</p>
 							</div>
-							<h3 className='text-lg '>Tel: 08056713362, 08080854480</h3>
-							<p className='text-md  italic'>
-								E-mail: hospitalalbarka@gmail.com
-							</p>
-							<p className='text-md  italic'>
+							<h3 className=''>Tel: 08056713362, 08080854480</h3>
+							<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
+							<p className='italic'>
 								<b>Address:</b> Malale road, Off Rofia road, Wawa, New Bussa
 								Niger state Nigeria.
 							</p>
-							<p className='text-md font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
+							<p className='font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
 								{tableReport}
 							</p>
 						</div>
@@ -150,7 +148,7 @@ const PaginatedTable = ({
 					</Table>
 				</div>
 			</section>
-			<section className='flex flex-col gap-2'>
+			<section className='flex flex-col gap-2 text-xs'>
 				{showSearch && (
 					<TextInput
 						placeholder={placeholder}

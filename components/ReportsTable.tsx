@@ -64,7 +64,7 @@ const ReportsTable = ({
 	return (
 		<Box pos='relative'>
 			<section style={{ display: "none" }}>
-				<div ref={contentRef} className='printable'>
+				<div ref={contentRef} className='printable text-xs'>
 					<div className='flex items-start gap-4 mb-2'>
 						<Image
 							src='/hospital.svg'
@@ -75,16 +75,12 @@ const ReportsTable = ({
 						/>
 						<div className='space-y-1 w-full'>
 							<div className='flex items-center w-full justify-between'>
-								<h2 className='text-xl font-extrabold font-serif '>
-									ALBARKA HOSPITAL
-								</h2>
+								<h2 className='font-extrabold font-serif '>ALBARKA HOSPITAL</h2>
 								<p>{format(new Date(), "PPPpp")}</p>
 							</div>
-							<h3 className='text-lg '>Tel: 08056713362, 08080854480</h3>
-							<p className='text-md  italic'>
-								E-mail: hospitalalbarka@gmail.com
-							</p>
-							<p className='text-md  italic'>
+							<h3 className=''>Tel: 08056713362, 08080854480</h3>
+							<p className=' italic'>E-mail: hospitalalbarka@gmail.com</p>
+							<p className='italic'>
 								<b>Address:</b> Malale road, Off Rofia road, Wawa, New Bussa
 								Niger state Nigeria.
 							</p>
@@ -109,9 +105,9 @@ const ReportsTable = ({
 					</Table>
 				</div>
 			</section>
-			<section className='flex flex-col gap-2'>
+			<section className='flex flex-col gap-2 text-xs'>
 				<div className='flex gap-3 items-end justify-between'>
-					{filters}
+					<div className='text-sm'>{filters}</div>
 					{showPrint && (
 						<Button
 							onClick={() => {

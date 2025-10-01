@@ -29,13 +29,13 @@ export default function StatementsT({
 	const [criteria, setCriteria] = useState<string | null>("");
 	const rows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
-			<Table.Td>{format(new Date(row?.createdAt), "dd/MM/yyyy")}</Table.Td>
+			<Table.Td>{format(new Date(row?.createdAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.tnxId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.paid} thousandSeparator />
+				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>{row?.method}</Table.Td>
 			<Table.Td>{row?.type}</Table.Td>
@@ -44,13 +44,13 @@ export default function StatementsT({
 	));
 	const printRows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
-			<Table.Td>{format(new Date(row?.createdAt), "dd/MM/yyyy")}</Table.Td>
+			<Table.Td>{format(new Date(row?.createdAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.tnxId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.paid} thousandSeparator />
+				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>{row?.method}</Table.Td>
 			<Table.Td>{row?.type}</Table.Td>
@@ -204,7 +204,7 @@ export default function StatementsT({
 				"Hosp No",
 				"Name",
 				"Item",
-				"Amount paid",
+				"Paid(N)",
 				"Method",
 				"Type",
 				"Cashier",
@@ -215,7 +215,7 @@ export default function StatementsT({
 				"Hosp No",
 				"Name",
 				"Item",
-				"Amount paid",
+				"Paid(N)",
 				"Method",
 				"Type",
 				"Cashier",
@@ -230,7 +230,7 @@ export default function StatementsT({
 			tableReport={getReport()}
 			pdfTitle={getReport()}
 			metadata={
-				<div className='text-lg font-semibold my-2'>
+				<div className='text-sm font-semibold my-2'>
 					<h2>Total Count: {sortedData.length}</h2>
 				</div>
 			}
@@ -242,7 +242,7 @@ export default function StatementsT({
 					<Table.Td></Table.Td>
 					<Table.Td></Table.Td>
 					<Table.Td>
-						<NumberFormatter prefix='NGN ' value={totalPay} thousandSeparator />
+						<NumberFormatter value={totalPay} thousandSeparator />
 					</Table.Td>
 					<Table.Td></Table.Td>
 					<Table.Td></Table.Td>

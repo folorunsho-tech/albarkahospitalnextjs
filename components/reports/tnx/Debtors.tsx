@@ -19,37 +19,37 @@ const Debtors = () => {
 	const [loaded, setLoaded] = useState<any>("");
 	const rows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
-			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy")}</Table.Td>
+			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.transactionId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
 			<Table.Td>{row?.fee?.name}</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.price} thousandSeparator />
+				<NumberFormatter value={row?.price} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.paid} thousandSeparator />
+				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.balance} thousandSeparator />
+				<NumberFormatter value={row?.balance} thousandSeparator />
 			</Table.Td>
 		</Table.Tr>
 	));
 	const printRows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
-			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy")}</Table.Td>
+			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.transactionId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
 			<Table.Td>{row?.fee?.name}</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.price} thousandSeparator />
+				<NumberFormatter value={row?.price} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.paid} thousandSeparator />
+				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
-				<NumberFormatter prefix='NGN ' value={row?.balance} thousandSeparator />
+				<NumberFormatter value={row?.balance} thousandSeparator />
 			</Table.Td>
 		</Table.Tr>
 	));
@@ -173,9 +173,9 @@ const Debtors = () => {
 					"Hosp No",
 					"Name",
 					"Item",
-					"Amount",
-					"Paid",
-					"Balance",
+					"Amount(N)",
+					"Paid(N)",
+					"Balance(N)",
 				]}
 				printHeaders={[
 					"Date",
@@ -183,9 +183,9 @@ const Debtors = () => {
 					"Hosp No",
 					"Name",
 					"Item",
-					"Amount",
-					"Paid",
-					"Balance",
+					"Amount(N)",
+					"Paid(N)",
+					"Balance(N)",
 				]}
 				sortedData={sortedData}
 				setSortedData={setSortedData}
@@ -198,7 +198,7 @@ const Debtors = () => {
 				tableReport={getReport()}
 				pdfTitle={getReport()}
 				metadata={
-					<div className='text-lg font-semibold my-2'>
+					<div className='font-semibold my-2'>
 						<h2>Total Count: {sortedData.length}</h2>
 					</div>
 				}
@@ -210,25 +210,13 @@ const Debtors = () => {
 						<Table.Td></Table.Td>
 						<Table.Td></Table.Td>
 						<Table.Td>
-							<NumberFormatter
-								prefix='NGN '
-								value={totalPrice}
-								thousandSeparator
-							/>
+							<NumberFormatter value={totalPrice} thousandSeparator />
 						</Table.Td>
 						<Table.Td>
-							<NumberFormatter
-								prefix='NGN '
-								value={totalPay}
-								thousandSeparator
-							/>
+							<NumberFormatter value={totalPay} thousandSeparator />
 						</Table.Td>
 						<Table.Td>
-							<NumberFormatter
-								prefix='NGN '
-								value={totalBalance}
-								thousandSeparator
-							/>
+							<NumberFormatter value={totalBalance} thousandSeparator />
 						</Table.Td>
 					</Table.Tr>
 				}
