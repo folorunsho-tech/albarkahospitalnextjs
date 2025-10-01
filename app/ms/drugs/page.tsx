@@ -32,7 +32,7 @@ const DrugsInventory = () => {
 		</Table.Tr>
 	));
 	const printRows = printData?.map((row, i: number) => (
-		<Table.Tr key={row?.id}>
+		<Table.Tr key={row?.id} className='text-[10px]'>
 			<Table.Td>{i + 1}</Table.Td>
 			<Table.Td>{row?.drug?.name}</Table.Td>
 			<Table.Td>

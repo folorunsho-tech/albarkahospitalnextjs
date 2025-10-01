@@ -90,7 +90,7 @@ const ReportsTable = ({
 						</div>
 					</div>
 					{metadata}
-					<Table miw={700} fz={13}>
+					<Table miw={700}>
 						<Table.Thead>
 							<Table.Tr>
 								{printHeaders?.map((head: string, index: number) => (
@@ -127,7 +127,7 @@ const ReportsTable = ({
 						highlightOnHover
 						withTableBorder
 						withColumnBorders
-						fz={13}
+						className='text-xs'
 					>
 						<Table.Thead>
 							<Table.Tr>

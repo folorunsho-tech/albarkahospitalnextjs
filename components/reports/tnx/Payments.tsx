@@ -40,7 +40,7 @@ const Payments = () => {
 		</Table.Tr>
 	));
 	const printRows = sortedData?.map((row, i) => (
-		<Table.Tr key={row?.id}>
+		<Table.Tr key={row?.id} className='text-[10px]'>
 			<Table.Td>{format(new Date(row?.createdAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.tnxId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>

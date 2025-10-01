@@ -30,7 +30,7 @@ const Summary = () => {
 		</Table.Tr>
 	));
 	const printRows = sortedData?.map((row, i) => (
-		<Table.Tr key={row?.name + i}>
+		<Table.Tr key={row?.name + i} className='text-[10px]'>
 			<Table.Td>{i + 1}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
 			<Table.Td>

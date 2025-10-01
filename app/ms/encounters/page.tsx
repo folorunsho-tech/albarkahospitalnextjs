@@ -67,7 +67,7 @@ const Encounter = () => {
 		</Table.Tr>
 	));
 	const printRows = printData?.map((row, i: number) => (
-		<Table.Tr key={row?.id + i}>
+		<Table.Tr key={row?.id + i} className='text-[10px]'>
 			<Table.Td>{i + 1}</Table.Td>
 			<Table.Td>{row?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.patient?.name}</Table.Td>

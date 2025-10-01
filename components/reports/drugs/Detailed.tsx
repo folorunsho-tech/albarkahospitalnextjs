@@ -39,7 +39,7 @@ const Detailed = () => {
 		</Table.Tr>
 	));
 	const printRows = sortedData?.map((row, i) => (
-		<Table.Tr key={row?.id}>
+		<Table.Tr key={row?.id} className='text-[10px]'>
 			<Table.Td>
 				{format(new Date(row?.encounter?.enc_date), "dd/MM/yyyy")}
 			</Table.Td>
