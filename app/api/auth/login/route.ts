@@ -14,11 +14,16 @@ export async function POST(request: NextRequest) {
 			},
 		});
 		const valid = bcrypt.compare(password, user?.passHash!);
-		if (!valid) {
-			return NextResponse.json(
-				{ error: "Invalid credentials" },
-				{ status: 401 }
-			);
+		if (user?.active === false) {
+			return new Response(JSON.stringify({ error: "Account is inactive" }), {
+				status: 401,
+				headers: { "Content-Type": "application/json" },
+			});
+		} else if (!valid) {
+			return new Response(JSON.stringify({ error: "Invalid credentials" }), {
+				status: 401,
+				headers: { "Content-Type": "application/json" },
+			});
 		} else {
 			const token = await generateToken({
 				id: user?.id,

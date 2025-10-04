@@ -12,7 +12,6 @@ export async function POST(
 	const id = (await params).id;
 	const body = await request.json();
 	const { password, menu, updatedById, role, active } = body;
-
 	try {
 		let hashedPassword: string | undefined;
 		if (password && password.trim() !== "") {

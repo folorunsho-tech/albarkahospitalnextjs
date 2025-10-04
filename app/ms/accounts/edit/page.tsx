@@ -70,6 +70,7 @@ const page = () => {
 				onChange={(value: any) => {
 					setId(value);
 				}}
+				searchable
 			/>
 			<form
 				className='relative'
@@ -84,7 +85,7 @@ const page = () => {
 							)
 						),
 						menus,
-						active: Boolean(active),
+						active: active == "true" ? true : false,
 					});
 
 					setUsername("");
