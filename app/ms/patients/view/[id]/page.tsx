@@ -104,7 +104,9 @@ const View = () => {
 						</Group>
 						<Group>
 							<Text fw={600}>Registration date:</Text>
-							<Text>{new Date(queryData?.reg_date).toLocaleDateString()}</Text>
+							<Text>
+								{new Date(queryData?.reg_date).toJSON().substring(0, 10)}
+							</Text>
 						</Group>
 						<Group>
 							<Text fw={600}>Created By:</Text>

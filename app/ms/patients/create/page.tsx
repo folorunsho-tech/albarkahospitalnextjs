@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 import { useFetch, useHospNo, usePost } from "@/queries";
 import { ArrowLeft } from "lucide-react";
 import {
+	Autocomplete,
 	Button,
 	Group,
 	LoadingOverlay,
 	Select,
 	Text,
 	TextInput,
+	ComboboxItem,
+	OptionsFilter,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { DatePickerInput } from "@mantine/dates";
-import { months } from "@/lib/ynm";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 const Create = () => {
@@ -28,7 +30,6 @@ const Create = () => {
 	const [hosp_no, setHospNo] = useState("");
 	const [no, setNo] = useState<null | number>(null);
 	const [religion, setReligion] = useState<any>("");
-	const [townId, setTownId] = useState<any>("");
 	const [reg_date, setRegDate] = useState<any>(new Date());
 	const ages = [
 		"1d",
@@ -145,8 +146,7 @@ const Create = () => {
 			name: "",
 			phone_no: "",
 			occupation: "",
-			month: months[new Date().getMonth()],
-			year: new Date().getFullYear(),
+			address: "",
 		},
 	});
 	const router = useRouter();
@@ -169,10 +169,7 @@ const Create = () => {
 			});
 			const { data: towns } = await fetch("/settings/town");
 			const sortedT = towns.map((town: { id: string; name: string }) => {
-				return {
-					value: town.id,
-					label: town.name,
-				};
+				return town.name;
 			});
 			setTownsList(sortedT);
 			setGroupsList(sortedG);
@@ -187,12 +184,10 @@ const Create = () => {
 			group_id,
 			reg_date,
 			religion,
-			townId,
 			age,
 			no,
 		});
 		form.reset();
-		setTownId(null);
 		setGroupId(null);
 		setSex(null);
 		setAge(null);
@@ -256,18 +251,16 @@ const Create = () => {
 						setNo(splitted);
 					}}
 				/>
-				<Select
+				<Autocomplete
 					label='Address'
-					placeholder='Select patient addres'
+					placeholder='address...'
+					key={form.key("address")}
+					{...form.getInputProps("address")}
+					autoSelectOnBlur
+					limit={20}
 					data={townsList}
-					allowDeselect={false}
-					value={townId}
-					onChange={(value: any) => {
-						setTownId(value);
-					}}
+					clearable
 					required
-					searchable
-					nothingFoundMessage='Nothing found...'
 				/>
 				<TextInput
 					label='Phone No'

@@ -270,7 +270,7 @@ const Create = () => {
 						Prescriptions for Hosp No: {patientData?.hosp_no} - Name:{" "}
 						{patientData?.name} on {format(new Date(), "dd/MM/yyyy HH:mm")}
 					</label>
-					<section className='printable'>
+					<section className='printable text-xs'>
 						<Table id='drugs'>
 							<Table.Thead>
 								<Table.Tr>
