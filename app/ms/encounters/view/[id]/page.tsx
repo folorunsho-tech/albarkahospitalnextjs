@@ -75,53 +75,56 @@ const View = () => {
 				</div>
 			</section>
 			<section className='space-y-6 py-4 enc_data '>
-				<div className='space-y-3 pt-5'>
-					<label htmlFor='info' className='font-bold underline'>
-						Personal Info
-					</label>
-					<div id='info' className='flex gap-3 flex-wrap'>
-						<Text className='flex gap-1 items-center'>
-							Enc Date:{" "}
-							<i className='text-sm'>
-								{new Date(queryData?.enc_date).toLocaleDateString()}
-							</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Enc time: <i className='text-sm'>{queryData?.time}</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Hosp No: <i className='text-sm'>{queryData?.patient?.hosp_no}</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Name:
-							<i className='text-sm'>{queryData?.patient?.name}</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Age:
-							<i className='text-sm'>{queryData?.patient?.age}</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Sex:
-							<i className='text-sm'>{queryData?.patient?.sex}</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Phone Number:
-							<i className='text-sm'>{queryData?.patient?.phone_no}</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Address:
-							<i className='text-sm'>{queryData?.patient?.town?.name}</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Care type:
-							<i className='text-sm'>{queryData?.care?.name}</i>
-						</Text>
-						<Text className='flex gap-1 items-center'>
-							Outcome:
-							<i className='text-sm'>{queryData?.outcome}</i>
-						</Text>
+				{queryData && (
+					<div className='space-y-3 pt-5'>
+						<label htmlFor='info' className='font-bold underline'>
+							Personal Info
+						</label>
+						<div id='info' className='flex gap-3 flex-wrap'>
+							<Text className='flex gap-1 items-center'>
+								Enc Date:{" "}
+								<i className='text-sm'>
+									{format(queryData?.enc_date, "dd/MM/yyyy")}
+								</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Enc time: <i className='text-sm'>{queryData?.time}</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Hosp No:{" "}
+								<i className='text-sm'>{queryData?.patient?.hosp_no}</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Name:
+								<i className='text-sm'>{queryData?.patient?.name}</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Age:
+								<i className='text-sm'>{queryData?.patient?.age}</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Sex:
+								<i className='text-sm'>{queryData?.patient?.sex}</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Phone Number:
+								<i className='text-sm'>{queryData?.patient?.phone_no}</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Address:
+								<i className='text-sm'>{queryData?.patient?.town?.name}</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Care type:
+								<i className='text-sm'>{queryData?.care?.name}</i>
+							</Text>
+							<Text className='flex gap-1 items-center'>
+								Outcome:
+								<i className='text-sm'>{queryData?.outcome}</i>
+							</Text>
+						</div>
 					</div>
-				</div>
+				)}
 				{queryData?.admission && (
 					<div className='space-y-3 pt-5'>
 						<label htmlFor='info' className='font-bold underline'>
@@ -253,8 +256,8 @@ const View = () => {
 										Operation date:
 										<i className='text-sm'>
 											{queryData?.operations[0]?.proc_date
-												? format(queryData?.operations[0]?.proc_date, "P")
-												: null}
+												? format(queryData?.operations[0]?.proc_date, "Pp")
+												: ""}
 										</i>
 									</Text>
 									<Text>
@@ -416,88 +419,87 @@ const View = () => {
 						</Table>
 					</div>
 					<section style={{ display: "none" }}>
-						<div ref={contentRef} className='printable space-y-2 text-xs'>
-							<div className='flex gap-1 justify-between w-full'>
-								<Image
-									src='/hospital.svg'
-									height={45}
-									width={50}
-									alt='Albarka logo'
-									loading='eager'
-								/>
-								<div className='w-full'>
-									<h2 className='font-extrabold font-serif '>
-										ALBARKA HOSPITAL
-									</h2>
-									<p className=''>Tel: 08056713362, 08080854480</p>
-									<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
-									<p className='italic'>
-										Malale road, Off Rofia road, Wawa New Bussa Niger state
-										Nigeria.
-									</p>
+						{queryData && (
+							<div ref={contentRef} className='printable space-y-2 text-xs'>
+								<div className='flex gap-1 justify-between w-full'>
+									<Image
+										src='/hospital.svg'
+										height={45}
+										width={50}
+										alt='Albarka logo'
+										loading='eager'
+									/>
+									<div className='w-full'>
+										<h2 className='font-extrabold font-serif '>
+											ALBARKA HOSPITAL
+										</h2>
+										<p className=''>Tel: 08056713362, 08080854480</p>
+										<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
+										<p className='italic'>
+											Malale road, Off Rofia road, Wawa New Bussa Niger state
+											Nigeria.
+										</p>
+									</div>
+									<p>{format(new Date(), "d/MM/Y , pp")}</p>
 								</div>
-								<p>{format(new Date(), "d/MM/Y , pp")}</p>
-							</div>
-							<p className='text-xs font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
-								Prescriptions for Hosp No: {queryData?.patient?.hosp_no} on{" "}
-								{new Date(queryData?.enc_date).toLocaleDateString()},{" "}
-								{queryData?.time}
-							</p>
-							<Table id='drugs'>
-								<Table.Thead>
-									<Table.Tr>
-										<Table.Th>Name</Table.Th>
-										<Table.Th>Rate</Table.Th>
-										<Table.Th>Quantity</Table.Th>
-										<Table.Th>Price</Table.Th>
-									</Table.Tr>
-								</Table.Thead>
-								<Table.Tbody>
-									{queryData?.drugsGiven?.map((drug: any, i: number) => (
-										<Table.Tr key={drug?.id}>
-											<Table.Td>{drug?.name}</Table.Td>
+								<p className='text-xs font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
+									Prescriptions for {queryData?.patient?.name} on{" "}
+									{format(queryData?.enc_date, "dd/MM/yyyy")}, {queryData?.time}
+								</p>
+								<Table id='drugs'>
+									<Table.Thead>
+										<Table.Tr>
+											<Table.Th>Name</Table.Th>
+											<Table.Th>Rate</Table.Th>
+											<Table.Th>Quantity</Table.Th>
+											<Table.Th>Price</Table.Th>
+										</Table.Tr>
+									</Table.Thead>
+									<Table.Tbody>
+										{queryData?.drugsGiven?.map((drug: any, i: number) => (
+											<Table.Tr key={drug?.id}>
+												<Table.Td>{drug?.name}</Table.Td>
+												<Table.Td>
+													<NumberFormatter
+														value={Number(drug?.rate)}
+														thousandSeparator
+													/>
+												</Table.Td>
+												<Table.Td>{drug?.quantity}</Table.Td>
+												<Table.Td>
+													<NumberFormatter
+														value={Number(drug?.rate) * Number(drug?.quantity)}
+														thousandSeparator
+													/>
+												</Table.Td>
+											</Table.Tr>
+										))}
+										<Table.Tr className='bg-gray-300 font-bold'>
+											<Table.Td></Table.Td>
+											<Table.Td></Table.Td>
+											<Table.Td>Total: </Table.Td>
 											<Table.Td>
-												<NumberFormatter
-													value={Number(drug?.rate)}
-													thousandSeparator
-												/>
-											</Table.Td>
-											<Table.Td>{drug?.quantity}</Table.Td>
-											<Table.Td>
-												<NumberFormatter
-													value={Number(drug?.rate) * Number(drug?.quantity)}
-													thousandSeparator
-												/>
+												<NumberFormatter value={total} thousandSeparator />
 											</Table.Td>
 										</Table.Tr>
-									))}
-								</Table.Tbody>
-								<Table.Tfoot className='bg-gray-300 font-bold'>
-									<Table.Tr>
-										<Table.Td></Table.Td>
-										<Table.Td></Table.Td>
-										<Table.Td>Total: </Table.Td>
-										<Table.Td>
+									</Table.Tbody>
+								</Table>
+								<div className='flex justify-between items-center px-2 py-2'>
+									<Text fw={600}>
+										Total amount paid:
+										<b className='text-sm pl-2'>
 											<NumberFormatter value={total} thousandSeparator />
-										</Table.Td>
-									</Table.Tr>
-								</Table.Tfoot>
-							</Table>
-							<div className='flex justify-between items-center px-2 py-2'>
-								<Text fw={600}>
-									Total amount paid:
-									<b className='text-sm pl-2'>
-										<NumberFormatter value={total} thousandSeparator />
-									</b>
-								</Text>
-								<Text fw={600}>
-									Total amount in words:
-									<i className='text-sm pl-2 capitalize'>
-										{convert(Number(total))} Naira
-									</i>
-								</Text>
+										</b>
+									</Text>
+									<Text fw={600}>
+										Total amount in words:
+										<i className='text-sm pl-2 capitalize'>
+											{convert(Number(total))} Naira
+										</i>
+									</Text>
+								</div>
 							</div>
-						</div>
+						)}
 					</section>
 					<div id='labs' className='flex gap-2 flex-wrap mb-3'>
 						<label htmlFor='diag' className='font-bold'>

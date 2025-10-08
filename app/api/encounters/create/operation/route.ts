@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 		const labs = labTest?.map((test: any) => {
 			return {
 				id: test?.lab_id,
-				date: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+				date: new Date(),
 				year: curYear,
 				month: curMonth,
 				info: test?.info,
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
 				name: drug?.name,
 				quantity: drug?.quantity,
 				price: drug?.price,
-				date: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+				date: new Date(),
 				year: curYear,
 				month: curMonth,
 			};
@@ -125,7 +125,7 @@ export async function POST(request: Request) {
 					stock_remain: d?.curr_stock,
 					year: curYear,
 					month: curMonth,
-					date: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+					date: new Date(),
 					time,
 					given_id: created.drugsGiven.find((g: any) => g.drug_id == d?.id)?.id,
 					enc_id: created.id,

@@ -307,7 +307,9 @@ const page = () => {
 		}
 		if (criteria == "Occupation") {
 			const found = queryData?.filter((d: any) =>
-				String(d?.occupation).toLowerCase().includes(value)
+				String(d?.occupation)
+					.toLowerCase()
+					.includes(String(value).toLowerCase())
 			);
 			setSortedData(found);
 		}

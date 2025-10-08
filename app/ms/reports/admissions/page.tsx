@@ -294,7 +294,10 @@ const page = () => {
 						<h2>Total Count: {sortedData.length}</h2>
 						<h2>
 							Average Admission days:{" "}
-							<NumberFormatter value={avg} thousandSeparator />
+							<NumberFormatter
+								value={Number(avg).toFixed(1)}
+								thousandSeparator
+							/>
 						</h2>
 					</div>
 				}

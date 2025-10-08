@@ -128,7 +128,9 @@ export default function StatementsT({
 		}
 		if (criteria == "Cashier") {
 			const found = queryData?.filter((d: any) =>
-				String(d?.createdBy?.username).toLowerCase().includes(value)
+				String(d?.createdBy?.username)
+					.toLowerCase()
+					.includes(String(value).toLowerCase())
 			);
 			setSortedData(found);
 		}

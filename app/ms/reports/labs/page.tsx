@@ -62,22 +62,23 @@ const page = () => {
 
 	const getFilter = () => {
 		if (criteria == "Result") {
-			const found = queryData?.filter((d: any) => d?.testType?.name == test);
+			const found = queryData?.filter((d: any) => d?.testType?.id == test);
 			const filtered = found?.filter((f: any) =>
-				String(f?.result).toLowerCase().includes(result)
+				String(f?.result).toLowerCase().includes(String(result).toLowerCase())
 			);
 			setSortedData(filtered);
 		}
 		if (criteria == "Info") {
-			const found = queryData?.filter((d: any) => d?.testType?.name == test);
+			const found = queryData?.filter((d: any) => d?.testType?.id == test);
 			const filtered = found?.filter((f: any) => f?.info == info);
 			setSortedData(filtered);
 		}
 		if (criteria == "Result and Info") {
-			const found = queryData?.filter((d: any) => d?.testType?.name == test);
+			const found = queryData?.filter((d: any) => d?.testType?.id == test);
 			const filtered = found?.filter(
 				(f: any) =>
-					f?.info == info && String(f?.result).toLowerCase().includes(result)
+					f?.info == info &&
+					String(f?.result).toLowerCase().includes(String(result).toLowerCase())
 			);
 			setSortedData(filtered);
 		}
@@ -208,7 +209,7 @@ const page = () => {
 		const getD = async () => {
 			const { data } = await fetch("/settings/tests");
 			const sorted = data.map((d: { name: string; id: string }) => {
-				return d.name;
+				return { value: d.id, label: d.name };
 			});
 			setTests(sorted);
 		};
@@ -216,7 +217,7 @@ const page = () => {
 	}, []);
 	useEffect(() => {
 		if (test) {
-			const found = queryData?.filter((d: any) => d?.testType?.name == test);
+			const found = queryData?.filter((d: any) => d?.testType?.id == test);
 			setSortedData(found);
 		} else {
 			setSortedData(queryData);

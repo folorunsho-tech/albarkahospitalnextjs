@@ -267,8 +267,8 @@ const Create = () => {
 						<p>{format(new Date(), "d/MM/Y , pp")}</p>
 					</div>
 					<label htmlFor='drugs' className='font-bold text-xs underline'>
-						Prescriptions for Hosp No: {patientData?.hosp_no} - Name:{" "}
-						{patientData?.name} on {format(new Date(), "dd/MM/yyyy HH:mm")}
+						Prescriptions for {patientData?.name} on{" "}
+						{format(new Date(), "dd/MM/yyyy, p")}
 					</label>
 					<section className='printable text-xs'>
 						<Table id='drugs'>
@@ -299,9 +299,7 @@ const Create = () => {
 										</Table.Td>
 									</Table.Tr>
 								))}
-							</Table.Tbody>
-							<Table.Tfoot className='bg-gray-300 font-bold'>
-								<Table.Tr>
+								<Table.Tr className='bg-gray-300 font-bold'>
 									<Table.Td></Table.Td>
 									<Table.Td></Table.Td>
 									<Table.Td>Total: </Table.Td>
@@ -309,7 +307,7 @@ const Create = () => {
 										<NumberFormatter value={total} thousandSeparator />
 									</Table.Td>
 								</Table.Tr>
-							</Table.Tfoot>
+							</Table.Tbody>
 						</Table>
 						<Text fw={600}>
 							Total amount in words:

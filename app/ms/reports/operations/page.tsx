@@ -125,13 +125,13 @@ const page = () => {
 	const getFilter = () => {
 		if (criteria == "Surgeon") {
 			const found = queryData.filter((d: any) =>
-				String(d?.surgeon).toLowerCase().includes(value)
+				String(d?.surgeon).toLowerCase().includes(String(value).toLowerCase())
 			);
 			setSortedData(found);
 		}
 		if (criteria == "Assistant") {
 			const found = queryData.filter((d: any) =>
-				String(d?.assistant).toLowerCase().includes(value)
+				String(d?.assistant).toLowerCase().includes(String(value).toLowerCase())
 			);
 			setSortedData(found);
 		}

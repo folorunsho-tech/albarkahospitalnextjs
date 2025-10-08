@@ -232,19 +232,20 @@ const Create = () => {
 					label='Sex'
 					placeholder='Select patient sex'
 					data={["Male", "Female"]}
-					required
-					allowDeselect={false}
 					value={sex}
 					onChange={(value: any) => {
 						setSex(value);
 					}}
+					required
+					searchable
+					nothingFoundMessage='Nothing found...'
 				/>
 				<TextInput
 					label='Card No'
 					placeholder='hospital card no...'
 					required
 					value={hosp_no}
-					error={Number(no) ? "" : "Hosp No is not correct"}
+					error={Number(no) ? "" : "Invalid Hosp No"}
 					onChange={(e) => {
 						const splitted = Number(e.currentTarget.value.split("/")[1]);
 						setHospNo(e.currentTarget.value);
@@ -277,6 +278,7 @@ const Create = () => {
 					onChange={(value) => {
 						setAge(value);
 					}}
+					required
 				/>
 				<TextInput
 					label='Occupation'
