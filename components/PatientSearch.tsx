@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Combobox, Loader, TextInput, useCombobox } from "@mantine/core";
 import axios from "@/lib/config";
 import { Search } from "lucide-react";
+import { useDebouncedCallback } from "@mantine/hooks";
 
 function getAsyncData(searchQuery: string, signal: AbortSignal) {
 	return new Promise<string[]>((resolve, reject) => {
@@ -39,7 +40,7 @@ export default function PatientSearch({
 	const [empty, setEmpty] = useState(false);
 	const abortController = useRef<AbortController | undefined>(null);
 
-	const fetchOptions = (query: string) => {
+	const fetchOptions = useDebouncedCallback((query: string) => {
 		abortController.current?.abort();
 		abortController.current = new AbortController();
 		setLoading(true);
@@ -52,7 +53,7 @@ export default function PatientSearch({
 				abortController.current = undefined;
 			})
 			.catch(() => {});
-	};
+	}, 500);
 
 	const options = (data || []).map((item) => (
 		<Combobox.Option value={item?.hosp_no} key={item?.hosp_no}>

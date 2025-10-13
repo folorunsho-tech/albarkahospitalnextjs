@@ -50,7 +50,7 @@ const Receipts = ({ id }: { id: string }) => {
 		<Table.Tr key={row?.id}>
 			<Table.Td>{i + 1}</Table.Td>
 			<Table.Td>{row?.id}</Table.Td>
-			<Table.Td>{format(new Date(row?.createdAt), "Pp")}</Table.Td>
+			<Table.Td>{format(new Date(row?.createdAt), "dd/MM/yyyy, pp")}</Table.Td>
 			<Table.Td>{JSON.parse(row?.items).length}</Table.Td>
 			<Table.Td>{row?.createdBy?.username}</Table.Td>
 			<Table.Td className={getStatus(row?.status)}>{row?.status}</Table.Td>
@@ -97,11 +97,11 @@ const Receipts = ({ id }: { id: string }) => {
 				size='xl'
 			>
 				{selected && (
-					<div ref={contentRef} className='printable text-[10px]'>
+					<div ref={contentRef} className='printable text-[9px] px-3 w-full'>
 						<div className='flex gap-1 justify-between w-full'>
 							<Image
 								src='/hospital.svg'
-								height={45}
+								height={40}
 								width={50}
 								alt='Albarka logo'
 								loading='eager'
@@ -115,7 +115,7 @@ const Receipts = ({ id }: { id: string }) => {
 									Nigeria.
 								</p>
 							</div>
-							<p>{format(new Date(), "d/MM/Y , pp")}</p>
+							<p>{format(new Date(), "d/MM/y , pp")}</p>
 						</div>
 
 						<div className='flex flex-wrap gap-1 my-2'>
@@ -169,12 +169,13 @@ const Receipts = ({ id }: { id: string }) => {
 								</p>
 							</div>
 						</div>
-						<Table fz={12}>
+						<Table fz={9}>
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th>Item</Table.Th>
-									<Table.Th>Amount</Table.Th>
+									<Table.Th>Amnt.</Table.Th>
 									<Table.Th>Paid</Table.Th>
+									<Table.Th>Bal.</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
@@ -193,6 +194,12 @@ const Receipts = ({ id }: { id: string }) => {
 												thousandSeparator
 											/>
 										</Table.Td>
+										<Table.Td>
+											<NumberFormatter
+												value={Number(item?.balance)}
+												thousandSeparator
+											/>
+										</Table.Td>
 									</Table.Tr>
 								))}
 							</Table.Tbody>
@@ -201,6 +208,7 @@ const Receipts = ({ id }: { id: string }) => {
 									<Table.Td>Total: </Table.Td>
 									<Table.Td>
 										<NumberFormatter
+											prefix='N '
 											value={items?.reduce(
 												(prev: any, curr: { price: number }) => {
 													return prev + curr.price;
@@ -212,6 +220,19 @@ const Receipts = ({ id }: { id: string }) => {
 									</Table.Td>
 									<Table.Td>
 										<NumberFormatter
+											prefix='N '
+											value={items?.reduce(
+												(prev: any, curr: { paid: number }) => {
+													return Number(prev) + Number(curr.paid);
+												},
+												0
+											)}
+											thousandSeparator
+										/>
+									</Table.Td>
+									<Table.Td>
+										<NumberFormatter
+											prefix='N '
 											value={items?.reduce(
 												(prev: any, curr: { paid: number }) => {
 													return Number(prev) + Number(curr.paid);
@@ -225,7 +246,7 @@ const Receipts = ({ id }: { id: string }) => {
 							</Table.Tfoot>
 						</Table>
 						<div className='flex justify-between items-center px-2 py-2'>
-							<Text fw={600} fz={12}>
+							<Text fw={600} fz={9}>
 								Total amount in words:
 								<i className=' pl-2 capitalize'>
 									{convert(
@@ -240,8 +261,8 @@ const Receipts = ({ id }: { id: string }) => {
 							</Text>
 						</div>
 						<Divider my='sm' size='xs' color='black' />
-						<div className='text-center mt-4 text-xs'>
-							<Text fw={600} className='italic' fz={12}>
+						<div className='text-center mt-4'>
+							<Text fw={600} className='italic' fz={9}>
 								*** Thanks. And when I am ill it is God who heals me.***
 							</Text>
 						</div>

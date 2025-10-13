@@ -19,6 +19,11 @@ export async function POST(
 							patient: true,
 						},
 					},
+					tnxItem: {
+						select: {
+							balance: true,
+						},
+					},
 					createdBy: {
 						select: {
 							username: true,
@@ -43,6 +48,11 @@ export async function POST(
 					transaction: {
 						select: {
 							patient: true,
+						},
+					},
+					tnxItem: {
+						select: {
+							balance: true,
 						},
 					},
 					createdBy: {
@@ -81,6 +91,11 @@ export async function POST(
 							patient: true,
 						},
 					},
+					tnxItem: {
+						select: {
+							balance: true,
+						},
+					},
 					createdBy: {
 						select: {
 							username: true,
@@ -115,6 +130,11 @@ export async function POST(
 					transaction: {
 						select: {
 							patient: true,
+						},
+					},
+					tnxItem: {
+						select: {
+							balance: true,
 						},
 					},
 					createdBy: {

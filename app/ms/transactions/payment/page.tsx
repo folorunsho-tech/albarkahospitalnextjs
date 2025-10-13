@@ -56,8 +56,6 @@ const page = () => {
 	} | null>(null);
 	const [outstanding, setOutstanding] = useState<any[]>([]);
 	const [prevTnx, setPrevTnx] = useState<any[]>([]);
-
-	const [cleared, setCleared] = useState<boolean>(false);
 	const [items, setItems] = useState<
 		{
 			name: string | undefined;
@@ -88,6 +86,12 @@ const page = () => {
 	const rPay = reciept?.items?.reduce((prev: any, curr: { paid: number }) => {
 		return Number(prev) + Number(curr.paid);
 	}, 0);
+	const rBal = reciept?.items?.reduce(
+		(prev: any, curr: { balance: number }) => {
+			return Number(prev) + Number(curr.balance);
+		},
+		0
+	);
 	const rAmount = reciept?.items?.reduce(
 		(prev: any, curr: { price: number }) => {
 			return prev + curr.price;
@@ -153,11 +157,11 @@ const page = () => {
 		<main className='space-y-4'>
 			{reciept && (
 				<section style={{ display: "none" }}>
-					<div ref={contentRef} className='printable text-xs'>
+					<div ref={contentRef} className='printable text-[9px] px-3'>
 						<div className='flex justify-between gap-1 w-full'>
 							<Image
 								src='/hospital.svg'
-								height={50}
+								height={40}
 								width={50}
 								alt='Albarka logo'
 								loading='eager'
@@ -171,9 +175,9 @@ const page = () => {
 									Nigeria.
 								</p>
 							</div>
-							<p>{format(new Date(), "d/MM/Y , pp")}</p>
+							<p>{format(new Date(), "d/MM/yyyy , pp")}</p>
 						</div>
-						<div className='flex flex-wrap gap-2 my-1 text-xs'>
+						<div className='flex flex-wrap gap-2 my-1 '>
 							<div className='flex items-center'>
 								<h2 className='font-extrabold uppercase font-serif '>
 									Receipt No:
@@ -222,12 +226,13 @@ const page = () => {
 								</p>
 							</div>
 						</div>
-						<Table fz={12}>
+						<Table fz={9}>
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th>Item</Table.Th>
-									<Table.Th>Amount</Table.Th>
+									<Table.Th>Amnt.</Table.Th>
 									<Table.Th>Paid</Table.Th>
+									<Table.Th>Bal.</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
@@ -246,6 +251,12 @@ const page = () => {
 												thousandSeparator
 											/>
 										</Table.Td>
+										<Table.Td>
+											<NumberFormatter
+												value={Number(item?.balance)}
+												thousandSeparator
+											/>
+										</Table.Td>
 									</Table.Tr>
 								))}
 							</Table.Tbody>
@@ -258,18 +269,21 @@ const page = () => {
 									<Table.Td>
 										<NumberFormatter value={rPay} thousandSeparator />
 									</Table.Td>
+									<Table.Td>
+										<NumberFormatter value={rBal} thousandSeparator />
+									</Table.Td>
 								</Table.Tr>
 							</Table.Tfoot>
 						</Table>
 						<div className='flex justify-between items-center px-2 py-2'>
-							<Text fw={600} fz={12}>
+							<Text fw={600} fz={9}>
 								Total amount in words:
 								<i className='pl-2 capitalize'>{convert(Number(rPay))} Naira</i>
 							</Text>
 						</div>
 						<Divider my='sm' size='xs' color='black' />
 						<div className='text-center mt-3'>
-							<Text fw={600} fz={12} className='italic'>
+							<Text fw={600} fz={9} className='italic'>
 								*** Thanks. And when I am ill it is God who heals me.***
 							</Text>
 						</div>

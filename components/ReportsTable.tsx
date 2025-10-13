@@ -64,12 +64,12 @@ const ReportsTable = ({
 	return (
 		<Box pos='relative'>
 			<section style={{ display: "none" }}>
-				<div ref={contentRef} className='printable text-xs'>
+				<div ref={contentRef} className='printable px-1 text-[9px] w-full'>
 					<div className='flex items-start gap-4 mb-2'>
 						<Image
 							src='/hospital.svg'
-							height={120}
-							width={120}
+							height={100}
+							width={100}
 							alt='Albarka logo'
 							loading='eager'
 						/>
@@ -84,13 +84,13 @@ const ReportsTable = ({
 								<b>Address:</b> Malale road, Off Rofia road, Wawa, New Bussa
 								Niger state Nigeria.
 							</p>
-							<p className='text-sm font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
+							<p className='font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
 								{tableReport} - {loaded}
 							</p>
 						</div>
 					</div>
 					{metadata}
-					<Table miw={700}>
+					<Table miw={700} fz={8}>
 						<Table.Thead>
 							<Table.Tr>
 								{printHeaders?.map((head: string, index: number) => (

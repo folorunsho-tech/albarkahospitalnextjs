@@ -35,7 +35,7 @@ const page = () => {
 	const [id, setId] = useState("");
 	const [criteria, setCriteria] = useState<
 		"Reciept / Tnx No" | "Hosp No" | null | string
-	>("Hosp No");
+	>("Reciept / Tnx No");
 	const [tnx, setTnx] = useState<any | null>(null);
 	const [item, setItem] = useState<any | null>(null);
 	const [items, setItems] = useState<
@@ -77,6 +77,12 @@ const page = () => {
 	const rPay = reciept?.items?.reduce((prev: any, curr: { paid: number }) => {
 		return Number(prev) + Number(curr.paid);
 	}, 0);
+	const rBal = reciept?.items?.reduce(
+		(prev: any, curr: { balance: number }) => {
+			return Number(prev) + Number(curr.balance);
+		},
+		0
+	);
 	const rAmount = reciept?.items?.reduce(
 		(prev: any, curr: { price: number }) => {
 			return prev + curr.price;
@@ -136,11 +142,11 @@ const page = () => {
 		<main className='space-y-12'>
 			{reciept && (
 				<section style={{ display: "none" }}>
-					<div ref={contentRef} className='printable text-xs'>
+					<div ref={contentRef} className='printable text-[9px]'>
 						<div className='flex justify-between gap-1 w-full'>
 							<Image
 								src='/hospital.svg'
-								height={50}
+								height={40}
 								width={50}
 								alt='Albarka logo'
 								loading='eager'
@@ -156,7 +162,7 @@ const page = () => {
 							</div>
 							<p>{format(new Date(), "d/MM/Y , pp")}</p>
 						</div>
-						<div className='flex flex-wrap gap-2 my-1 text-xs'>
+						<div className='flex flex-wrap gap-2 my-1'>
 							<div className='flex items-center'>
 								<h2 className='font-extrabold uppercase font-serif '>
 									Receipt No:
@@ -168,7 +174,7 @@ const page = () => {
 									Tnx Date:
 								</h2>
 								<p className='underline pl-1.5'>
-									{format(new Date(reciept?.createdAt), "d/MM/Y , pp")}
+									{format(new Date(reciept?.createdAt), "d/MM/yyyy , pp")}
 								</p>
 							</div>
 							<div className='flex items-center'>
@@ -206,12 +212,13 @@ const page = () => {
 								</p>
 							</div>
 						</div>
-						<Table fz={12}>
+						<Table fz={9}>
 							<Table.Thead>
 								<Table.Tr>
 									<Table.Th>Item</Table.Th>
-									<Table.Th>Amount</Table.Th>
+									<Table.Th>Amnt.</Table.Th>
 									<Table.Th>Paid</Table.Th>
+									<Table.Th>Bal.</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
@@ -230,6 +237,12 @@ const page = () => {
 												thousandSeparator
 											/>
 										</Table.Td>
+										<Table.Td>
+											<NumberFormatter
+												value={Number(item?.balance)}
+												thousandSeparator
+											/>
+										</Table.Td>
 									</Table.Tr>
 								))}
 							</Table.Tbody>
@@ -242,25 +255,28 @@ const page = () => {
 									<Table.Td>
 										<NumberFormatter value={rPay} thousandSeparator />
 									</Table.Td>
+									<Table.Td>
+										<NumberFormatter value={rBal} thousandSeparator />
+									</Table.Td>
 								</Table.Tr>
 							</Table.Tfoot>
 						</Table>
 						<div className='flex justify-between items-center px-2 py-2'>
-							<Text fw={600} fz={12}>
+							<Text fw={600} fz={9}>
 								Total amount in words:
 								<i className='pl-2 capitalize'>{convert(Number(rPay))} Naira</i>
 							</Text>
 						</div>
 						<Divider my='sm' size='xs' color='black' />
 						<div className='text-center mt-3'>
-							<Text fw={600} fz={12} className='italic'>
+							<Text fw={600} fz={9} className='italic'>
 								*** Thanks. And when I am ill it is God who heals me.***
 							</Text>
 						</div>
 					</div>
 				</section>
 			)}
-			<header className='flex justify-between items-center'>
+			<header className='flex justify-between items-center w-full'>
 				<Link
 					className='bg-blue-500 hover:bg-blue-600 p-1 px-2 rounded-lg text-white flex gap-3'
 					href='/ms/transactions'
@@ -273,6 +289,7 @@ const page = () => {
 						label='Tnx search criteria'
 						placeholder='search criteria'
 						value={criteria}
+						className='w-40'
 						data={["Reciept / Tnx No", "Hosp No"]}
 						onChange={(value) => {
 							setTnx(null);
@@ -285,9 +302,9 @@ const page = () => {
 							<TextInput
 								label='Receipt / Tnx No'
 								placeholder='load tnx by reciept no or tnx id'
-								// className='w-52'
 								rightSection={<Search size={20} />}
 								value={id}
+								className='w-60'
 								onChange={(e) => {
 									setId(e.currentTarget.value);
 								}}

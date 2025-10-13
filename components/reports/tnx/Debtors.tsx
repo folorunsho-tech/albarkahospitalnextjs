@@ -36,7 +36,7 @@ const Debtors = () => {
 		</Table.Tr>
 	));
 	const printRows = sortedData?.map((row, i) => (
-		<Table.Tr key={row?.id} className='text-[10px]'>
+		<Table.Tr key={row?.id} className='text-[9px]'>
 			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.transactionId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
@@ -159,6 +159,7 @@ const Debtors = () => {
 					post={post}
 					setQueryData={setQueryData}
 					setLoaded={setLoaded}
+					defaultLoad='date'
 				/>
 
 				<Text size='md' fw={600}>

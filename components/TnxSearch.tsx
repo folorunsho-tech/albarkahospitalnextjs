@@ -10,6 +10,7 @@ import {
 	useCombobox,
 } from "@mantine/core";
 import axios from "@/lib/config";
+import { useDebouncedCallback } from "@mantine/hooks";
 
 function getAsyncData(searchQuery: string, signal: AbortSignal) {
 	return new Promise<string[]>((resolve, reject) => {
@@ -45,7 +46,7 @@ export default function TnxSearch({
 	const [empty, setEmpty] = useState(false);
 	const abortController = useRef<AbortController | undefined>(null);
 
-	const fetchOptions = (query: string) => {
+	const fetchOptions = useDebouncedCallback((query: string) => {
 		abortController.current?.abort();
 		abortController.current = new AbortController();
 		setLoading(true);
@@ -58,7 +59,7 @@ export default function TnxSearch({
 				abortController.current = undefined;
 			})
 			.catch(() => {});
-	};
+	}, 500);
 
 	const options = (data || []).map((item) => (
 		<Combobox.Option value={item?.id} key={item?.id}>

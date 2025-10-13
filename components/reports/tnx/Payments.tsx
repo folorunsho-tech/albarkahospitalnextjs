@@ -34,13 +34,15 @@ const Payments = () => {
 			<Table.Td>
 				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
+			<Table.Td>
+				<NumberFormatter value={row?.tnxItem?.balance} thousandSeparator />
+			</Table.Td>
 			<Table.Td>{row?.method}</Table.Td>
-			<Table.Td>{row?.type}</Table.Td>
 			<Table.Td>{row?.createdBy?.username}</Table.Td>
 		</Table.Tr>
 	));
 	const printRows = sortedData?.map((row, i) => (
-		<Table.Tr key={row?.id} className='text-[10px]'>
+		<Table.Tr key={row?.id}>
 			<Table.Td>{format(new Date(row?.createdAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.tnxId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
@@ -49,13 +51,18 @@ const Payments = () => {
 			<Table.Td>
 				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
+			<Table.Td>
+				<NumberFormatter value={row?.tnxItem?.balance} thousandSeparator />
+			</Table.Td>
 			<Table.Td>{row?.method}</Table.Td>
-			<Table.Td>{row?.type}</Table.Td>
 			<Table.Td>{row?.createdBy?.username}</Table.Td>
 		</Table.Tr>
 	));
 	const totalPay = sortedData.reduce((prev, curr) => {
 		return Number(prev) + Number(curr.paid);
+	}, 0);
+	const totalBal = sortedData.reduce((prev, curr) => {
+		return Number(prev) + Number(curr.tnxItem?.balance);
 	}, 0);
 	const getValuesUI = () => {
 		if (criteria == "Cashier") {
@@ -206,6 +213,7 @@ const Payments = () => {
 					post={post}
 					setQueryData={setQueryData}
 					setLoaded={setLoaded}
+					defaultLoad='date'
 				/>
 
 				<Text size='md' fw={600}>
@@ -220,9 +228,9 @@ const Payments = () => {
 					"Hosp No",
 					"Name",
 					"Item",
-					"Paid(N)",
-					"Method",
-					"Type",
+					"Paid",
+					"Bal.",
+					"Meth.",
 					"Cashier",
 				]}
 				printHeaders={[
@@ -231,9 +239,9 @@ const Payments = () => {
 					"Hosp No",
 					"Name",
 					"Item",
-					"Paid(N)",
-					"Method",
-					"Type",
+					"Paid",
+					"Bal.",
+					"Meth.",
 					"Cashier",
 				]}
 				sortedData={sortedData}
@@ -259,9 +267,11 @@ const Payments = () => {
 						<Table.Td></Table.Td>
 						<Table.Td></Table.Td>
 						<Table.Td>
-							<NumberFormatter value={totalPay} thousandSeparator />
+							<NumberFormatter prefix='N ' value={totalPay} thousandSeparator />
 						</Table.Td>
-						<Table.Td></Table.Td>
+						<Table.Td>
+							<NumberFormatter prefix='N ' value={totalBal} thousandSeparator />
+						</Table.Td>
 						<Table.Td></Table.Td>
 						<Table.Td></Table.Td>
 					</Table.Tr>
