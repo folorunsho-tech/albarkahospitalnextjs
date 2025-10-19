@@ -11,7 +11,7 @@ const DataLoader = ({
 	setQueryData,
 	post,
 	updated,
-	defaultLoad = "yearnmonth",
+	defaultLoad = "date",
 	setLoaded,
 }: {
 	link: string;
