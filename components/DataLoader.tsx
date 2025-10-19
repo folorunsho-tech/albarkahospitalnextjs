@@ -62,7 +62,7 @@ const DataLoader = ({
 			return (
 				<DatePickerInput
 					label='Pick date'
-					placeholder='Pick date'
+					placeholder='Pick a date'
 					value={cDate}
 					onChange={(datevalue: any) => {
 						setCDate(datevalue);
