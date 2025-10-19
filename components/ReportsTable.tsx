@@ -90,7 +90,7 @@ const ReportsTable = ({
 						</div>
 					</div>
 					{metadata}
-					<Table miw={700} fz={8}>
+					<Table verticalSpacing={3} fz={8}>
 						<Table.Thead>
 							<Table.Tr>
 								{printHeaders?.map((head: string, index: number) => (
@@ -122,12 +122,12 @@ const ReportsTable = ({
 				<ScrollArea h={700}>
 					{metadata}
 					<Table
-						miw={700}
 						striped
 						highlightOnHover
 						withTableBorder
 						withColumnBorders
 						className='text-xs'
+						verticalSpacing={3}
 					>
 						<Table.Thead>
 							<Table.Tr>
