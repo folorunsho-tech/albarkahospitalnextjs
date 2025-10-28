@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 			feeId: item?.feeId,
 			price: item?.price,
 			paid: item?.paid,
-			balance: item?.balance,
+			balance: Number(item?.price) - Number(item?.paid),
 			year: curYear,
 			month: curMonth,
 			name: item?.name,

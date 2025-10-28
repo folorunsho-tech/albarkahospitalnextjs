@@ -22,6 +22,7 @@ export async function POST(
 					tnxItem: {
 						select: {
 							balance: true,
+							price: true,
 						},
 					},
 					createdBy: {
@@ -53,6 +54,7 @@ export async function POST(
 					tnxItem: {
 						select: {
 							balance: true,
+							price: true,
 						},
 					},
 					createdBy: {
@@ -94,6 +96,7 @@ export async function POST(
 					tnxItem: {
 						select: {
 							balance: true,
+							price: true,
 						},
 					},
 					createdBy: {
@@ -135,6 +138,7 @@ export async function POST(
 					tnxItem: {
 						select: {
 							balance: true,
+							price: true,
 						},
 					},
 					createdBy: {

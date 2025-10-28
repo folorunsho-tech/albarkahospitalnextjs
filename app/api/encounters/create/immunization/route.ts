@@ -37,6 +37,7 @@ export async function POST(request: Request) {
 				info: test?.info,
 				result: test?.result,
 				test_id: test?.id,
+				unit: test?.unit,
 				rate: test?.rate,
 			};
 		});
@@ -47,6 +48,7 @@ export async function POST(request: Request) {
 				name: drug?.name,
 				quantity: drug?.quantity,
 				price: drug?.price,
+				package: drug?.package,
 				date: new Date(),
 				year: curYear,
 				month: curMonth,

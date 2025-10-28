@@ -53,6 +53,7 @@ export async function POST(request: Request) {
 				result: test?.result,
 				test_id: test?.id,
 				rate: test?.rate,
+				unit: test?.unit,
 			};
 		});
 		const drugsG = drugsGiven?.map((drug: any) => {
@@ -65,6 +66,7 @@ export async function POST(request: Request) {
 				date: new Date(new Date().setUTCHours(0, 0, 0, 0)),
 				year: curYear,
 				month: curMonth,
+				package: drug?.package,
 			};
 		});
 		if (follow_up_to) {

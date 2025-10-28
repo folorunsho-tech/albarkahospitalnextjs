@@ -23,6 +23,7 @@ export async function POST(request: Request) {
 							},
 						},
 					},
+					tnxItem: true,
 					createdBy: {
 						select: {
 							username: true,

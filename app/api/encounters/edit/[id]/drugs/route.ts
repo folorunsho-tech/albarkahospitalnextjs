@@ -19,6 +19,7 @@ export async function POST(
 				data: {
 					rate: drug.rate,
 					quantity: drug.quantity,
+					package: drug.package,
 					price: drug.price,
 					month: body.month,
 					year: Number(body.year),

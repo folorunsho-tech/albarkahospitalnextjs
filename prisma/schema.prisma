@@ -170,6 +170,7 @@ model drugsgiven {
   drug_id          String?
   drug             drugsinventory?    @relation(fields: [drug_id], references: [id])
   name             String?
+  package          String?
   encounter_id     String?
   encounter        encounters?        @relation(fields: [encounter_id], references: [id])
   date             DateTime           @default(now())
@@ -204,6 +205,7 @@ model labtest {
   test_id      String
   testType     tests       @relation(fields: [test_id], references: [id])
   result       String?
+  unit         String?
   rate         Int?
   info         String?
   date         DateTime    @default(now())

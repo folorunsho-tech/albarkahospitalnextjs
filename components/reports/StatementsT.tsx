@@ -35,6 +35,9 @@ export default function StatementsT({
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
 			<Table.Td>
+				<NumberFormatter value={row?.tnxItem?.price} thousandSeparator />
+			</Table.Td>
+			<Table.Td>
 				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>{row?.method}</Table.Td>
@@ -43,12 +46,15 @@ export default function StatementsT({
 		</Table.Tr>
 	));
 	const printRows = sortedData?.map((row, i) => (
-		<Table.Tr key={row?.id} className='text-[10px]'>
+		<Table.Tr key={row?.id} className='text-[9px]'>
 			<Table.Td>{format(new Date(row?.createdAt), "dd/MM/yyyy, p")}</Table.Td>
 			<Table.Td>{row?.tnxId}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.hosp_no}</Table.Td>
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
+			<Table.Td>
+				<NumberFormatter value={row?.tnxItem?.price} thousandSeparator />
+			</Table.Td>
 			<Table.Td>
 				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
@@ -59,6 +65,9 @@ export default function StatementsT({
 	));
 	const totalPay = sortedData.reduce((prev, curr) => {
 		return Number(prev) + Number(curr.paid);
+	}, 0);
+	const totalBill = sortedData.reduce((prev, curr) => {
+		return Number(prev) + Number(curr.tnxItem?.price);
 	}, 0);
 	const getValuesUI = () => {
 		if (criteria == "Cashier") {
@@ -206,6 +215,7 @@ export default function StatementsT({
 				"Hosp No",
 				"Name",
 				"Item",
+				"Bill(N)",
 				"Paid(N)",
 				"Method",
 				"Type",
@@ -217,6 +227,7 @@ export default function StatementsT({
 				"Hosp No",
 				"Name",
 				"Item",
+				"Bill(N)",
 				"Paid(N)",
 				"Method",
 				"Type",
@@ -243,6 +254,9 @@ export default function StatementsT({
 					<Table.Td></Table.Td>
 					<Table.Td></Table.Td>
 					<Table.Td></Table.Td>
+					<Table.Td>
+						<NumberFormatter value={totalBill} thousandSeparator />
+					</Table.Td>
 					<Table.Td>
 						<NumberFormatter value={totalPay} thousandSeparator />
 					</Table.Td>

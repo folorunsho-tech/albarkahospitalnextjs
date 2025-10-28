@@ -15,8 +15,12 @@ import {
 	Table,
 } from "@mantine/core";
 import { IconPencil, IconReload } from "@tabler/icons-react";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { curYear, curMonth } from "@/lib/ynm";
+import { Printer } from "lucide-react";
+import { format } from "date-fns";
+import Image from "next/image";
+import { useReactToPrint } from "react-to-print";
 
 const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 	const { user } = useContext(userContext);
@@ -30,14 +34,23 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 	);
 	const [toEdit, setToEdit] = useState<any | null | undefined>(null);
 	const [data, setData] = useState<any | null | undefined>(null);
+	const [enc, setEnc] = useState<any | null | undefined>(null);
 	const [drugQnty, setDrugQnty] = useState(0);
 	const [drugRate, setDrugRate] = useState(0);
 	const [drugsList, setDrugsList] = useState([]);
+	const [drugPackage, setDrugPackage] = useState("");
 	const [drugM, setDrugM] = useState([]);
+	const contentRef = useRef<HTMLTableElement>(null);
+	const reactToPrintFn = useReactToPrint({
+		contentRef,
+		bodyClass: "print",
+		documentTitle: "labtest-list",
+	});
 	const getAll = async () => {
 		const { data } = await fetch("/drugsinventory");
 		const { data: enc } = await fetch(`/encounters/e/${enc_id}`);
 		setDrugsList(data);
+		setEnc(enc);
 		const sorted = data?.map((drug: any) => {
 			return {
 				value: drug?.id,
@@ -53,6 +66,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 				name: d?.name,
 				rate: d?.rate,
 				prev: d?.quantity,
+				package: d?.package,
 				added: 0,
 				quantity: d?.quantity,
 				price: Number(d?.rate) * Number(d?.quantity),
@@ -91,7 +105,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 						label='Drugs Given'
 						placeholder='Select one or more drugs given'
 						data={drugM}
-						className='w-[20rem]'
+						className='w-52'
 						value={selectedDrug?.id}
 						disabled
 					/>
@@ -117,6 +131,28 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 						onChange={(value) => {
 							setDrugQnty(Number(value));
 						}}
+					/>
+					<Select
+						label='Drug package'
+						placeholder='Select package'
+						data={[
+							"pieces",
+							"satchet ",
+							"bottle",
+							"tin",
+							"tube",
+							"roll",
+							"carton",
+						]}
+						className='w-40'
+						required
+						value={drugPackage}
+						onChange={(value: any) => {
+							setDrugPackage(value);
+						}}
+						clearable
+						searchable
+						nothingFoundMessage='Nothing found...'
 					/>
 					<NumberInput
 						label='Rate'
@@ -150,6 +186,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 										Number(selectedDrug?.stock_qty) - Number(drugQnty),
 									price:
 										Number(drugRate) * (Number(toEdit?.quantity) + drugQnty),
+									package: drugPackage,
 								},
 								...filtered,
 							]);
@@ -166,97 +203,194 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 							setDrugQnty(0);
 							setSelectedDrug(null);
 							setToEdit(null);
+
+							setDrugPackage("");
 						}}
 					>
 						Reset
 					</Button>
 				</section>
 			)}
-			<ScrollArea h={250}>
-				<Table>
-					<Table.Thead>
-						<Table.Tr>
-							<Table.Th>S/N</Table.Th>
-							<Table.Th>Name</Table.Th>
-							<Table.Th>Rate</Table.Th>
-							<Table.Th>Prev Quantity</Table.Th>
-							<Table.Th>Added Quantity</Table.Th>
-							<Table.Th>Total Quantity</Table.Th>
-							<Table.Th>Price</Table.Th>
-							<Table.Th></Table.Th>
-						</Table.Tr>
-					</Table.Thead>
-					<Table.Tbody>
-						{drugsGiven?.map((drug: any, i: number) => (
-							<Table.Tr key={drug?.id}>
-								<Table.Td>{i + 1}</Table.Td>
-								<Table.Td>{drug?.name}</Table.Td>
-								<Table.Td>
-									<NumberFormatter
-										prefix='NGN '
-										value={Number(drug?.rate)}
-										thousandSeparator
-									/>
-								</Table.Td>
-								<Table.Td>{drug?.prev}</Table.Td>
-								<Table.Td>{drug?.added}</Table.Td>
-								<Table.Td>{drug?.quantity}</Table.Td>
-								<Table.Td>
-									<NumberFormatter
-										prefix='NGN '
-										value={Number(drug?.rate) * Number(drug?.quantity)}
-										thousandSeparator
-									/>
-								</Table.Td>
-								{user?.role == "admin" && (
-									<Table.Td>
-										<ActionIcon
-											color='teal'
-											onClick={() => {
-												const found = drugsList?.find(
-													(d: any) => d?.drug?.name == drug?.name
-												);
-												const foundE = data?.find(
-													(d: any) => d?.id == drug?.id
-												);
-												setSelectedDrug(found);
-												setToEdit(foundE);
-												setDrugId(drug?.id);
-												setDrugName(drug?.name);
-												setDrugRate(drug?.rate);
-											}}
-										>
-											<IconPencil />
-										</ActionIcon>
-									</Table.Td>
-								)}
+			<div className='flex justify-between'>
+				<ScrollArea mah={150}>
+					<Table>
+						<Table.Thead>
+							<Table.Tr>
+								<Table.Th>S/N</Table.Th>
+								<Table.Th>Name</Table.Th>
+								<Table.Th>Rate</Table.Th>
+								<Table.Th>Prev Quantity</Table.Th>
+								<Table.Th>Added Quantity</Table.Th>
+								<Table.Th>Total Quantity</Table.Th>
+								<Table.Th>Package</Table.Th>
+								<Table.Th>Price</Table.Th>
+								<Table.Th></Table.Th>
 							</Table.Tr>
-						))}
-					</Table.Tbody>
-					<Table.Tfoot className='bg-gray-300 font-bold'>
-						<Table.Tr>
-							<Table.Td></Table.Td>
-							<Table.Td></Table.Td>
-							<Table.Td></Table.Td>
-							<Table.Td></Table.Td>
-							<Table.Td></Table.Td>
-							<Table.Td>Total: </Table.Td>
-							<Table.Td>
-								<NumberFormatter
-									prefix='NGN '
-									value={total}
-									thousandSeparator
-								/>
-							</Table.Td>
-						</Table.Tr>
-					</Table.Tfoot>
-				</Table>
-			</ScrollArea>
+						</Table.Thead>
+						<Table.Tbody>
+							{drugsGiven?.map((drug: any, i: number) => (
+								<Table.Tr key={drug?.id}>
+									<Table.Td>{i + 1}</Table.Td>
+									<Table.Td>{drug?.name}</Table.Td>
+									<Table.Td>
+										<NumberFormatter
+											prefix='NGN '
+											value={Number(drug?.rate)}
+											thousandSeparator
+										/>
+									</Table.Td>
+									<Table.Td>{drug?.prev}</Table.Td>
+									<Table.Td>{drug?.added}</Table.Td>
+									<Table.Td>{drug?.quantity}</Table.Td>
+									<Table.Td>{drug?.package}</Table.Td>
+									<Table.Td>
+										<NumberFormatter
+											prefix='NGN '
+											value={Number(drug?.rate) * Number(drug?.quantity)}
+											thousandSeparator
+										/>
+									</Table.Td>
+									{user?.role == "admin" && (
+										<Table.Td>
+											<ActionIcon
+												color='teal'
+												onClick={() => {
+													const found = drugsList?.find(
+														(d: any) => d?.drug?.name == drug?.name
+													);
+													const foundE = data?.find(
+														(d: any) => d?.id == drug?.id
+													);
+													setSelectedDrug(found);
+													setToEdit(foundE);
+													setDrugId(drug?.id);
+													setDrugName(drug?.name);
+													setDrugRate(drug?.rate);
+													setDrugPackage(drug?.package);
+												}}
+											>
+												<IconPencil />
+											</ActionIcon>
+										</Table.Td>
+									)}
+								</Table.Tr>
+							))}
+						</Table.Tbody>
+						<Table.Tfoot className='bg-gray-300 font-bold'>
+							<Table.Tr>
+								<Table.Td></Table.Td>
+								<Table.Td></Table.Td>
+								<Table.Td></Table.Td>
+								<Table.Td></Table.Td>
+								<Table.Td></Table.Td>
+								<Table.Td></Table.Td>
+								<Table.Td>Total: </Table.Td>
+								<Table.Td>
+									<NumberFormatter
+										prefix='NGN '
+										value={total}
+										thousandSeparator
+									/>
+								</Table.Td>
+							</Table.Tr>
+						</Table.Tfoot>
+					</Table>
+				</ScrollArea>
+				<Button leftSection={<Printer size={16} />} onClick={reactToPrintFn}>
+					Print
+				</Button>
+			</div>
 			{user?.role == "admin" && (
 				<Button disabled={!toEdit?.id} color='teal' w={200} type='submit'>
 					Update drugs
 				</Button>
 			)}
+			<div style={{ display: "none" }}>
+				<div id='prescription' ref={contentRef}>
+					<div className='flex gap-1 justify-between w-full text-xs mt-4'>
+						<Image
+							src='/hospital.svg'
+							height={45}
+							width={50}
+							alt='Albarka logo'
+							loading='eager'
+						/>
+						<div className='w-full'>
+							<h2 className='font-extrabold font-serif '>ALBARKA HOSPITAL</h2>
+							<p className=''>Tel: 08056713362, 08080854480</p>
+							<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
+							<p className='italic'>
+								Malale road, Off Rofia road, Wawa New Bussa Niger state Nigeria.
+							</p>
+						</div>
+						<p>{format(new Date(), "dd/MM/yyyy , p")}</p>
+					</div>
+					<label htmlFor='drugs' className='font-bold text-xs underline'>
+						Labtest for {enc?.patient?.name} on{" "}
+						{format(new Date(), "dd/MM/yyyy, p")}
+					</label>
+					<section className='printable text-xs'>
+						<Table>
+							<Table.Thead>
+								<Table.Tr>
+									<Table.Th>S/N</Table.Th>
+									<Table.Th>Name</Table.Th>
+									<Table.Th>Rate</Table.Th>
+									<Table.Th>Prev Quantity</Table.Th>
+									<Table.Th>Added Quantity</Table.Th>
+									<Table.Th>Total Quantity</Table.Th>
+									<Table.Th>Package</Table.Th>
+									<Table.Th>Price</Table.Th>
+								</Table.Tr>
+							</Table.Thead>
+							<Table.Tbody>
+								{drugsGiven?.map((drug: any, i: number) => (
+									<Table.Tr key={drug?.id}>
+										<Table.Td>{i + 1}</Table.Td>
+										<Table.Td>{drug?.name}</Table.Td>
+										<Table.Td>
+											<NumberFormatter
+												prefix='NGN '
+												value={Number(drug?.rate)}
+												thousandSeparator
+											/>
+										</Table.Td>
+										<Table.Td>{drug?.prev}</Table.Td>
+										<Table.Td>{drug?.added}</Table.Td>
+										<Table.Td>{drug?.quantity}</Table.Td>
+										<Table.Td>{drug?.package}</Table.Td>
+										<Table.Td>
+											<NumberFormatter
+												prefix='NGN '
+												value={Number(drug?.rate) * Number(drug?.quantity)}
+												thousandSeparator
+											/>
+										</Table.Td>
+									</Table.Tr>
+								))}
+							</Table.Tbody>
+							<Table.Tfoot className='bg-gray-300 font-bold'>
+								<Table.Tr>
+									<Table.Td></Table.Td>
+									<Table.Td></Table.Td>
+									<Table.Td></Table.Td>
+									<Table.Td></Table.Td>
+									<Table.Td></Table.Td>
+									<Table.Td></Table.Td>
+									<Table.Td>Total: </Table.Td>
+									<Table.Td>
+										<NumberFormatter
+											prefix='NGN '
+											value={total}
+											thousandSeparator
+										/>
+									</Table.Td>
+								</Table.Tr>
+							</Table.Tfoot>
+						</Table>
+					</section>
+				</div>
+			</div>
 			<LoadingOverlay visible={loading} />
 		</form>
 	);

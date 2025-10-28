@@ -15,7 +15,7 @@ export async function POST(
 			id: nanoid(8),
 			paid: item?.paid,
 			price: item?.price,
-			balance: item?.balance,
+			balance: Number(item?.price) - Number(item?.paid),
 			name: item?.name,
 			method: item?.method,
 		};

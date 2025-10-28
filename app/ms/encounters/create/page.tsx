@@ -27,7 +27,6 @@ import Image from "next/image";
 import convert from "@/lib/numberConvert";
 const Create = () => {
 	const { fetch } = useFetch();
-	const contentRef = useRef<HTMLTableElement>(null);
 
 	const [patientData, setPatientData] = useState<any>(null);
 	const [cares, setCares] = useState([]);
@@ -38,6 +37,7 @@ const Create = () => {
 	const [enc_date, setEncDate] = useState<any>(new Date());
 	const [prescription, setPrescription] = useState<any>(null);
 	const [opened, { open, close }] = useDisclosure(false);
+	const contentRef = useRef<HTMLTableElement>(null);
 	const reactToPrintFn = useReactToPrint({
 		contentRef,
 		bodyClass: "print",

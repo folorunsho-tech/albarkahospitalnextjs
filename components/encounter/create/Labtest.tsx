@@ -27,6 +27,7 @@ const Labtest = ({
 	const [testInfo, setTestInfo] = useState("");
 	const [testName, setTestName] = useState("");
 	const [testResult, setTestResult] = useState("");
+	const [testUnit, setTestUnit] = useState("");
 	const [testRate, setTestRate] = useState<number | string>();
 	const [search, setSearch] = useState("");
 
@@ -60,11 +61,13 @@ const Labtest = ({
 							result: testResult,
 							rate: testRate,
 							info: testInfo,
+							unit: testUnit,
 						},
 						...filtered,
 					]);
 					setTestId("");
 					setSearch("");
+					setTestUnit("");
 					setTestResult("");
 				}}
 			>
@@ -97,10 +100,21 @@ const Labtest = ({
 					}}
 				/>
 				<Select
+					label='Test Unit'
+					placeholder='Select test unit'
+					data={["%", "mmol/L", "g/dl", "IU", "kg", " x10^9/L"]}
+					className='w-40'
+					value={testUnit}
+					onChange={(value: any) => {
+						setTestUnit(value);
+					}}
+					nothingFoundMessage='Nothing found...'
+				/>
+				<Select
 					label='Test Info'
 					placeholder='Select test info'
 					data={["High", "Low", "Negative", "Positive"]}
-					className='w-[10rem]'
+					className='w-40'
 					value={testInfo}
 					onChange={(value: any) => {
 						setTestInfo(value);
@@ -112,7 +126,7 @@ const Labtest = ({
 					prefix='N '
 					label='Test Rate'
 					placeholder='Input test rate'
-					className='w-[10rem]'
+					className='w-40'
 					value={testResult}
 					onChange={(value) => {
 						setTestRate(value);
@@ -130,6 +144,7 @@ const Labtest = ({
 							<Table.Th>S/N</Table.Th>
 							<Table.Th>Name</Table.Th>
 							<Table.Th>Result</Table.Th>
+							<Table.Th>Unit</Table.Th>
 							<Table.Th>Info</Table.Th>
 							<Table.Th>Rate</Table.Th>
 							<Table.Th></Table.Th>
@@ -141,6 +156,7 @@ const Labtest = ({
 								<Table.Td>{i + 1}</Table.Td>
 								<Table.Td>{test?.name}</Table.Td>
 								<Table.Td>{test?.result}</Table.Td>
+								<Table.Td>{test?.unit}</Table.Td>
 								<Table.Td>{test?.info}</Table.Td>
 								<Table.Td>
 									<NumberFormatter
@@ -157,6 +173,7 @@ const Labtest = ({
 											setTestId(test?.id);
 											setTestName(test?.name);
 											setTestResult(test?.result);
+											setTestUnit(test?.unit);
 											setTestInfo(test?.info);
 											setTestRate(test?.rate);
 										}}

@@ -38,6 +38,7 @@ export async function POST(request: Request) {
 				result: test?.result,
 				test_id: test?.id,
 				rate: test?.rate,
+				unit: test?.unit,
 			};
 		});
 		const drugsG = drugsGiven?.map((drug: any) => {
@@ -46,6 +47,7 @@ export async function POST(request: Request) {
 				rate: drug?.rate,
 				name: drug?.name,
 				quantity: drug?.quantity,
+				package: drug?.package,
 				price: drug?.price,
 				date: new Date(),
 				year: curYear,

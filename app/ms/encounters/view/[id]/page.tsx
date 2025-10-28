@@ -20,8 +20,14 @@ const View = () => {
 	const [createdBy, setCreatedBy] = useState<any>(null);
 	const router = useRouter();
 	const contentRef = useRef<HTMLTableElement>(null);
+	const contentRefL = useRef<HTMLTableElement>(null);
 	const reactToPrintFn = useReactToPrint({
 		contentRef,
+		bodyClass: "print",
+		documentTitle: "prescription-list",
+	});
+	const reactToPrintFnL = useReactToPrint({
+		contentRef: contentRefL,
 		bodyClass: "print",
 		documentTitle: "prescription-list",
 	});
@@ -375,6 +381,7 @@ const View = () => {
 									<Table.Th>Name</Table.Th>
 									<Table.Th>Rate</Table.Th>
 									<Table.Th>Quantity</Table.Th>
+									<Table.Th>Package</Table.Th>
 									<Table.Th>Price</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
@@ -391,6 +398,7 @@ const View = () => {
 											/>
 										</Table.Td>
 										<Table.Td>{drug?.quantity}</Table.Td>
+										<Table.Td>{drug?.package}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
 												prefix='NGN '
@@ -403,6 +411,7 @@ const View = () => {
 							</Table.Tbody>
 							<Table.Tfoot className='bg-gray-300 font-bold'>
 								<Table.Tr>
+									<Table.Td></Table.Td>
 									<Table.Td></Table.Td>
 									<Table.Td></Table.Td>
 									<Table.Td></Table.Td>
@@ -452,6 +461,8 @@ const View = () => {
 											<Table.Th>Name</Table.Th>
 											<Table.Th>Rate</Table.Th>
 											<Table.Th>Quantity</Table.Th>
+											<Table.Th>Package</Table.Th>
+
 											<Table.Th>Price</Table.Th>
 										</Table.Tr>
 									</Table.Thead>
@@ -466,6 +477,7 @@ const View = () => {
 													/>
 												</Table.Td>
 												<Table.Td>{drug?.quantity}</Table.Td>
+												<Table.Td>{drug?.package}</Table.Td>
 												<Table.Td>
 													<NumberFormatter
 														value={Number(drug?.rate) * Number(drug?.quantity)}
@@ -475,6 +487,7 @@ const View = () => {
 											</Table.Tr>
 										))}
 										<Table.Tr className='bg-gray-300 font-bold'>
+											<Table.Td></Table.Td>
 											<Table.Td></Table.Td>
 											<Table.Td></Table.Td>
 											<Table.Td>Total: </Table.Td>
@@ -501,16 +514,85 @@ const View = () => {
 							</div>
 						)}
 					</section>
+					<section style={{ display: "none" }}>
+						{queryData && (
+							<div ref={contentRefL} className='printable space-y-2 text-xs'>
+								<div className='flex gap-1 justify-between w-full'>
+									<Image
+										src='/hospital.svg'
+										height={45}
+										width={50}
+										alt='Albarka logo'
+										loading='eager'
+									/>
+									<div className='w-full'>
+										<h2 className='font-extrabold font-serif '>
+											ALBARKA HOSPITAL
+										</h2>
+										<p className=''>Tel: 08056713362, 08080854480</p>
+										<p className='italic'>E-mail: hospitalalbarka@gmail.com</p>
+										<p className='italic'>
+											Malale road, Off Rofia road, Wawa New Bussa Niger state
+											Nigeria.
+										</p>
+									</div>
+									<p>{format(new Date(), "d/MM/Y , pp")}</p>
+								</div>
+								<p className='text-xs font-extrabold bg-black text-white p-1 px-2 text-center uppercase'>
+									Labtests for {queryData?.patient?.name} on{" "}
+									{format(queryData?.enc_date, "dd/MM/yyyy")}, {queryData?.time}
+								</p>
+								<Table>
+									<Table.Thead className='bg-gray-200'>
+										<Table.Tr>
+											<Table.Th>S/N</Table.Th>
+											<Table.Th>Name</Table.Th>
+											<Table.Th>Result</Table.Th>
+											<Table.Th>Unit</Table.Th>
+											<Table.Th>Info</Table.Th>
+											<Table.Th>Rate</Table.Th>
+										</Table.Tr>
+									</Table.Thead>
+									<Table.Tbody>
+										{queryData?.labTest?.map((test: any, i: number) => (
+											<Table.Tr key={test?.id}>
+												<Table.Td>{i + 1}</Table.Td>
+												<Table.Td>{test?.testType?.name}</Table.Td>
+												<Table.Td>{test?.result}</Table.Td>
+												<Table.Td>{test?.unit}</Table.Td>
+												<Table.Td>{test?.info}</Table.Td>
+												<Table.Td>
+													<NumberFormatter
+														prefix='N '
+														value={test?.rate}
+														thousandSeparator
+													/>
+												</Table.Td>
+											</Table.Tr>
+										))}
+									</Table.Tbody>
+								</Table>
+							</div>
+						)}
+					</section>
 					<div id='labs' className='flex gap-2 flex-wrap mb-3'>
-						<label htmlFor='diag' className='font-bold'>
+						<label htmlFor='diag' className='font-bold mr-3'>
 							Labs
 						</label>
+						<Button
+							onClick={() => {
+								reactToPrintFnL();
+							}}
+						>
+							<Printer />
+						</Button>
 						<Table>
 							<Table.Thead className='bg-gray-200'>
 								<Table.Tr>
 									<Table.Th>S/N</Table.Th>
 									<Table.Th>Name</Table.Th>
 									<Table.Th>Result</Table.Th>
+									<Table.Th>Unit</Table.Th>
 									<Table.Th>Info</Table.Th>
 									<Table.Th>Rate</Table.Th>
 								</Table.Tr>
@@ -521,6 +603,7 @@ const View = () => {
 										<Table.Td>{i + 1}</Table.Td>
 										<Table.Td>{test?.testType?.name}</Table.Td>
 										<Table.Td>{test?.result}</Table.Td>
+										<Table.Td>{test?.unit}</Table.Td>
 										<Table.Td>{test?.info}</Table.Td>
 										<Table.Td>
 											<NumberFormatter

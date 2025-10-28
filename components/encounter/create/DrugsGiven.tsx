@@ -31,6 +31,7 @@ const DrugsGiven = ({
 	);
 	const [drugQnty, setDrugQnty] = useState(0);
 	const [drugRate, setDrugRate] = useState(0);
+	const [drugPackage, setDrugPackage] = useState("");
 	const [drugsList, setDrugsList] = useState([]);
 	const getAll = async () => {
 		const { data } = await fetch("/drugsinventory");
@@ -57,14 +58,16 @@ const DrugsGiven = ({
 							quantity: drugQnty,
 							curr_stock: Number(selectedDrug?.stock_qty) - Number(drugQnty),
 							price: Number(drugRate) * Number(drugQnty),
+							package: drugPackage,
 						},
 						...filtered,
 					]);
+					setSelectedDrug(null);
 					setDrugQnty(0);
 					setDrugRate(0);
 					setDrugId("");
 					setSearch("");
-					setSelectedDrug(null);
+					setDrugPackage("");
 				}}
 			>
 				<Select
@@ -119,6 +122,28 @@ const DrugsGiven = ({
 					}}
 					required
 				/>
+				<Select
+					label='Drug package'
+					placeholder='Select drug package'
+					data={[
+						"pieces",
+						"satchet ",
+						"bottle",
+						"tin",
+						"tube",
+						"roll",
+						"carton",
+					]}
+					className='w-[16rem]'
+					required
+					value={drugPackage}
+					onChange={(value: any) => {
+						setDrugPackage(value);
+					}}
+					clearable
+					searchable
+					nothingFoundMessage='Nothing found...'
+				/>
 				<NumberInput
 					label='Rate'
 					thousandSeparator
@@ -146,6 +171,7 @@ const DrugsGiven = ({
 							<Table.Th>Name</Table.Th>
 							<Table.Th>Rate</Table.Th>
 							<Table.Th>Quantity</Table.Th>
+							<Table.Th>Package</Table.Th>
 							<Table.Th>Price</Table.Th>
 							<Table.Th></Table.Th>
 						</Table.Tr>
@@ -163,6 +189,7 @@ const DrugsGiven = ({
 									/>
 								</Table.Td>
 								<Table.Td>{drug?.quantity}</Table.Td>
+								<Table.Td>{drug?.package}</Table.Td>
 								<Table.Td>
 									<NumberFormatter
 										prefix='NGN '
@@ -177,6 +204,7 @@ const DrugsGiven = ({
 											setDrugId(drug?.id);
 											setDrugName(drug?.name);
 											setDrugQnty(drug?.quantity);
+											setDrugPackage(drug?.package);
 											setDrugRate(drug?.rate);
 											setSelectedDrug(drugId);
 										}}
@@ -200,6 +228,7 @@ const DrugsGiven = ({
 					</Table.Tbody>
 					<Table.Tfoot className='bg-gray-300 font-bold'>
 						<Table.Tr>
+							<Table.Td></Table.Td>
 							<Table.Td></Table.Td>
 							<Table.Td></Table.Td>
 							<Table.Td></Table.Td>

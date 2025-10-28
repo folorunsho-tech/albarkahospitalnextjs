@@ -20,7 +20,6 @@ import Labtest from "@/components/encounter/edit/Labtest";
 import Delivery from "@/components/encounter/edit/Delivery";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import Admission from "@/components/encounter/edit/Admission";
 import { IconOutbound, IconWoman } from "@tabler/icons-react";
 import Operations from "@/components/encounter/edit/Operations";
 import Immunization from "@/components/encounter/edit/Immunization";
@@ -34,7 +33,6 @@ const Edit = () => {
 	const [care, setCare] = useState("");
 	const [careN, setCareN] = useState("");
 	const [enc_date, setDate] = useState<Date | null | string>(null);
-	const [admission, setAdmission] = useState(null);
 	const [diags, setDiags] = useState<any[]>([]);
 	const { id } = useParams<{ id: string }>();
 
@@ -58,7 +56,6 @@ const Edit = () => {
 		setCares(sorted);
 		setCare(found?.care?.id);
 		setCareN(found?.care?.name);
-		setAdmission(found?.admission);
 	};
 	useEffect(() => {
 		if (id !== "" || id !== null) {

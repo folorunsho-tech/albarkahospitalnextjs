@@ -174,7 +174,7 @@ const Debtors = () => {
 					"Hosp No",
 					"Name",
 					"Item",
-					"Amount(N)",
+					"Bill(N)",
 					"Paid(N)",
 					"Balance(N)",
 				]}
@@ -184,7 +184,7 @@ const Debtors = () => {
 					"Hosp No",
 					"Name",
 					"Item",
-					"Amount(N)",
+					"Bill(N)",
 					"Paid(N)",
 					"Balance(N)",
 				]}

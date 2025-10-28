@@ -28,8 +28,10 @@ export async function GET(
 					},
 				},
 				patient: {
-					include: {
+					select: {
 						town: true,
+						hosp_no: true,
+						name: true,
 					},
 				},
 				operations: {

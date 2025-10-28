@@ -13,6 +13,7 @@ export async function POST(
 			result: test?.result,
 			info: test?.info,
 			rate: test?.rate,
+			unit: test?.unit,
 		};
 	});
 	try {

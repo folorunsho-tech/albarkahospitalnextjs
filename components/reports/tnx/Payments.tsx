@@ -32,6 +32,9 @@ const Payments = () => {
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
 			<Table.Td>
+				<NumberFormatter value={row?.tnxItem?.price} thousandSeparator />
+			</Table.Td>
+			<Table.Td>
 				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
@@ -49,6 +52,9 @@ const Payments = () => {
 			<Table.Td>{row?.transaction?.patient?.name}</Table.Td>
 			<Table.Td>{row?.name}</Table.Td>
 			<Table.Td>
+				<NumberFormatter value={row?.tnxItem?.price} thousandSeparator />
+			</Table.Td>
+			<Table.Td>
 				<NumberFormatter value={row?.paid} thousandSeparator />
 			</Table.Td>
 			<Table.Td>
@@ -63,6 +69,9 @@ const Payments = () => {
 	}, 0);
 	const totalBal = sortedData.reduce((prev, curr) => {
 		return Number(prev) + Number(curr.tnxItem?.balance);
+	}, 0);
+	const totalBill = sortedData.reduce((prev, curr) => {
+		return Number(prev) + Number(curr.tnxItem?.price);
 	}, 0);
 	const getValuesUI = () => {
 		if (criteria == "Cashier") {
@@ -228,6 +237,7 @@ const Payments = () => {
 					"Hosp No",
 					"Name",
 					"Item",
+					"Bill",
 					"Paid",
 					"Bal.",
 					"Meth.",
@@ -239,6 +249,7 @@ const Payments = () => {
 					"Hosp No",
 					"Name",
 					"Item",
+					"Bill",
 					"Paid",
 					"Bal.",
 					"Meth.",
@@ -266,6 +277,13 @@ const Payments = () => {
 						<Table.Td></Table.Td>
 						<Table.Td></Table.Td>
 						<Table.Td></Table.Td>
+						<Table.Td>
+							<NumberFormatter
+								prefix='N '
+								value={totalBill}
+								thousandSeparator
+							/>
+						</Table.Td>
 						<Table.Td>
 							<NumberFormatter prefix='N ' value={totalPay} thousandSeparator />
 						</Table.Td>
