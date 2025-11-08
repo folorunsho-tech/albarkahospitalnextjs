@@ -13,8 +13,8 @@ export async function POST(request: NextRequest) {
 				username,
 			},
 		});
-		const valid = bcrypt.compare(password, user?.passHash!);
-		if (user?.active === false) {
+		const valid = await bcrypt.compare(password, user?.passHash!);
+		if (!user?.active) {
 			return new Response(JSON.stringify({ error: "Account is inactive" }), {
 				status: 401,
 				headers: { "Content-Type": "application/json" },
