@@ -64,7 +64,7 @@ const Immunization = ({
 			admission: {
 				adm_date,
 				nok_phone,
-				admitted_for,
+				admitted_for: Number(admitted_for),
 				discharged_on,
 				ward_matron,
 			},
@@ -224,6 +224,7 @@ const Immunization = ({
 					Cancel
 				</Button>
 				<Button
+					disabled={diagnosis.length < 1}
 					onClick={(e) => {
 						e.preventDefault();
 						handleSubmit();

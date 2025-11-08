@@ -70,7 +70,7 @@ const ANC = ({
 			admission: {
 				adm_date,
 				nok_phone,
-				admitted_for,
+				admitted_for: Number(admitted_for),
 				discharged_on,
 				ward_matron,
 			},
@@ -354,6 +354,7 @@ const ANC = ({
 						e.preventDefault();
 						handleSubmit();
 					}}
+					disabled={diagnosis.length < 1}
 				>
 					Add encounter
 				</Button>

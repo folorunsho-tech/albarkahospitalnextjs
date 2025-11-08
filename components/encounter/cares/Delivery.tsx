@@ -76,7 +76,7 @@ const Delivery = ({
 			admission: {
 				adm_date,
 				nok_phone,
-				admitted_for,
+				admitted_for: Number(admitted_for),
 				discharged_on,
 				ward_matron,
 			},
@@ -371,6 +371,7 @@ const Delivery = ({
 					Cancel
 				</Button>
 				<Button
+					disabled={diagnosis.length < 1}
 					onClick={(e) => {
 						e.preventDefault();
 						handleSubmit();
