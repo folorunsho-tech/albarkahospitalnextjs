@@ -97,15 +97,6 @@ ALTER TABLE `transaction` DROP FOREIGN KEY `Transaction_patientId_fkey`;
 -- DropForeignKey
 ALTER TABLE `transaction` DROP FOREIGN KEY `Transaction_updatedById_fkey`;
 
--- AlterTable
-ALTER TABLE `drugsgiven` ADD COLUMN `package` VARCHAR(191) NULL;
-
--- AlterTable
-ALTER TABLE `labtest` ADD COLUMN `unit` VARCHAR(191) NULL;
-
--- AddForeignKey
-ALTER TABLE `patients` ADD CONSTRAINT `patients_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
 -- AddForeignKey
 ALTER TABLE `patients` ADD CONSTRAINT `patients_group_id_fkey` FOREIGN KEY (`group_id`) REFERENCES `groups`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -113,10 +104,13 @@ ALTER TABLE `patients` ADD CONSTRAINT `patients_group_id_fkey` FOREIGN KEY (`gro
 ALTER TABLE `patients` ADD CONSTRAINT `patients_townId_fkey` FOREIGN KEY (`townId`) REFERENCES `town`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `encounters` ADD CONSTRAINT `encounters_patient_id_fkey` FOREIGN KEY (`patient_id`) REFERENCES `patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `patients` ADD CONSTRAINT `patients_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `encounters` ADD CONSTRAINT `encounters_care_id_fkey` FOREIGN KEY (`care_id`) REFERENCES `care`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `encounters` ADD CONSTRAINT `encounters_patient_id_fkey` FOREIGN KEY (`patient_id`) REFERENCES `patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `encounters` ADD CONSTRAINT `encounters_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -152,43 +146,43 @@ ALTER TABLE `labtest` ADD CONSTRAINT `labtest_encounter_id_fkey` FOREIGN KEY (`e
 ALTER TABLE `labtest` ADD CONSTRAINT `labtest_test_id_fkey` FOREIGN KEY (`test_id`) REFERENCES `tests`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `transaction` ADD CONSTRAINT `transaction_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `transaction` ADD CONSTRAINT `transaction_patientId_fkey` FOREIGN KEY (`patientId`) REFERENCES `patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `tnxitem` ADD CONSTRAINT `tnxitem_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `transaction` ADD CONSTRAINT `transaction_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `tnxitem` ADD CONSTRAINT `tnxitem_feeId_fkey` FOREIGN KEY (`feeId`) REFERENCES `fees`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `payment` ADD CONSTRAINT `payment_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `transaction`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `payment` ADD CONSTRAINT `payment_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `tnxitem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tnxitem` ADD CONSTRAINT `tnxitem_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `payment` ADD CONSTRAINT `payment_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `reciept` ADD CONSTRAINT `reciept_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `payment` ADD CONSTRAINT `payment_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `tnxitem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `payment` ADD CONSTRAINT `payment_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `transaction`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `reciept` ADD CONSTRAINT `reciept_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `drugsinventory` ADD CONSTRAINT `drugsinventory_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `reciept` ADD CONSTRAINT `reciept_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `drugsinventory` ADD CONSTRAINT `drugsinventory_drugId_fkey` FOREIGN KEY (`drugId`) REFERENCES `drugs`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `prescriptionhist` ADD CONSTRAINT `prescriptionhist_given_id_fkey` FOREIGN KEY (`given_id`) REFERENCES `drugsgiven`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `drugsinventory` ADD CONSTRAINT `drugsinventory_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `prescriptionhist` ADD CONSTRAINT `prescriptionhist_enc_id_fkey` FOREIGN KEY (`enc_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `prescriptionhist` ADD CONSTRAINT `prescriptionhist_given_id_fkey` FOREIGN KEY (`given_id`) REFERENCES `drugsgiven`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `stockshistory` ADD CONSTRAINT `stockshistory_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `drugsinventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -197,16 +191,16 @@ ALTER TABLE `stockshistory` ADD CONSTRAINT `stockshistory_drug_id_fkey` FOREIGN 
 ALTER TABLE `stockshistory` ADD CONSTRAINT `stockshistory_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `drugpurchases` ADD CONSTRAINT `drugpurchases_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `drugsinventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `drugpurchases` ADD CONSTRAINT `drugpurchases_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
--- RenameIndex
-ALTER TABLE `_diagnosistoencounters` RENAME INDEX `_DiagnosisToEncounters_AB_unique` TO `_diagnosisToencounters_AB_unique`;
+-- AddForeignKey
+ALTER TABLE `drugpurchases` ADD CONSTRAINT `drugpurchases_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `drugsinventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- RenameIndex
-ALTER TABLE `_diagnosistoencounters` RENAME INDEX `_DiagnosisToEncounters_B_index` TO `_diagnosisToencounters_B_index`;
+ALTER TABLE `_diagnosistoencounters` RENAME INDEX `_diagnosistoencounters_AB_unique` TO `_diagnosisToencounters_AB_unique`;
+
+-- RenameIndex
+ALTER TABLE `_diagnosistoencounters` RENAME INDEX `_diagnosistoencounters_B_index` TO `_diagnosisToencounters_B_index`;
 
 -- RenameIndex
 ALTER TABLE `admission` RENAME INDEX `Admission_encounter_id_key` TO `admission_encounter_id_key`;

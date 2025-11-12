@@ -1,4 +1,5 @@
 import prisma from "@/config/prisma";
+import { snapshot } from "@/lib/sumarizer";
 // import { PrismaClient } from "@prisma/client";
 // const prisma = new PrismaClient();
 const months = [
@@ -52,6 +53,8 @@ export async function POST(
 				type: "gain",
 			},
 		});
+		// Snapshot logic
+		await snapshot();
 		return new Response(JSON.stringify({ updated, drugHist }), {
 			status: 200,
 			headers: { "Content-Type": "application/json" },

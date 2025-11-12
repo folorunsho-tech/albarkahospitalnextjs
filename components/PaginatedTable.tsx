@@ -133,7 +133,7 @@ const PaginatedTable = ({
 							</p>
 						</div>
 					</div>
-					<Table verticalSpacing={3}>
+					<Table verticalSpacing={2}>
 						<Table.Thead>
 							<Table.Tr>
 								{printHeaders?.map((head: string, index: number) => (
@@ -159,7 +159,7 @@ const PaginatedTable = ({
 				)}
 				<ScrollArea h={700}>
 					<Table
-						verticalSpacing={3}
+						verticalSpacing={2}
 						striped
 						highlightOnHover
 						withTableBorder

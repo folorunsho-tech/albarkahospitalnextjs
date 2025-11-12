@@ -3,13 +3,14 @@
 
 import { Text, NumberFormatter, Table, Select } from "@mantine/core";
 import { usePostNormal, useFetch } from "@/queries";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import DataLoader from "@/components/DataLoader";
-
+import { userContext } from "@/context/User";
 import ReportsTable from "@/components/ReportsTable";
 import { format } from "date-fns";
 
 const Detailed = () => {
+	const { accounts } = useContext(userContext);
 	const { post, loading } = usePostNormal();
 	const { fetch } = useFetch();
 	const [queryData, setQueryData] = useState<any[]>([]);
@@ -17,7 +18,10 @@ const Detailed = () => {
 	const [sortedData, setSortedData] = useState<any[]>(queryData);
 	const [filter, setFilter] = useState<string | null>("");
 	const [loaded, setLoaded] = useState<any>("");
-
+	const userFinder = (id: string | null) => {
+		const found = accounts?.find((acc) => acc?.id == id);
+		return found?.username;
+	};
 	const rows = sortedData?.map((row, i) => (
 		<Table.Tr key={row?.id}>
 			<Table.Td>
@@ -36,6 +40,7 @@ const Detailed = () => {
 			<Table.Td>
 				<NumberFormatter value={row?.rate} prefix='N ' thousandSeparator />
 			</Table.Td>
+			<Table.Td>{userFinder(row?.encounter?.createdById)}</Table.Td>
 		</Table.Tr>
 	));
 	const printRows = sortedData?.map((row, i) => (
@@ -56,9 +61,12 @@ const Detailed = () => {
 			<Table.Td>
 				<NumberFormatter value={row?.rate} prefix='N ' thousandSeparator />
 			</Table.Td>
+			<Table.Td>
+				<NumberFormatter value={row?.rate} prefix='N ' thousandSeparator />
+			</Table.Td>
+			<Table.Td>{row?.createdBy?.username}</Table.Td>
 		</Table.Tr>
 	));
-
 	const filters = (
 		<section className='w-full'>
 			<label htmlFor='filters'>Filters</label>
@@ -133,6 +141,7 @@ const Detailed = () => {
 					"Quantity",
 					"Price",
 					"Rate",
+					"Dispenser",
 				]}
 				printHeaders={[
 					"ENC Date",
@@ -143,6 +152,7 @@ const Detailed = () => {
 					"Quantity",
 					"Price",
 					"Rate",
+					"Dispenser",
 				]}
 				sortedData={sortedData}
 				setSortedData={setSortedData}

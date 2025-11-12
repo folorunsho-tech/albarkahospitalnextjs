@@ -95,7 +95,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 					color='teal'
 					component={Link}
 					href='/ms/reports/drugs_summary'
-					label='Drugs Summary'
+					label='Drugs Tally'
 					className='rounded-r-full w-fit text-xs'
 					active={`/ms/reports/drugs_summary` == url}
 				/>

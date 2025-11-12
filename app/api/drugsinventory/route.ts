@@ -1,4 +1,5 @@
 import prisma from "@/config/prisma";
+import { snapshot } from "@/lib/sumarizer";
 
 export async function GET(request: Request) {
 	try {
@@ -37,6 +38,8 @@ export async function POST(request: Request) {
 		const created = await prisma.drugsinventory.createMany({
 			data: [...toAdd],
 		});
+		// Snapshot logic
+		await snapshot();
 		return new Response(JSON.stringify(created), {
 			status: 200,
 			headers: { "Content-Type": "application/json" },

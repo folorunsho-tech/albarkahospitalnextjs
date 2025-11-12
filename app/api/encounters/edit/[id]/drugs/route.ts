@@ -2,6 +2,7 @@
 
 import { NextRequest } from "next/server";
 import prisma from "@/config/prisma";
+import { snapshot } from "@/lib/sumarizer";
 export async function POST(
 	request: NextRequest,
 	{ params }: { params: Promise<{ id: string }> }
@@ -61,7 +62,8 @@ export async function POST(
 				};
 			}),
 		});
-
+		// Snapshot logic
+		await snapshot();
 		return new Response(JSON.stringify(created), {
 			status: 200,
 			headers: { "Content-Type": "application/json" },

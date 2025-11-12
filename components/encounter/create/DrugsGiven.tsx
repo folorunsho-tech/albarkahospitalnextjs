@@ -31,7 +31,7 @@ const DrugsGiven = ({
 	);
 	const [drugQnty, setDrugQnty] = useState(0);
 	const [drugRate, setDrugRate] = useState(0);
-	const [drugPackage, setDrugPackage] = useState("");
+	const [drugPackage, setDrugPackage] = useState<string | null>(null);
 	const [drugsList, setDrugsList] = useState([]);
 	const getAll = async () => {
 		const { data } = await fetch("/drugsinventory");
@@ -67,7 +67,7 @@ const DrugsGiven = ({
 					setDrugRate(0);
 					setDrugId("");
 					setSearch("");
-					setDrugPackage("");
+					setDrugPackage(null);
 				}}
 			>
 				<Select
@@ -141,7 +141,6 @@ const DrugsGiven = ({
 						setDrugPackage(value);
 					}}
 					clearable
-					searchable
 					nothingFoundMessage='Nothing found...'
 				/>
 				<NumberInput

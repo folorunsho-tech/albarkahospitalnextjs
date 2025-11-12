@@ -18,10 +18,10 @@ body {
 }
 
 .print{
-	@apply m-2
+	@apply m-2 
 }
 .printable th {
-	@apply  border border-black bg-gray-200;
+	@apply  border border-black ;
 }
 .printable tbody tr {
 	@apply  border border-black;

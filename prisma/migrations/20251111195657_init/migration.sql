@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `Accounts` (
+CREATE TABLE `accounts` (
     `id` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NULL,
     `passHash` VARCHAR(191) NULL,
@@ -15,7 +15,7 @@ CREATE TABLE `Accounts` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Patients` (
+CREATE TABLE `patients` (
     `id` VARCHAR(191) NOT NULL,
     `hosp_no` VARCHAR(191) NOT NULL,
     `no` INTEGER NULL,
@@ -39,7 +39,7 @@ CREATE TABLE `Patients` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Encounters` (
+CREATE TABLE `encounters` (
     `id` VARCHAR(191) NOT NULL,
     `patient_id` VARCHAR(191) NULL,
     `year` INTEGER NULL,
@@ -58,7 +58,7 @@ CREATE TABLE `Encounters` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Followups` (
+CREATE TABLE `followups` (
     `id` VARCHAR(191) NOT NULL,
     `encounter_id` VARCHAR(191) NULL,
     `year` INTEGER NULL,
@@ -70,7 +70,7 @@ CREATE TABLE `Followups` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Immunization` (
+CREATE TABLE `immunization` (
     `id` VARCHAR(191) NOT NULL,
     `encounter_id` VARCHAR(191) NULL,
     `type` VARCHAR(191) NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `Immunization` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Admission` (
+CREATE TABLE `admission` (
     `id` VARCHAR(191) NOT NULL,
     `encounter_id` VARCHAR(191) NULL,
     `adm_date` DATETIME(3) NULL,
@@ -94,7 +94,7 @@ CREATE TABLE `Admission` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Admission_encounter_id_key`(`encounter_id`),
+    UNIQUE INDEX `admission_encounter_id_key`(`encounter_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -118,7 +118,7 @@ CREATE TABLE `anc` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Delivery` (
+CREATE TABLE `delivery` (
     `id` VARCHAR(191) NOT NULL,
     `encounter_id` VARCHAR(191) NULL,
     `parity` VARCHAR(191) NULL,
@@ -144,13 +144,14 @@ CREATE TABLE `Delivery` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `DrugsGiven` (
+CREATE TABLE `drugsgiven` (
     `id` VARCHAR(191) NOT NULL,
     `rate` INTEGER NULL DEFAULT 0,
     `price` INTEGER NULL DEFAULT 0,
     `quantity` INTEGER NULL DEFAULT 0,
     `drug_id` VARCHAR(191) NULL,
     `name` VARCHAR(191) NULL,
+    `package` VARCHAR(191) NULL,
     `encounter_id` VARCHAR(191) NULL,
     `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `year` INTEGER NULL,
@@ -162,7 +163,7 @@ CREATE TABLE `DrugsGiven` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Operations` (
+CREATE TABLE `operations` (
     `id` VARCHAR(191) NOT NULL,
     `encounter_id` VARCHAR(191) NULL,
     `procedureId` VARCHAR(191) NULL,
@@ -180,11 +181,12 @@ CREATE TABLE `Operations` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `LabTest` (
+CREATE TABLE `labtest` (
     `id` VARCHAR(191) NOT NULL,
     `encounter_id` VARCHAR(191) NULL,
     `test_id` VARCHAR(191) NOT NULL,
     `result` VARCHAR(191) NULL,
+    `unit` VARCHAR(191) NULL,
     `rate` INTEGER NULL,
     `info` VARCHAR(191) NULL,
     `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -197,7 +199,7 @@ CREATE TABLE `LabTest` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Transaction` (
+CREATE TABLE `transaction` (
     `id` VARCHAR(191) NOT NULL,
     `total` INTEGER NOT NULL,
     `balance` INTEGER NOT NULL,
@@ -214,7 +216,7 @@ CREATE TABLE `Transaction` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `TnxItem` (
+CREATE TABLE `tnxitem` (
     `id` VARCHAR(191) NOT NULL,
     `transactionId` VARCHAR(191) NOT NULL,
     `feeId` VARCHAR(191) NOT NULL,
@@ -231,7 +233,7 @@ CREATE TABLE `TnxItem` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Payment` (
+CREATE TABLE `payment` (
     `id` VARCHAR(191) NOT NULL,
     `tnxId` VARCHAR(191) NULL,
     `itemId` VARCHAR(191) NOT NULL,
@@ -249,7 +251,7 @@ CREATE TABLE `Payment` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Reciept` (
+CREATE TABLE `reciept` (
     `id` VARCHAR(191) NOT NULL,
     `items` JSON NOT NULL,
     `tnxId` VARCHAR(191) NOT NULL,
@@ -264,10 +266,13 @@ CREATE TABLE `Reciept` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Snapshot` (
+CREATE TABLE `drugsummary` (
     `id` VARCHAR(191) NOT NULL,
-    `type` VARCHAR(191) NULL,
-    `data` JSON NULL,
+    `name` VARCHAR(191) NULL,
+    `totalSGain` INTEGER NULL,
+    `totalSLoss` INTEGER NULL,
+    `prescriptions` INTEGER NULL,
+    `encounters` INTEGER NULL,
     `year` INTEGER NULL,
     `month` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -277,7 +282,7 @@ CREATE TABLE `Snapshot` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `DrugsInventory` (
+CREATE TABLE `drugsinventory` (
     `id` VARCHAR(191) NOT NULL,
     `stock_qty` INTEGER NOT NULL DEFAULT 0,
     `added` INTEGER NULL DEFAULT 0,
@@ -288,12 +293,12 @@ CREATE TABLE `DrugsInventory` (
     `updatedAt` DATETIME(3) NOT NULL,
     `drugId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `DrugsInventory_drugId_key`(`drugId`),
+    UNIQUE INDEX `drugsinventory_drugId_key`(`drugId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `prescriptionHist` (
+CREATE TABLE `prescriptionhist` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `drug` VARCHAR(191) NOT NULL,
     `hosp_no` VARCHAR(191) NOT NULL,
@@ -314,7 +319,7 @@ CREATE TABLE `prescriptionHist` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `StocksHistory` (
+CREATE TABLE `stockshistory` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `drug_id` VARCHAR(191) NULL,
     `name` VARCHAR(191) NULL,
@@ -331,7 +336,7 @@ CREATE TABLE `StocksHistory` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `DrugPurchases` (
+CREATE TABLE `drugpurchases` (
     `id` VARCHAR(191) NOT NULL,
     `drug_id` VARCHAR(191) NULL,
     `name` VARCHAR(191) NULL,
@@ -349,7 +354,7 @@ CREATE TABLE `DrugPurchases` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Drugs` (
+CREATE TABLE `drugs` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -359,7 +364,7 @@ CREATE TABLE `Drugs` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Diagnosis` (
+CREATE TABLE `diagnosis` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -368,7 +373,7 @@ CREATE TABLE `Diagnosis` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Town` (
+CREATE TABLE `town` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -377,7 +382,7 @@ CREATE TABLE `Town` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Tests` (
+CREATE TABLE `tests` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -386,7 +391,7 @@ CREATE TABLE `Tests` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Procedures` (
+CREATE TABLE `procedures` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -395,7 +400,7 @@ CREATE TABLE `Procedures` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Fees` (
+CREATE TABLE `fees` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `amount` INTEGER NULL,
@@ -405,7 +410,7 @@ CREATE TABLE `Fees` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Care` (
+CREATE TABLE `care` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -414,7 +419,7 @@ CREATE TABLE `Care` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Groups` (
+CREATE TABLE `groups` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -423,118 +428,118 @@ CREATE TABLE `Groups` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `_DiagnosisToEncounters` (
+CREATE TABLE `_diagnosisToencounters` (
     `A` VARCHAR(191) NOT NULL,
     `B` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `_DiagnosisToEncounters_AB_unique`(`A`, `B`),
-    INDEX `_DiagnosisToEncounters_B_index`(`B`)
+    UNIQUE INDEX `_diagnosisToencounters_AB_unique`(`A`, `B`),
+    INDEX `_diagnosisToencounters_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Patients` ADD CONSTRAINT `Patients_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `patients` ADD CONSTRAINT `patients_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Patients` ADD CONSTRAINT `Patients_group_id_fkey` FOREIGN KEY (`group_id`) REFERENCES `Groups`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `patients` ADD CONSTRAINT `patients_group_id_fkey` FOREIGN KEY (`group_id`) REFERENCES `groups`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Patients` ADD CONSTRAINT `Patients_townId_fkey` FOREIGN KEY (`townId`) REFERENCES `Town`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `patients` ADD CONSTRAINT `patients_townId_fkey` FOREIGN KEY (`townId`) REFERENCES `town`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Encounters` ADD CONSTRAINT `Encounters_patient_id_fkey` FOREIGN KEY (`patient_id`) REFERENCES `Patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `encounters` ADD CONSTRAINT `encounters_patient_id_fkey` FOREIGN KEY (`patient_id`) REFERENCES `patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Encounters` ADD CONSTRAINT `Encounters_care_id_fkey` FOREIGN KEY (`care_id`) REFERENCES `Care`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `encounters` ADD CONSTRAINT `encounters_care_id_fkey` FOREIGN KEY (`care_id`) REFERENCES `care`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Encounters` ADD CONSTRAINT `Encounters_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `encounters` ADD CONSTRAINT `encounters_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Followups` ADD CONSTRAINT `Followups_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `followups` ADD CONSTRAINT `followups_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Immunization` ADD CONSTRAINT `Immunization_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `immunization` ADD CONSTRAINT `immunization_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Admission` ADD CONSTRAINT `Admission_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `admission` ADD CONSTRAINT `admission_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `anc` ADD CONSTRAINT `anc_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `anc` ADD CONSTRAINT `anc_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Delivery` ADD CONSTRAINT `Delivery_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `delivery` ADD CONSTRAINT `delivery_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `DrugsGiven` ADD CONSTRAINT `DrugsGiven_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `DrugsInventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `drugsgiven` ADD CONSTRAINT `drugsgiven_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `drugsinventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `DrugsGiven` ADD CONSTRAINT `DrugsGiven_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `drugsgiven` ADD CONSTRAINT `drugsgiven_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Operations` ADD CONSTRAINT `Operations_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `operations` ADD CONSTRAINT `operations_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Operations` ADD CONSTRAINT `Operations_procedureId_fkey` FOREIGN KEY (`procedureId`) REFERENCES `Procedures`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `operations` ADD CONSTRAINT `operations_procedureId_fkey` FOREIGN KEY (`procedureId`) REFERENCES `procedures`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `LabTest` ADD CONSTRAINT `LabTest_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `labtest` ADD CONSTRAINT `labtest_encounter_id_fkey` FOREIGN KEY (`encounter_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `LabTest` ADD CONSTRAINT `LabTest_test_id_fkey` FOREIGN KEY (`test_id`) REFERENCES `Tests`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `labtest` ADD CONSTRAINT `labtest_test_id_fkey` FOREIGN KEY (`test_id`) REFERENCES `tests`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Transaction` ADD CONSTRAINT `Transaction_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `transaction` ADD CONSTRAINT `transaction_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Transaction` ADD CONSTRAINT `Transaction_patientId_fkey` FOREIGN KEY (`patientId`) REFERENCES `Patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `transaction` ADD CONSTRAINT `transaction_patientId_fkey` FOREIGN KEY (`patientId`) REFERENCES `patients`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TnxItem` ADD CONSTRAINT `TnxItem_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `Transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tnxitem` ADD CONSTRAINT `tnxitem_transactionId_fkey` FOREIGN KEY (`transactionId`) REFERENCES `transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TnxItem` ADD CONSTRAINT `TnxItem_feeId_fkey` FOREIGN KEY (`feeId`) REFERENCES `Fees`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `tnxitem` ADD CONSTRAINT `tnxitem_feeId_fkey` FOREIGN KEY (`feeId`) REFERENCES `fees`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Payment` ADD CONSTRAINT `Payment_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `Transaction`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `payment` ADD CONSTRAINT `payment_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `transaction`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Payment` ADD CONSTRAINT `Payment_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `TnxItem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `payment` ADD CONSTRAINT `payment_itemId_fkey` FOREIGN KEY (`itemId`) REFERENCES `tnxitem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Payment` ADD CONSTRAINT `Payment_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `payment` ADD CONSTRAINT `payment_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Reciept` ADD CONSTRAINT `Reciept_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `Transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `reciept` ADD CONSTRAINT `reciept_tnxId_fkey` FOREIGN KEY (`tnxId`) REFERENCES `transaction`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Reciept` ADD CONSTRAINT `Reciept_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `reciept` ADD CONSTRAINT `reciept_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `DrugsInventory` ADD CONSTRAINT `DrugsInventory_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `drugsinventory` ADD CONSTRAINT `drugsinventory_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `DrugsInventory` ADD CONSTRAINT `DrugsInventory_drugId_fkey` FOREIGN KEY (`drugId`) REFERENCES `Drugs`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `drugsinventory` ADD CONSTRAINT `drugsinventory_drugId_fkey` FOREIGN KEY (`drugId`) REFERENCES `drugs`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `prescriptionHist` ADD CONSTRAINT `prescriptionHist_given_id_fkey` FOREIGN KEY (`given_id`) REFERENCES `DrugsGiven`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `prescriptionhist` ADD CONSTRAINT `prescriptionhist_given_id_fkey` FOREIGN KEY (`given_id`) REFERENCES `drugsgiven`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `prescriptionHist` ADD CONSTRAINT `prescriptionHist_enc_id_fkey` FOREIGN KEY (`enc_id`) REFERENCES `Encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `prescriptionhist` ADD CONSTRAINT `prescriptionhist_enc_id_fkey` FOREIGN KEY (`enc_id`) REFERENCES `encounters`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `StocksHistory` ADD CONSTRAINT `StocksHistory_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `DrugsInventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `stockshistory` ADD CONSTRAINT `stockshistory_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `drugsinventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `StocksHistory` ADD CONSTRAINT `StocksHistory_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `stockshistory` ADD CONSTRAINT `stockshistory_updatedById_fkey` FOREIGN KEY (`updatedById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `DrugPurchases` ADD CONSTRAINT `DrugPurchases_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `DrugsInventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `drugpurchases` ADD CONSTRAINT `drugpurchases_drug_id_fkey` FOREIGN KEY (`drug_id`) REFERENCES `drugsinventory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `DrugPurchases` ADD CONSTRAINT `DrugPurchases_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `Accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `drugpurchases` ADD CONSTRAINT `drugpurchases_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `accounts`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_DiagnosisToEncounters` ADD CONSTRAINT `_DiagnosisToEncounters_A_fkey` FOREIGN KEY (`A`) REFERENCES `Diagnosis`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_diagnosisToencounters` ADD CONSTRAINT `_diagnosisToencounters_A_fkey` FOREIGN KEY (`A`) REFERENCES `diagnosis`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `_DiagnosisToEncounters` ADD CONSTRAINT `_DiagnosisToEncounters_B_fkey` FOREIGN KEY (`B`) REFERENCES `Encounters`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `_diagnosisToencounters` ADD CONSTRAINT `_diagnosisToencounters_B_fkey` FOREIGN KEY (`B`) REFERENCES `encounters`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

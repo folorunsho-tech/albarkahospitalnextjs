@@ -2,6 +2,7 @@
 
 import prisma from "@/config/prisma";
 import { curMonth, curYear } from "@/config/ynm";
+import { snapshot } from "@/lib/sumarizer";
 
 export async function GET(request: Request) {
 	try {
@@ -150,7 +151,8 @@ export async function POST(request: Request) {
 				},
 			});
 		}
-
+		// Snapshot logic
+		await snapshot();
 		return new Response(JSON.stringify(created), {
 			status: 200,
 			headers: { "Content-Type": "application/json" },

@@ -27,7 +27,7 @@ const DataLoader = ({
 	const [cYnmM, setCYnmM] = useState<string | null>(curMonth);
 	const [cDate, setCDate] = useState<Date | any>(new Date());
 	const [from, setFrom] = useState<Date | any>(
-		new Date(Number(curYear), curMonthNo, 2)
+		new Date(Number(curYear), curMonthNo, 1)
 	);
 	const [to, setTo] = useState<Date | any>(new Date());
 	const loadValue = (criteria: string) => {

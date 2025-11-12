@@ -90,7 +90,7 @@ const ReportsTable = ({
 						</div>
 					</div>
 					{metadata}
-					<Table verticalSpacing={3} fz={8}>
+					<Table verticalSpacing={1} fz={8} horizontalSpacing={3}>
 						<Table.Thead>
 							<Table.Tr>
 								{printHeaders?.map((head: string, index: number) => (
@@ -127,7 +127,7 @@ const ReportsTable = ({
 						withTableBorder
 						withColumnBorders
 						className='text-xs'
-						verticalSpacing={3}
+						verticalSpacing={1}
 					>
 						<Table.Thead>
 							<Table.Tr>

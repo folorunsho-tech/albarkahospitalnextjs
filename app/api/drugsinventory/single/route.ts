@@ -1,4 +1,5 @@
 import prisma from "@/config/prisma";
+import { snapshot } from "@/lib/sumarizer";
 
 export async function POST(request: Request) {
 	// Parse the request body
@@ -16,6 +17,8 @@ export async function POST(request: Request) {
 				updatedById,
 			},
 		});
+		// Snapshot logic
+		await snapshot();
 		return new Response(JSON.stringify(created), {
 			status: 200,
 			headers: { "Content-Type": "application/json" },
