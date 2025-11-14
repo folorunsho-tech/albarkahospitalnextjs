@@ -9,6 +9,16 @@ export async function GET(request: Request) {
 			},
 			include: {
 				drug: true,
+				updatedBy: {
+					select: {
+						username: true,
+					},
+				},
+				_count: {
+					select: {
+						givenHistory: true,
+					},
+				},
 			},
 		});
 		return new Response(JSON.stringify(found), {

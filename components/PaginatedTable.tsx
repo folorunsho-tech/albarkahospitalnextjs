@@ -39,6 +39,7 @@ const PaginatedTable = ({
 	tableReport = "",
 	tableFoot,
 	setPrintData,
+	display = 200,
 }: {
 	showSearch?: boolean;
 	showPagination?: boolean;
@@ -56,8 +57,9 @@ const PaginatedTable = ({
 	tableReport?: string;
 	tableFoot?: ReactElement;
 	setPrintData?: any;
+	display?: number;
 }) => {
-	const chunkAmnt = 200;
+	const chunkAmnt = display;
 	const [total, setTotal] = useState(1);
 	const [activePage, setPage] = useState(1);
 	const [search, setSearch] = useState("");
@@ -84,7 +86,7 @@ const PaginatedTable = ({
 		const chunked = chunk(filtered, chunkAmnt);
 		setPage(1);
 		setSortedData(chunked[activePage - 1]);
-		setPrintData(filtered);
+		setPrintData ? setPrintData(filtered) : null;
 		setTotal(chunked?.length);
 	};
 	useEffect(() => {
@@ -110,8 +112,8 @@ const PaginatedTable = ({
 					<div className='flex items-start gap-4 mb-2'>
 						<Image
 							src='/hospital.svg'
-							height={120}
-							width={120}
+							height={100}
+							width={100}
 							alt='Albarka logo'
 							loading='eager'
 						/>
@@ -157,7 +159,7 @@ const PaginatedTable = ({
 						onChange={handleSearchChange}
 					/>
 				)}
-				<ScrollArea h={700}>
+				<ScrollArea>
 					<Table
 						verticalSpacing={2}
 						striped

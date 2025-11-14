@@ -28,6 +28,7 @@ const DrugsInventory = () => {
 			<Table.Td>
 				<NumberFormatter value={row?.added} thousandSeparator />
 			</Table.Td>
+			<Table.Td>{row?.updatedBy?.username}</Table.Td>
 			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy, p")}</Table.Td>
 		</Table.Tr>
 	));
@@ -41,6 +42,7 @@ const DrugsInventory = () => {
 			<Table.Td>
 				<NumberFormatter value={row?.added} thousandSeparator />
 			</Table.Td>
+			<Table.Td>{row?.updatedBy?.username}</Table.Td>
 			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy, p")}</Table.Td>
 		</Table.Tr>
 	));
@@ -76,12 +78,12 @@ const DrugsInventory = () => {
 					>
 						Stock Update History
 					</Link>
-					<Link
+					{/* <Link
 						className='bg-blue-500 hover:bg-blue-600 text-white p-2 text-sm rounded-sm transition duration-300'
 						href='drugs/purchase'
 					>
 						Drug Purchase Record
-					</Link>
+					</Link> */}
 				</Group>
 			</section>
 			<section className='flex items-end gap-6 w-full'>
@@ -94,6 +96,11 @@ const DrugsInventory = () => {
 				<Button href='drugs/add-to-inventory' color='teal' component={Link}>
 					Add to inventory
 				</Button>
+				{user?.role == "admin" && (
+					<Button href='drugs/rm-from-inventory' color='red' component={Link}>
+						Remove from inventory
+					</Button>
+				)}
 			</section>
 			<PaginatedTable
 				headers={[
@@ -101,6 +108,7 @@ const DrugsInventory = () => {
 					"Name",
 					"Current Stock Quantity",
 					"Last added amount",
+					"Last Updated by",
 					"Last Updated on",
 				]}
 				printRows={printRows}
@@ -109,6 +117,7 @@ const DrugsInventory = () => {
 					"Name",
 					"Current Stock Quantity",
 					"Last added amount",
+					"Last Updated by",
 					"Last Updated on",
 				]}
 				placeholder='Search by drug name'

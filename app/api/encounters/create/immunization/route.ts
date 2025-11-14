@@ -71,6 +71,7 @@ export async function POST(request: Request) {
 				month: curMonth,
 				care_id: careId,
 				createdById,
+				updatedById: createdById,
 				diagnosis: {
 					connect: diags,
 				},

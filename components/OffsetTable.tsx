@@ -154,7 +154,7 @@ const OffsetTable = ({
 						onChange={handleSearchChange}
 					/>
 				)}
-				<ScrollArea h={700}>
+				<ScrollArea>
 					<Table
 						verticalSpacing={3}
 						striped

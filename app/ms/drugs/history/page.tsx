@@ -34,7 +34,7 @@ const Drughistory = () => {
 			<Table.Td>
 				<NumberFormatter value={row?.added} thousandSeparator />
 			</Table.Td>
-
+			<Table.Td>{row?.updatedBy?.username}</Table.Td>
 			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy, p")}</Table.Td>
 		</Table.Tr>
 	));
@@ -50,7 +50,7 @@ const Drughistory = () => {
 			<Table.Td>
 				<NumberFormatter value={row?.added} thousandSeparator />
 			</Table.Td>
-
+			<Table.Td>{row?.updatedBy?.username}</Table.Td>
 			<Table.Td>{format(new Date(row?.updatedAt), "dd/MM/yyyy, p")}</Table.Td>
 		</Table.Tr>
 	));
@@ -92,6 +92,7 @@ const Drughistory = () => {
 					"Stock Quantity",
 					"Type",
 					"Amount added",
+					"Created By",
 					"Date",
 				]}
 				sortedData={sortedData}
@@ -108,6 +109,7 @@ const Drughistory = () => {
 					"Quantity",
 					"Type",
 					"Amount added",
+					"Created By",
 					"Date",
 				]}
 				printRows={printRows}

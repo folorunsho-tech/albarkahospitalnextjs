@@ -12,29 +12,39 @@ export async function POST(
 	const drugs = body.drugs;
 	const updates = body.stock_updates;
 	try {
-		drugs.forEach(async (drug: any) => {
-			await prisma.drugsgiven.update({
-				where: {
-					id: drug.id,
-				},
-				data: {
-					rate: drug.rate,
-					quantity: drug.quantity,
-					package: drug.package,
-					price: drug.price,
-					month: body.month,
-					year: Number(body.year),
-				},
-			});
+		await drugs.forEach(async (drug: any) => {
+			if (drug?.id) {
+				await prisma.drugsgiven.update({
+					where: {
+						id: drug.id,
+					},
+					data: {
+						rate: drug.rate,
+						quantity: drug.quantity,
+						package: drug.package,
+						price: drug.price,
+						month: body.month,
+						year: Number(body.year),
+					},
+				});
+			} else {
+				await prisma.drugsgiven.create({
+					data: {
+						rate: drug.rate,
+						quantity: drug.quantity,
+						package: drug.package,
+						price: drug.price,
+						name: drug.name,
+						month: body.month,
+						year: Number(body.year),
+						encounter_id: id,
+						drug_id: drug.inv,
+					},
+				});
+			}
 		});
 
-		const created = await prisma.encounters.findUnique({
-			where: {
-				id,
-			},
-			include: { drugsGiven: true, patient: true },
-		});
-		updates.forEach(async (update: any) => {
+		await updates.forEach(async (update: any) => {
 			await prisma.drugsinventory.update({
 				where: {
 					id: update?.id,
@@ -43,6 +53,19 @@ export async function POST(
 					stock_qty: update?.stock_qty,
 				},
 			});
+		});
+		const created = await prisma.encounters.findUnique({
+			where: {
+				id,
+			},
+			include: {
+				drugsGiven: true,
+				patient: {
+					select: {
+						hosp_no: true,
+					},
+				},
+			},
 		});
 		await prisma.prescriptionhist.createMany({
 			data: drugs?.map((d: any) => {
@@ -64,11 +87,12 @@ export async function POST(
 		});
 		// Snapshot logic
 		await snapshot();
-		return new Response(JSON.stringify(created), {
+		return new Response(JSON.stringify("Prescription updated"), {
 			status: 200,
 			headers: { "Content-Type": "application/json" },
 		});
 	} catch (error) {
+		console.log(error);
 		return new Response(JSON.stringify(error), {
 			status: 500,
 			headers: { "Content-Type": "application/json" },

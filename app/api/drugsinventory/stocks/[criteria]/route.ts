@@ -15,6 +15,11 @@ export async function POST(
 				},
 				include: {
 					drug: true,
+					updatedBy: {
+						select: {
+							username: true,
+						},
+					},
 				},
 				orderBy: {
 					createdAt: "desc",
@@ -32,11 +37,17 @@ export async function POST(
 				},
 				include: {
 					drug: true,
+					updatedBy: {
+						select: {
+							username: true,
+						},
+					},
 				},
 				orderBy: {
 					createdAt: "desc",
 				},
 			});
+
 			return new Response(JSON.stringify(found), {
 				status: 200,
 				headers: { "Content-Type": "application/json" },
@@ -48,6 +59,11 @@ export async function POST(
 				},
 				include: {
 					drug: true,
+					updatedBy: {
+						select: {
+							username: true,
+						},
+					},
 				},
 				orderBy: {
 					createdAt: "desc",
@@ -75,6 +91,11 @@ export async function POST(
 				},
 				include: {
 					drug: true,
+					updatedBy: {
+						select: {
+							username: true,
+						},
+					},
 				},
 				orderBy: {
 					createdAt: "desc",

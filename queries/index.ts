@@ -26,6 +26,7 @@ function useApi<T = any>(
 					? transformPayload(payload, user)
 					: payload;
 			}
+
 			const res = await axios(config);
 			setData(res.data);
 			if (enableNotification) showNotification(res.status);
@@ -116,4 +117,10 @@ export const useEdit = () => {
 		updatedById: user?.id,
 	}));
 	return { loading, data, edit: request };
+};
+export const useDelete = () => {
+	const { loading, data, request } = useApi<any[]>("POST", (payload) => ({
+		...payload,
+	}));
+	return { loading, data, remove: request };
 };

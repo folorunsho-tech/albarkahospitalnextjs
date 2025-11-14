@@ -2,7 +2,6 @@
 "use client";
 
 import { useFetch, useEditT } from "@/queries";
-import { userContext } from "@/context/User";
 
 import {
 	ActionIcon,
@@ -15,7 +14,7 @@ import {
 	Table,
 } from "@mantine/core";
 import { IconPencil, IconReload } from "@tabler/icons-react";
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { curYear, curMonth } from "@/lib/ynm";
 import { Printer } from "lucide-react";
 import { format } from "date-fns";
@@ -23,23 +22,21 @@ import Image from "next/image";
 import { useReactToPrint } from "react-to-print";
 
 const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
-	const { user } = useContext(userContext);
 	const { fetch } = useFetch();
 	const { edit, loading } = useEditT();
 	const [drugsGiven, setDrugsGiven] = useState<any[]>([]);
-	const [drugId, setDrugId] = useState("");
+	const [prescription, setPrescription] = useState<any[]>([]);
+	const [invId, setInvId] = useState<string | null>(null);
 	const [drugName, setDrugName] = useState("");
-	const [selectedDrug, setSelectedDrug] = useState<any | null | undefined>(
-		null
-	);
-	const [toEdit, setToEdit] = useState<any | null | undefined>(null);
-	const [data, setData] = useState<any | null | undefined>(null);
 	const [enc, setEnc] = useState<any | null | undefined>(null);
 	const [drugQnty, setDrugQnty] = useState(0);
-	const [drugRate, setDrugRate] = useState(0);
+	const [drugStock, setDrugStock] = useState<number>(0);
+	const [givenId, setGivenId] = useState<string | null>(null);
+	const [drugPrevQnty, setDrugPrevQnty] = useState(0);
+	const [drugRate, setDrugRate] = useState<number | undefined | string>(0);
+	const [drugPackage, setDrugPackage] = useState<string | null>("");
 	const [drugsList, setDrugsList] = useState([]);
-	const [drugPackage, setDrugPackage] = useState("");
-	const [drugM, setDrugM] = useState([]);
+	const [drugM, setDrugM] = useState<any>([]);
 	const contentRef = useRef<HTMLTableElement>(null);
 	const reactToPrintFn = useReactToPrint({
 		contentRef,
@@ -48,18 +45,10 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 	});
 	const getAll = async () => {
 		const { data } = await fetch("/drugsinventory");
-		const { data: enc } = await fetch(`/encounters/e/${enc_id}`);
 		setDrugsList(data);
+		const { data: enc } = await fetch(`/encounters/e/${enc_id}`);
 		setEnc(enc);
-		const sorted = data?.map((drug: any) => {
-			return {
-				value: drug?.id,
-				label: `${drug?.drug?.name}`,
-				disabled: drug?.stock_qty < 1 ? true : false,
-			};
-		});
-		setDrugM(sorted);
-		const sortedDrug = enc?.drugsGiven?.map((d: any) => {
+		const sortedDrug: any[] = enc?.drugsGiven?.map((d: any) => {
 			return {
 				id: d?.id,
 				inv: d?.drug_id,
@@ -72,8 +61,18 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 				price: Number(d?.rate) * Number(d?.quantity),
 			};
 		});
-		setData(enc?.drugsGiven);
+		const filtered: any[] = data?.map((drug: any) => {
+			const isExist = sortedDrug.find((d) => d?.inv == drug?.id);
+			return {
+				value: drug?.id,
+				label: `${drug?.drug?.name}`,
+				disabled: isExist || drug?.stock_qty < 1 ? true : false,
+			};
+		});
+		const sorted = filtered.sort((a, b) => a?.disabled - b?.disabled);
+		setDrugM(sorted);
 		setDrugsGiven(sortedDrug);
+		return enc;
 	};
 	useEffect(() => {
 		getAll();
@@ -81,38 +80,75 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 	const total = drugsGiven?.reduce((prev, curr) => {
 		return Number(prev) + Number(curr?.price);
 	}, 0);
+	const handleSubmit = async () => {
+		await edit(`/encounters/edit/${enc_id}/drugs`, {
+			drugs: drugsGiven,
+			stock_updates: drugsGiven.map((drug) => {
+				return {
+					id: drug?.inv,
+					stock_qty: drug?.curr_stock,
+				};
+			}),
+			month: curMonth,
+			year: curYear,
+		});
+		const pres = await getAll();
+		setPrescription(pres?.drugsGiven);
+	};
+
 	return (
-		<form
-			className='space-y-6 my-4'
-			onSubmit={async (e) => {
-				e.preventDefault();
-				await edit(`/encounters/edit/${enc_id}/drugs`, {
-					drugs: drugsGiven,
-					stock_updates: drugsGiven.map((drug) => {
-						return {
-							id: drug?.inv,
-							stock_qty: drug?.curr_stock,
-						};
-					}),
-					month: curMonth,
-					year: curYear,
-				});
-			}}
-		>
-			{user?.role == "admin" && (
-				<section className='flex items-end gap-4'>
+		<section className='space-y-6 my-4'>
+			<section className='flex items-end gap-4'>
+				<form
+					className='flex items-end gap-4'
+					onSubmit={(e) => {
+						e.preventDefault();
+						const filtered = drugsGiven.filter((d: any) => invId !== d?.inv);
+						setDrugsGiven([
+							{
+								id: givenId,
+								inv: invId,
+								name: drugName,
+								rate: drugRate,
+								added: drugQnty,
+								prev: drugPrevQnty,
+								quantity: drugPrevQnty + drugQnty,
+								curr_stock: drugStock - drugQnty,
+								price: Number(drugRate) * (drugPrevQnty + drugQnty),
+								package: drugPackage,
+							},
+							...filtered,
+						]);
+						setDrugRate(0);
+						setDrugQnty(0);
+						setDrugPrevQnty(0);
+						setGivenId(null);
+						setInvId(null);
+						setDrugPackage(null);
+						setDrugStock(0);
+						setDrugName("");
+					}}
+				>
 					<Select
 						label='Drugs Given'
 						placeholder='Select one or more drugs given'
 						data={drugM}
 						className='w-52'
-						value={selectedDrug?.id}
-						disabled
+						value={invId}
+						onChange={(value) => {
+							const found: any = drugsList?.find((d: any) => d?.id == value);
+							setInvId(value);
+							setDrugName(found?.drug?.name);
+							setDrugStock(Number(found?.stock_qty));
+						}}
+						searchable
+						clearable
+						required
 					/>
 					<NumberInput
 						label='Current Stock'
 						placeholder='stock'
-						value={selectedDrug?.stock_qty}
+						value={drugStock}
 						thousandSeparator
 						disabled
 						className='w-24'
@@ -120,10 +156,9 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 					<NumberInput
 						label='Added Quantity'
 						placeholder='quantity'
-						min={-toEdit?.quantity}
-						max={selectedDrug?.stock_qty}
+						min={-drugQnty}
+						max={drugStock}
 						stepHoldDelay={500}
-						disabled={!toEdit?.id}
 						stepHoldInterval={100}
 						thousandSeparator
 						className='w-32'
@@ -159,7 +194,6 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 						thousandSeparator
 						placeholder='rate'
 						min={1}
-						disabled={!toEdit?.id}
 						prefix='NGN '
 						stepHoldDelay={500}
 						stepHoldInterval={100}
@@ -168,49 +202,27 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 							setDrugRate(Number(value));
 						}}
 					/>
-					<Button
-						disabled={!selectedDrug?.id}
-						color='teal'
-						onClick={() => {
-							const filtered = drugsGiven.filter((d: any) => drugId !== d?.id);
-							setDrugsGiven([
-								{
-									id: drugId,
-									inv: toEdit?.drug_id,
-									name: drugName,
-									rate: drugRate,
-									added: drugQnty,
-									prev: toEdit?.quantity,
-									quantity: toEdit?.quantity + drugQnty,
-									curr_stock:
-										Number(selectedDrug?.stock_qty) - Number(drugQnty),
-									price:
-										Number(drugRate) * (Number(toEdit?.quantity) + drugQnty),
-									package: drugPackage,
-								},
-								...filtered,
-							]);
-						}}
-					>
-						Update list
+					<Button disabled={!invId} color='teal' type='submit'>
+						Update / add to list
 					</Button>
-					<Button
-						color='orange'
-						leftSection={<IconReload />}
-						onClick={() => {
-							getAll();
-							setDrugRate(0);
-							setDrugQnty(0);
-							setSelectedDrug(null);
-							setToEdit(null);
+				</form>
+				<Button
+					color='orange'
+					leftSection={<IconReload />}
+					onClick={() => {
+						getAll();
+						setDrugRate(0);
+						setDrugQnty(0);
+						setDrugPrevQnty(0);
+						setGivenId(null);
+						setInvId(null);
+						setDrugPackage(null);
+					}}
+				>
+					Reset
+				</Button>
+			</section>
 
-							setDrugPackage("");
-						}}
-					>
-						Reset
-					</Button>
-				</section>
-			)}
 			<div className='flex justify-between'>
 				<ScrollArea mah={150}>
 					<Table>
@@ -221,7 +233,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 								<Table.Th>Rate</Table.Th>
 								<Table.Th>Prev Quantity</Table.Th>
 								<Table.Th>Added Quantity</Table.Th>
-								<Table.Th>Total Quantity</Table.Th>
+								<Table.Th>New Quantity</Table.Th>
 								<Table.Th>Package</Table.Th>
 								<Table.Th>Price</Table.Th>
 								<Table.Th></Table.Th>
@@ -229,7 +241,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 						</Table.Thead>
 						<Table.Tbody>
 							{drugsGiven?.map((drug: any, i: number) => (
-								<Table.Tr key={drug?.id}>
+								<Table.Tr key={drug?.inv}>
 									<Table.Td>{i + 1}</Table.Td>
 									<Table.Td>{drug?.name}</Table.Td>
 									<Table.Td>
@@ -250,29 +262,28 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 											thousandSeparator
 										/>
 									</Table.Td>
-									{user?.role == "admin" && (
-										<Table.Td>
-											<ActionIcon
-												color='teal'
-												onClick={() => {
-													const found = drugsList?.find(
-														(d: any) => d?.drug?.name == drug?.name
-													);
-													const foundE = data?.find(
-														(d: any) => d?.id == drug?.id
-													);
-													setSelectedDrug(found);
-													setToEdit(foundE);
-													setDrugId(drug?.id);
-													setDrugName(drug?.name);
-													setDrugRate(drug?.rate);
-													setDrugPackage(drug?.package);
-												}}
-											>
-												<IconPencil />
-											</ActionIcon>
-										</Table.Td>
-									)}
+
+									<Table.Td>
+										<ActionIcon
+											color='teal'
+											onClick={() => {
+												const found: any = drugsList?.find(
+													(d: any) => d?.drug?.name == drug?.name
+												);
+
+												setDrugStock(found?.stock_qty);
+												setDrugPrevQnty(drug?.prev);
+												setDrugQnty(drug?.added);
+												setInvId(drug?.inv);
+												setGivenId(drug?.id);
+												setDrugName(drug?.name);
+												setDrugRate(drug?.rate);
+												setDrugPackage(drug?.package);
+											}}
+										>
+											<IconPencil />
+										</ActionIcon>
+									</Table.Td>
 								</Table.Tr>
 							))}
 						</Table.Tbody>
@@ -296,15 +307,23 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 						</Table.Tfoot>
 					</Table>
 				</ScrollArea>
-				<Button leftSection={<Printer size={16} />} onClick={reactToPrintFn}>
+				<Button
+					leftSection={<Printer size={16} />}
+					onClick={reactToPrintFn}
+					disabled={prescription.length < 1}
+				>
 					Print
 				</Button>
 			</div>
-			{user?.role == "admin" && (
-				<Button disabled={!toEdit?.id} color='teal' w={200} type='submit'>
-					Update drugs
-				</Button>
-			)}
+			<Button
+				color='teal'
+				w={200}
+				onClick={() => {
+					handleSubmit();
+				}}
+			>
+				Update prescriptions
+			</Button>
 			<div style={{ display: "none" }}>
 				<div id='prescription' ref={contentRef}>
 					<div className='flex gap-1 justify-between w-full text-xs mt-4'>
@@ -335,19 +354,19 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 								<Table.Tr>
 									<Table.Th>S/N</Table.Th>
 									<Table.Th>Name</Table.Th>
-									<Table.Th>Rate</Table.Th>
-									<Table.Th>Prev Quantity</Table.Th>
-									<Table.Th>Added Quantity</Table.Th>
-									<Table.Th>Total Quantity</Table.Th>
 									<Table.Th>Package</Table.Th>
+									<Table.Th>Quantity</Table.Th>
+									<Table.Th>Rate</Table.Th>
 									<Table.Th>Price</Table.Th>
 								</Table.Tr>
 							</Table.Thead>
 							<Table.Tbody>
-								{drugsGiven?.map((drug: any, i: number) => (
+								{prescription?.map((drug: any, i: number) => (
 									<Table.Tr key={drug?.id}>
 										<Table.Td>{i + 1}</Table.Td>
 										<Table.Td>{drug?.name}</Table.Td>
+										<Table.Td>{drug?.package}</Table.Td>
+										<Table.Td>{drug?.quantity}</Table.Td>
 										<Table.Td>
 											<NumberFormatter
 												prefix='NGN '
@@ -355,10 +374,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 												thousandSeparator
 											/>
 										</Table.Td>
-										<Table.Td>{drug?.prev}</Table.Td>
-										<Table.Td>{drug?.added}</Table.Td>
-										<Table.Td>{drug?.quantity}</Table.Td>
-										<Table.Td>{drug?.package}</Table.Td>
+
 										<Table.Td>
 											<NumberFormatter
 												prefix='NGN '
@@ -369,16 +385,14 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 									</Table.Tr>
 								))}
 							</Table.Tbody>
-							<Table.Tfoot className='bg-gray-300 font-bold'>
+							<Table.Tfoot>
 								<Table.Tr>
 									<Table.Td></Table.Td>
 									<Table.Td></Table.Td>
 									<Table.Td></Table.Td>
 									<Table.Td></Table.Td>
-									<Table.Td></Table.Td>
-									<Table.Td></Table.Td>
-									<Table.Td>Total: </Table.Td>
-									<Table.Td>
+									<Table.Td fw={600}>Total: </Table.Td>
+									<Table.Td fw={600}>
 										<NumberFormatter
 											prefix='NGN '
 											value={total}
@@ -392,7 +406,7 @@ const DrugsGiven = ({ enc_id }: { enc_id: string | null }) => {
 				</div>
 			</div>
 			<LoadingOverlay visible={loading} />
-		</form>
+		</section>
 	);
 };
 

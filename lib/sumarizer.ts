@@ -170,22 +170,27 @@ export async function drugsSummaryCompute(
 	} else {
 		const returned: DrugSummary[] = [];
 		data.forEach((row) => {
-			const drug = data?.filter((r) => {
-				return r?.name === row?.name;
-			});
-			returned.push({
-				name: row.name,
-				stockStart: drug.reduce((acc, r) => acc + Number(r.stockStart), 0),
-				totalSGain: drug.reduce((acc, r) => acc + Number(r.totalSGain), 0),
-				totalSLoss: drug.reduce((acc, r) => acc + Number(r.totalSLoss), 0),
-				prescriptions: drug.reduce(
-					(acc, r) => acc + Number(r.prescriptions),
-					0
-				),
-				encounters: drug.reduce((acc, r) => acc + Number(r.encounters), 0),
-				year: row.year,
-				month: row.month,
-			});
+			const isExist = returned.find((i) => i.name == row.name);
+			if (isExist) {
+				return isExist;
+			} else {
+				const drug = data?.filter((r) => {
+					return r?.name === row?.name;
+				});
+				returned.push({
+					name: row.name,
+					stockStart: drug.reduce((acc, r) => acc + Number(r.stockStart), 0),
+					totalSGain: drug.reduce((acc, r) => acc + Number(r.totalSGain), 0),
+					totalSLoss: drug.reduce((acc, r) => acc + Number(r.totalSLoss), 0),
+					prescriptions: drug.reduce(
+						(acc, r) => acc + Number(r.prescriptions),
+						0
+					),
+					encounters: drug.reduce((acc, r) => acc + Number(r.encounters), 0),
+					year: row.year,
+					month: row.month,
+				});
+			}
 		});
 
 		return returned;

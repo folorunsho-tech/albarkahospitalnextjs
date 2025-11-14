@@ -17,6 +17,12 @@ export async function POST(
 					encounter: {
 						include: {
 							patient: true,
+							updatedBy: {
+								select: {
+									id: true,
+									username: true,
+								},
+							},
 						},
 					},
 				},
@@ -38,6 +44,12 @@ export async function POST(
 					encounter: {
 						include: {
 							patient: true,
+							updatedBy: {
+								select: {
+									id: true,
+									username: true,
+								},
+							},
 						},
 					},
 				},
@@ -69,6 +81,12 @@ export async function POST(
 					encounter: {
 						include: {
 							patient: true,
+							updatedBy: {
+								select: {
+									id: true,
+									username: true,
+								},
+							},
 						},
 					},
 				},
@@ -100,6 +118,12 @@ export async function POST(
 					encounter: {
 						include: {
 							patient: true,
+							updatedBy: {
+								select: {
+									username: true,
+									id: true,
+								},
+							},
 						},
 					},
 				},

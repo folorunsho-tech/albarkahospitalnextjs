@@ -5,6 +5,7 @@ import { Select } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { DatePickerInput } from "@mantine/dates";
 import { curMonth, curMonthNo, curYear, months, years } from "@/lib/ynm";
+import { format } from "date-fns";
 
 const DataLoader = ({
 	link,
@@ -142,12 +143,13 @@ const DataLoader = ({
 			} else if (criteria == "year") {
 				setLoaded(`Year - ${cYear}`);
 			} else if (criteria == "date") {
-				setLoaded(`Date - ${new Date(cDate).toLocaleDateString()}`);
+				setLoaded(`Date - ${format(new Date(cDate), "dd/MM/yyyy")}`);
 			} else if (criteria == "range") {
 				setLoaded(
-					`From - ${new Date(from).toLocaleDateString()}, To - ${new Date(
-						to
-					).toLocaleDateString()}`
+					`From - ${format(new Date(from), "dd/MM/yyyy")}, To - ${format(
+						new Date(to),
+						"dd/MM/yyyy"
+					)}`
 				);
 			}
 	}, [criteria, cYear, cYnmY, cYnmM, cDate, to, from]);

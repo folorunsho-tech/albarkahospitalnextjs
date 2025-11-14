@@ -8,25 +8,24 @@ datasource db {
 }
 
 model accounts {
-  id                 String             @id @default(uuid())
-  username           String?
-  passHash           String?
-  menu               Json?
-  role               String             @default("user")
-  active             Boolean            @default(true)
-  createdById        String?
-  updatedById        String?
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  drugPurchases      drugpurchases[]
-  drugsInventory     drugsinventory[]
-  encounters         encounters[]
-  patients           patients[]
-  payments           payment[]
-  reciepts           reciept[]
-  stocksHistory      stockshistory[]
-  transactions       transaction[]
-  dispensersummaries dispensersummary[]
+  id             String           @id @default(uuid())
+  username       String?
+  passHash       String?
+  menu           Json?
+  role           String           @default("user")
+  active         Boolean          @default(true)
+  createdById    String?
+  updatedById    String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  drugPurchases  drugpurchases[]
+  drugsInventory drugsinventory[]
+  encounters     encounters[]
+  patients       patients[]
+  payments       payment[]
+  reciepts       reciept[]
+  stocksHistory  stockshistory[]
+  transactions   transaction[]
 }
 
 model patients {
@@ -167,12 +166,12 @@ model drugsgiven {
   drug_id          String?
   name             String?
   encounter_id     String?
-  date             DateTime           @default(now())
   year             Int?
   month            String?
+  package          String?
+  date             DateTime           @default(now())
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
-  package          String?
   drug             drugsinventory?    @relation(fields: [drug_id], references: [id])
   encounter        encounters?        @relation(fields: [encounter_id], references: [id])
   prescriptionHist prescriptionhist[]
@@ -294,21 +293,21 @@ model drugsummary {
   updatedAt     DateTime @updatedAt
 }
 
-model dispensersummary {
-  id            String    @id @default(uuid())
-  name          String?
-  avlStock      Int?
-  input         Int?
-  loss          Int?
-  prescriptions Int?
-  avlBal        Int?
-  dispenserId   String?
-  dispenserName accounts? @relation(fields: [dispenserId], references: [id])
-  year          Int?
-  month         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
+// model dispensersummary {
+//   id            String    @id @default(uuid())
+//   name          String?
+//   avlStock      Int?
+//   input         Int?
+//   loss          Int?
+//   prescriptions Int?
+//   avlBal        Int?
+//   dispenserId   String?
+//   dispenserName accounts? @relation(fields: [dispenserId], references: [id])
+//   year          Int?
+//   month         String?
+//   createdAt     DateTime  @default(now())
+//   updatedAt     DateTime  @updatedAt
+// }
 
 model drugsinventory {
   id            String          @id @default(uuid())

@@ -119,7 +119,7 @@ const ReportsTable = ({
 					)}
 				</div>
 
-				<ScrollArea h={700}>
+				<ScrollArea>
 					{metadata}
 					<Table
 						striped

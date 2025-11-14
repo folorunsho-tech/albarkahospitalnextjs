@@ -26,9 +26,7 @@ const DrugsGiven = ({
 	const [drugId, setDrugId] = useState("");
 	const [search, setSearch] = useState("");
 	const [drugName, setDrugName] = useState("");
-	const [selectedDrug, setSelectedDrug] = useState<any | null | undefined>(
-		null
-	);
+	const [selectedDrug, setSelectedDrug] = useState<any>(null);
 	const [drugQnty, setDrugQnty] = useState(0);
 	const [drugRate, setDrugRate] = useState(0);
 	const [drugPackage, setDrugPackage] = useState<string | null>(null);
@@ -137,11 +135,11 @@ const DrugsGiven = ({
 					className='w-[16rem]'
 					required
 					value={drugPackage}
-					onChange={(value: any) => {
+					onChange={(value) => {
 						setDrugPackage(value);
 					}}
 					clearable
-					nothingFoundMessage='Nothing found...'
+					searchable
 				/>
 				<NumberInput
 					label='Rate'
